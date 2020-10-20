@@ -13,7 +13,7 @@ const MongoClient = require('mongodb').MongoClient;
  */
 const app = express();
 const port = process.env.PORT || "8000";
-const uri = 'mongodb+srv://admin:admin@cluster0.2lbvv.mongodb.net/test'
+const uri = 'mongodb+srv://phikappapsi:liveeverdienever@pkp.alpwd.mongodb.net/test'
 
 /**
  *  App Configuration
