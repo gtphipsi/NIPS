@@ -1,0 +1,117 @@
+/* PKP OFFICIAL RGB CODES
+ *********************************
+ * Red: rgb(196, 18, 48)
+ * Green: rgb(0, 112, 60)
+ * Yellow: rgb(238, 178, 17)
+ *********************************
+ */
+
+html, body {
+	height: 100%;
+	margin: 0;
+}
+body {
+	background-size: 100%;
+	color: white;
+}
+form:hover {
+	color: rgb(0, 112, 60);
+}
+* {
+	box-sizing: border-box;
+}
+input {
+	border: solid white;
+}
+input:hover {
+	border: solid rgb(0, 112, 60);
+}
+/* Create three equal columns that floats next to each other */
+.row {
+    margin-top: 50px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.center {
+    text-align: center;
+}
+input {
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+select {
+    margin-bottom: 10px;
+}
+ul {
+    list-style-type: none;
+    padding: 0px;
+}
+button {
+    border-radius: 2px;
+    border-style: none;
+	background-color: rgb(0, 112, 60);
+	margin-bottom: 10px;
+}
+button:hover {
+    background-color: rgb(105, 192, 105);
+}
+/* Tooltip styling */
+.tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black;
+}
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+}
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+}
+/* Color presets */
+.gold {
+	color: gold;
+}
+.red {
+	color: rgb(255, 65, 65);
+}
+.blue {
+	color: rgb(79, 79, 255);
+}
+
+
+/* Custom Stylings */
+.loginBackground {
+    background-image: url("/images/gt_background.jpg");
+     /* Full height */
+    height: 100%; 
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.loginShieldContainer {
+    width: 50%;
+    margin: auto;
+}
+.loginShieldContainer img {
+    margin: auto;
+}
+#loginShield {
+    margin: auto;
+}
+#loginContainer {
+    background: rgba(196, 18, 48, 0.836);
+	color: black;
+	border-radius: 5px;
+}
