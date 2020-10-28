@@ -27,7 +27,12 @@ app.use(express.static(path.join(__dirname, "public")));
  * Routes Definitions
  */
 app.get("/", (req, res) => {
-    res.render("index", { title: "Home" });
+    res.render("login", { title: "Login" });
+});
+
+app.get("/login", (req, res) => {
+    console.log("GET LOGIN")
+    res.render("login", { title: "Login" });
 });
 
 app.get("/users", (req, res) => {
@@ -35,7 +40,7 @@ app.get("/users", (req, res) => {
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
-            res.send(404);
+            res.sendStatus(404);
         } else {
             var db = client.db('NIPS');
             var collection = db.collection('Users');
@@ -44,13 +49,47 @@ app.get("/users", (req, res) => {
                     console.log(err);
                     throw err;
                 } else {
-                    res.send(result);
+                    res.sendStatus(result);
                 }
             });
             client.close();
         }
     });
 });
+
+// app.post("/login", (req, res) => {
+//     console.log("POST LOGIN");
+//     // console.log(req);
+//     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+//         if (err) {
+//             console.log('ERROR CONNECTING TO MONGO');
+//             res.sendStatus(404);
+//         } else {
+//             var db = client.db('NIPS');
+//             var collection = db.collection('Users');
+//             if (!req.body) {
+//                 console.log("No message body");
+//                 res.sendStatus(200);
+//             } else {
+//                 var lastName = req.body.lastName;
+//                 var badgeNumber = req.body.badgeNumber;
+//                 collection.findOne({lastName: lastName, badgeNumber: badgeNumber}, function(err, result) {
+//                     if (err) {
+//                         console.log(err);
+//                         throw err;
+//                     } else if (result) {
+//                         console.log('Matching user found--logging in');
+//                         res.sendStatus(result);
+//                     } else {
+//                         console.log('No matching user found');
+//                         res.sendStatus(404);
+//                     }
+//                 });
+//             }
+//             client.close();
+//         }
+//     });
+// });
 
 /**
  * Server Activation

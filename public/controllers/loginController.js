@@ -1,0 +1,19 @@
+
+$(document).ready(function() {
+    console.log("Loading login page...");
+
+    $("#loginButton").off('click');
+    $("#loginButton").click(function() {
+        let lastName = document.getElementById('lastName').value;
+        let badgeNumber = document.getElementById('badgeNumber').value;
+        var userInfo = {
+            lastName: lastName,
+            badgeNumber: badgeNumber
+        }
+        if (!lastName || !badgeNumber) {
+            alert('Please fill out both fields');
+        } else {
+            console.log("POST request TBD");
+        }
+    });
+});
