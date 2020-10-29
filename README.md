@@ -17,10 +17,10 @@ To run the site, <b>cd</b> into the repository and run
 You will likely get many errors on the first try, and to resolve these you will probably need to run various <code>npm install</code> commands.
 <strong>Before your first server run, you will need to install the npm packages.</strong><br></br>
 <ul>
-  <li>After you've cloned the repo, open a terminal and <code>cd <path-to-directory></code> into the <strong>NIPS</strong> directory.</li>
+  <li>After you've cloned the repo, open a terminal and <code>cd path-to-directory</code> into the <strong>NIPS</strong> directory.</li>
   <li>Run <code>npm install</code>. This (should) read from the <code>package.json</code> file and install necessary packages.</li>
   <li>Depending on certain <code>npm</code> configurations, this might (?) not work completely, so you may need to individually install certain packages by running 
-    something along the lines of <code>npm install <package-name></code>.
+    something along the lines of <code>npm install package-name</code>.
 </ul>
     After completing this, you can run the server and open <code>http://localhost:8000</code> and interact with the site.
 
