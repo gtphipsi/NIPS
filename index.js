@@ -5,6 +5,7 @@
  */
 const express = require("express");
 const path = require("path");
+const bodyParser = require('body-parser');
 var ObjectId = require('mongodb').ObjectId;
 const MongoClient = require('mongodb').MongoClient;
 
@@ -22,6 +23,7 @@ app.set("views", path.join(__dirname, "views"));
 app.engine('html', require('ejs').renderFile);
 app.set("view engine", "html");
 app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /**
  * Routes Definitions
@@ -57,39 +59,68 @@ app.get("/users", (req, res) => {
     });
 });
 
-// app.post("/login", (req, res) => {
-//     console.log("POST LOGIN");
-//     // console.log(req);
-//     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
-//         if (err) {
-//             console.log('ERROR CONNECTING TO MONGO');
-//             res.sendStatus(404);
-//         } else {
-//             var db = client.db('NIPS');
-//             var collection = db.collection('Users');
-//             if (!req.body) {
-//                 console.log("No message body");
-//                 res.sendStatus(200);
-//             } else {
-//                 var lastName = req.body.lastName;
-//                 var badgeNumber = req.body.badgeNumber;
-//                 collection.findOne({lastName: lastName, badgeNumber: badgeNumber}, function(err, result) {
-//                     if (err) {
-//                         console.log(err);
-//                         throw err;
-//                     } else if (result) {
-//                         console.log('Matching user found--logging in');
-//                         res.sendStatus(result);
-//                     } else {
-//                         console.log('No matching user found');
-//                         res.sendStatus(404);
-//                     }
-//                 });
-//             }
-//             client.close();
-//         }
-//     });
-// });
+app.get("/users/:userId", (req, res) => {
+    console.log('getting user by ID');
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var userId = req.params.userId;
+            var db = client.db('NIPS');
+            var collection = db.collection('Users');
+            collection.findOne({_id: ObjectId(userId)}, function(err, result) {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                } else {
+                    res.send(result);
+                }
+            });
+            client.close();
+        }
+    });
+});
+
+app.post("/login", (req, res) => {
+    console.log("POST LOGIN");
+    console.log("body:");
+    console.log(req.body);
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Users');
+            if (!req.body) {
+                console.log("No message body");
+                res.sendStatus(200);
+            } else {
+                var lastName = req.body.lastName;
+                var badgeNumber = req.body.badgeNumber;
+                collection.findOne({lastName: lastName, badgeNumber: badgeNumber}, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    } else if (result) {
+                        console.log('Matching user found--logging in');
+                        res.send(result);
+                    } else {
+                        console.log('No matching user found');
+                        res.sendStatus(404);
+                    }
+                });
+            }
+            client.close();
+        }
+    });
+});
+
+app.get("/home", (req, res) => {
+    console.log("GET HOME")
+    res.render("home", { title: "Login" });
+});
 
 /**
  * Server Activation

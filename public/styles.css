@@ -14,17 +14,11 @@ body {
 	background-size: 100%;
 	color: white;
 }
-form:hover {
-	color: rgb(0, 112, 60);
-}
 * {
 	box-sizing: border-box;
 }
 input {
 	border: solid white;
-}
-input:hover {
-	border: solid rgb(0, 112, 60);
 }
 /* Create three equal columns that floats next to each other */
 .row {
@@ -90,7 +84,9 @@ button:hover {
 }
 
 
-/* Custom Stylings */
+/******************** Custom Stylings ********************/
+
+/* Login Page */
 .loginBackground {
     background-image: url("/images/gt_background.jpg");
      /* Full height */
@@ -114,4 +110,10 @@ button:hover {
     background: rgba(196, 18, 48, 0.836);
 	color: black;
 	border-radius: 5px;
+}
+
+
+/* Home Page */
+.homeBackground {
+	background-color: snow;
 }
