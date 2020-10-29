@@ -8,20 +8,23 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 		<title>Phi Kappa Psi</title>
 		<link rel="stylesheet" href="/styles.css">
-		<script type="text/javascript" src="/controllers/homeController.js"></script>
+        <script type="text/javascript" src="/controllers/homeController.js"></script>
+        <!-- Font Awesome Icons -->
+        <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
 	</head>
-	<body class="loginBackground">
-        <div class="center">
-            <img id="loginShield" src="/images/pkp_shield.png">
-        </div>
+	<body class="homeBackground">
+        <nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid topNav">
+                <a href="/home"><i class="fas fa-home"></i> Home</a>
+                <a href="/login"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+			</div>
+		</nav>
 		<div class="container">
 			<div class="row">
 				<div class="col-md center" id="loginContainer">
-                    <h1>New and Improved Points System</h1>
-                    <h2>(Web Engagement Technology)</h2>
-					<h3>
-                        Successfully Logged In
-                    </h3>
+                    <h1>Home Page</h1>
+                    <h3>Successfully Logged In</h3>
+                    <h3 id="welcomeMessage">Welcome, Brother </h3>
 				</div>
 			</div>
 		</div>

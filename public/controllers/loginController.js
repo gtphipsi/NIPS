@@ -14,6 +14,12 @@ $(document).ready(function() {
             alert('Please fill out both fields');
         } else {
             console.log("POST request TBD");
+            $.post("/login", userInfo).done(function(data) {
+                console.log("Received data:");
+                console.log(data);
+                sessionStorage.setItem('userId', data._id);
+                window.location = "/home";
+            });
         }
     });
 });
