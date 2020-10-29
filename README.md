@@ -36,7 +36,8 @@ From <b>master</b> branch, run <code>git checkout -b <your-new-branch></code>
 <li>Try to name your branch something useful, such as name-of-feature</li><br>
   At this point you can run <code>git status</code> again and ensure you are now on <b>your development branch</b> with the latest code from master. From here, edit the code
 as needed for your task.<br>
-When you are done with your changes, you can run <code>git add -A</code> to add all files you've edited to the staging area. Then you can run <code>git commit -m <message></code>
+When you are done with your changes, you can run <code>git add -A</code> to add all files you've edited to the staging area. Then you can run 
+  <code>git commit -m "brief message about your changes"</code>
 to commit these changes, and finally <code>git push origin master</code> to push them.
 
 <h2>Version Control</h2>
