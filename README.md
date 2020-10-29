@@ -23,12 +23,12 @@ I will show an example of this, starting from the assumption that you already ha
 <br>
 You've been assigned a new task, and you're about to start working on it.<br>
 From the command line in your local repo, run <code>git status</code> and ensure that you are on the master branch.
-<li>If not, you will want to run ```git checkout master``` and then <code>git pull</code>. <b>This is assuming you don't have any outstanding commits.</b></li><br>
+<li>If not, you will want to run <code>git checkout master</code> and then <code>git pull</code>. <b>This is assuming you don't have any outstanding commits.</b></li><br>
 From <b>master</b> branch, run <code>git checkout -b <your-new-branch></code>
 <li>Try to name your branch something useful, such as name-of-feature</li><br>
   At this point you can run <code>git status</code> again and ensure you are now on <b>your development branch</b> with the latest code from master. From here, edit the code
 as needed for your task.<br>
-When you are done with your changes, you can run <code>git add -A</code> to add all files you've edited to the staging area. Then you can run ```git commit -m <message>```
+When you are done with your changes, you can run <code>git add -A</code> to add all files you've edited to the staging area. Then you can run <code>git commit -m <message></code>
 to commit these changes, and finally <code>git push origin master</code> to push them.
 
 <h2>Version Control</h2>
