@@ -12,7 +12,7 @@ html, body {
 }
 body {
 	background-size: 100%;
-	color: white;
+	color: black;
 }
 * {
 	box-sizing: border-box;
@@ -111,9 +111,73 @@ button:hover {
 	color: black;
 	border-radius: 5px;
 }
+.assignInput {
+	border: 1px solid rgb(196, 18, 48);
+}
+.buttonCenter {
+	margin: auto;
+}
+.assignButton {
+	background-color: transparent;
+	border: 1px solid grey;
+	border-radius: 3px;
+	margin-left: 5px;
+}
+.assignButton:hover {
+	background-color: rgb(105, 192, 105);
+}
+.deleteGroupButton {
+	background-color: transparent;
+	margin: auto;
+}
+.deleteGroupButton:hover {
+	background-color: transparent;
+	color: rgb(196, 18, 48);
+}
+#submitPointsButton h2 {
+	margin-bottom: 0px;
+}
+.DataTable {
+	width: 100%;
+}
+table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+td, th {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+tr:nth-child(even) {
+	background-color: #dddddd;
+}
 
 
 /* Home Page */
 .homeBackground {
 	background-color: snow;
+}
+
+
+/**************** Color Classes ****************/
+.pkpgreen {
+	color: rgb(0, 112, 60);
+}
+
+.pkpred {
+	color: rgb(196, 18, 48);
+}
+
+.pkpyellow {
+	color: rgb(238, 178, 17);
+}
+
+.fontblack {
+	color: black;
+}
+
+.fontwhite {
+	color: white;
 }

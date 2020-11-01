@@ -33,8 +33,18 @@ app.get("/", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-    console.log("GET LOGIN")
+    console.log("GET LOGIN");
     res.render("login", { title: "Login" });
+});
+
+app.get("/home", (req, res) => {
+    console.log("GET HOME");
+    res.render("home", { title: "Home" });
+});
+
+app.get("/assign", (req, res) => {
+    console.log("GET ASSIGN");
+    res.render("assign", { title: "Assign Points" });
 });
 
 app.get("/users", (req, res) => {
@@ -51,7 +61,7 @@ app.get("/users", (req, res) => {
                     console.log(err);
                     throw err;
                 } else {
-                    res.sendStatus(result);
+                    res.send(result);
                 }
             });
             client.close();
@@ -66,17 +76,25 @@ app.get("/users/:userId", (req, res) => {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
         } else {
-            var userId = req.params.userId;
-            var db = client.db('NIPS');
-            var collection = db.collection('Users');
-            collection.findOne({_id: ObjectId(userId)}, function(err, result) {
-                if (err) {
-                    console.log(err);
-                    throw err;
-                } else {
-                    res.send(result);
-                }
-            });
+            try {
+                var userId = req.params.userId;
+                console.log("FINDING ONE USER");
+                var mongoId = ObjectId(userId);
+                var db = client.db('NIPS');
+                var collection = db.collection('Users');
+                collection.findOne({_id: mongoId}, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(404);
+                    } else {
+                        res.send(result);
+                    }
+                });
+            } catch(e) {
+                console.log("ERROR FINDING USER");
+                console.log(err);
+                res.sendStatus(404);
+            }
             client.close();
         }
     });
@@ -117,9 +135,26 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.get("/home", (req, res) => {
-    console.log("GET HOME")
-    res.render("home", { title: "Login" });
+app.get("/committees", (req, res) => {
+    console.log('getting all users');
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Committees');
+            collection.find({}).toArray(function(err, result) {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                } else {
+                    res.send(result);
+                }
+            });
+            client.close();
+        }
+    });
 });
 
 /**

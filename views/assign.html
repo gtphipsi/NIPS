@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		<title>Phi Kappa Psi</title>
+		<link rel="stylesheet" href="/styles.css">
+		<script type="text/javascript" src="/controllers/utils.js"></script>
+		<script type="text/javascript" src="/controllers/assignController.js"></script>
+        <!-- Font Awesome Icons -->
+        <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
+	</head>
+	<body class="homeBackground">
+        <nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid topNav">
+                <a href="/home"><i class="fas fa-home"></i> Home</a>
+                <a href="/login"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+			</div>
+		</nav>
+		<div class="container">
+			<div class="row">
+				<div class="col-md center" id="loginContainer">
+                    <h1>Assign Points</h1>
+				</div>
+			</div>
+			<div class="column">
+				<div class="row">
+					<h3><i class="fas fa-angle-right pkpgreen"></i> Assigning as: 
+						<select id='assigningAs' onchange="updateAssigningAs()">
+							<option>None</option>
+						</select>
+					</h3>
+				</div>
+				<div class="row">
+					<h3><i class="fas fa-angle-right pkpgreen"></i> Reason: 
+						<input type="text" class="assignInput" id="assignReason" onchange="updateReason()">
+					</h3>
+				</div>
+				<div class="row">
+					<h3><i class="fas fa-angle-right pkpgreen"></i> Amount: 
+						<input type="number" value="0" class="assignInput" id="assignAmount" onchange="updateAmount()">
+					</h3>
+				</div>
+				<div class="row">
+					<h3><i class="fas fa-angle-right pkpgreen"></i> Groups: 
+						<select id="assigningGroup" onchange="updateGroup()">
+							<option value="None">None</option>
+						</select>
+						<button class="assignButton" id="addGroupButton">Add</button>
+						</h3>
+				</div>
+				<div class="row">
+					<div style="width: 100%">
+						<table class="DataTable" id="groupsTable">
+							<thead>
+								<tr>
+									<th>Delete</th>
+									<th>Group</th>
+									<th>ID</th>
+								</tr>
+							</thead>
+							<tbody>
+	
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row">
+					<h3><i class="fas fa-angle-right pkpgreen"></i> Brothers: 
+						<select id="assigningBrother" onchange="updateBrother()">
+							<option>None</option>
+						</select>
+					<button class="assignButton" id="addBrotherButton">Add</button>
+					</h3>					
+				</div>
+				<div class="row">
+					<div style="width: 100%">
+						<table class="DataTable" id="brothersTable">
+							<thead>
+								<tr>
+									<th>Delete</th>
+									<th>Brother</th>
+									<th>ID</th>
+								</tr>
+							</thead>
+							<tbody>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row">
+					<h3><i class="fas fa-angle-right pkpgreen"></i> Log:</h3>
+				</div>
+				<div class="row">
+					<div style="width: 100%">
+						<table class="DataTable" id="logTable">
+							<thead>
+								<tr>
+									<th>Brother</th>
+									<th>Amount</th>
+									<th>Reason</th>
+									<th>Assigner</th>
+								</tr>
+							</thead>
+							<tbody>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row">
+					<button class="buttonCenter" id="submitPointsButton"><h2><i class="far fa-check-circle"></i> Submit</h2></button>
+					<br>
+					<br>
+					<br>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
