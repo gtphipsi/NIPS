@@ -29,7 +29,9 @@ $(document).ready(function() {
         "columnDefs": [{
             "targets": 0,
             "data": null,
-            "defaultContent": "<button class='deleteGroupButton'><i class='far fa-window-close'></i></button>"
+            "defaultContent": "<button class='deleteGroupButton'><i class='far fa-window-close'></i></button>",
+            "width": "10%",
+            "className": "text-center"
         },
         {
             "targets": -1,
@@ -59,7 +61,9 @@ $(document).ready(function() {
         "columnDefs": [{
             "targets": 0,
             "data": null,
-            "defaultContent": "<button class='deleteGroupButton'><i class='far fa-window-close'></i></button>"
+            "defaultContent": "<button class='deleteGroupButton'><i class='far fa-window-close'></i></button>",
+            "width": "10%",
+            "className": "text-center"
         },
         {
             "targets": -1,
@@ -85,6 +89,7 @@ $(document).ready(function() {
     var assigningBrother = $('#assigningBrother');
     var addGroupButton = $('#addGroupButton');
     var addBrotherButton = $('#addBrotherButton');
+    var submitPointsButton = $('#submitPointsButton');
 
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
@@ -152,6 +157,13 @@ $(document).ready(function() {
         }
         console.log(ALL_USER_IDS);
         updateBrotherTable();
+    });
+
+    submitPointsButton.off('click');
+    submitPointsButton.click(function() {
+        if (confirm('Are you sure you want to submit these points?')) {
+            location.reload();
+        }
     });
 });
 

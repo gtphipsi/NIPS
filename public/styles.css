@@ -129,6 +129,7 @@ button:hover {
 .deleteGroupButton {
 	background-color: transparent;
 	margin: auto;
+	text-align: center;
 }
 .deleteGroupButton:hover {
 	background-color: transparent;
@@ -146,13 +147,19 @@ table {
 	width: 100%;
 }
 td, th {
-	border: 1px solid #dddddd;
+	border: 1px solid rgb(196, 18, 48);
 	text-align: left;
 	padding: 8px;
 }
-tr:nth-child(even) {
-	background-color: #dddddd;
+th {
+	text-align: center;
 }
+tr:hover {
+	background-color: rgb(185, 185, 185);
+}
+/* tr:nth-child(even) {
+	background-color: #c2c2c2;
+} */
 
 
 /* Home Page */
