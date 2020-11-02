@@ -26,6 +26,7 @@ $(document).ready(function() {
         searching: false,
         paging: false,
         info: false,
+        autoWidth: false,
         "columnDefs": [{
             "targets": 0,
             "data": null,
@@ -58,6 +59,7 @@ $(document).ready(function() {
         searching: false,
         paging: false,
         info: false,
+        autoWidth: false,
         "columnDefs": [{
             "targets": 0,
             "data": null,
