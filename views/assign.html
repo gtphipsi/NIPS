@@ -21,7 +21,7 @@
                 <a href="/login"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
 			</div>
 		</nav>
-		<div class="container">
+		<div class="container assign">
 			<div class="row">
 				<div class="col-md center" id="loginContainer">
                     <h1>Assign Points</h1>
@@ -30,7 +30,6 @@
 			<div class="column">
 				<div class="row">
 					<h3><i class="fas fa-user-cog pkpgreen"></i> Assigning as
-					<!-- <h3><i class="fas fa-angle-right pkpgreen"></i> Assigning as:  -->
 						<select id='assigningAs' onchange="updateAssigningAs()">
 							<option>None</option>
 						</select>
@@ -38,19 +37,16 @@
 				</div>
 				<div class="row">
 					<h3><i class="far fa-comment pkpgreen"></i> Reason
-					<!-- <h3><i class="fas fa-angle-right pkpgreen"></i> Reason:  -->
 						<input type="text" class="assignInput" id="assignReason" onchange="updateReason()">
 					</h3>
 				</div>
 				<div class="row">
 					<h3><i class="fas fa-calculator pkpgreen"></i> Amount
-					<!-- <h3><i class="fas fa-angle-right pkpgreen"></i> Amount:  -->
 						<input type="number" value="0" class="assignInput" id="assignAmount" onchange="updateAmount()">
 					</h3>
 				</div>
 				<div class="row">
 					<h3><i class="far fa-address-book pkpgreen"></i> Groups
-					<!-- <h3><i class="fas fa-angle-right pkpgreen"></i> Groups:  -->
 						<select id="assigningGroup" onchange="updateGroup()">
 							<option value="None">None</option>
 						</select>
@@ -75,7 +71,6 @@
 				</div>
 				<div class="row">
 					<h3><i class="far fa-address-card pkpgreen"></i> Brothers
-					<!-- <h3><i class="fas fa-angle-right pkpgreen"></i> Brothers:  -->
 						<select id="assigningBrother" onchange="updateBrother()">
 							<option>None</option>
 						</select>
@@ -100,7 +95,6 @@
 				</div>
 				<div class="row">
 					<h3><i class="fas fa-clipboard-check pkpgreen"></i> Log</h3>
-					<!-- <h3><i class="fas fa-angle-right pkpgreen"></i> Log:</h3> -->
 				</div>
 				<div class="row">
 					<div style="width: 100%">
