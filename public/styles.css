@@ -41,6 +41,14 @@ ul {
     list-style-type: none;
     padding: 0px;
 }
+a {
+	border-bottom: 1px solid transparent;
+}
+a:hover {
+	text-decoration: none;
+	border-bottom: 1px solid rgb(238, 178, 17);
+	transition: 0.5s;
+}
 button {
     border-radius: 2px;
     border-style: none;
@@ -111,8 +119,48 @@ button:hover {
 	color: black;
 	border-radius: 5px;
 }
-.assignInput {
+.DataTable {
+	width: 100%;
+}
+table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+td, th {
 	border: 1px solid rgb(196, 18, 48);
+	text-align: left;
+	padding: 8px;
+}
+th {
+	text-align: center;
+}
+tr:hover {
+	background-color: rgb(185, 185, 185);
+}
+.redInput {
+	border: 1px solid rgb(196, 18, 48);
+}
+
+
+/* Assign Page */
+.assign h3 {
+	margin-bottom: 10px;
+	border-bottom: 1px solid transparent;
+}
+.assign h3:hover {
+	border-bottom: 1px solid rgb(0, 112, 60);
+	transition: 0.5s;
+}
+.assign h3:hover i {
+	color: rgb(196, 18, 48);
+	transition: 0.5s;
+}
+.assign select {
+	margin-left: 10px;
+}
+.assign input {
+	margin-left: 10px;
 }
 .buttonCenter {
 	margin: auto;
@@ -139,42 +187,67 @@ button:hover {
 #submitPointsButton h2 {
 	margin-bottom: 0px;
 }
-.DataTable {
-	width: 100%;
+#submitPointsButton {
+	border-radius: 7px;
 }
-table {
-	font-family: arial, sans-serif;
-	border-collapse: collapse;
-	width: 100%;
+
+
+/* Admin Page */
+.adminTitle {
+	margin: auto;
+	color: rgb(238, 178, 17);
 }
-td, th {
-	border: 1px solid rgb(196, 18, 48);
-	text-align: left;
-	padding: 8px;
-}
-th {
-	text-align: center;
-}
-tr:hover {
-	background-color: rgb(185, 185, 185);
-}
-.assign h3 {
+.admin h2 {
 	margin-bottom: 10px;
+}
+.admin h3 {
+	padding-top: 10px;
+	padding-bottom: 10px;
 	border-bottom: 1px solid transparent;
 }
-.assign h3:hover {
-	border-bottom: 1px solid rgb(0, 112, 60);
+.admin h3:hover {
+	border-bottom: 1px solid rgb(0, 112, 60, 1.0);
 	transition: 0.5s;
 }
-.assign h3:hover i {
+.admin h3:hover i {
 	color: rgb(196, 18, 48);
 	transition: 0.5s;
 }
-.assign select {
-	margin-left: 10px;
+.admin form {
+	border: 1px solid rgb(0, 112, 60, 0.3);
+	width: 100%;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	padding: 5px;
 }
-.assign input {
-	margin-left: 10px;
+.admin form:hover {
+	border: 1px solid rgb(0, 112, 60, 1.0);
+}
+.admin input {
+	margin-left: 30px;
+	margin: auto;
+}
+.adminButton {
+	background-color: transparent;
+	border: 1px solid grey;
+	border-radius: 3px;
+	margin-left: 5px;
+}
+.adminButton:hover {
+	background-color: transparent;
+	box-shadow: 0 1px 2px 0 rgb(0, 112, 60, 0.5), 0 2px 3px 0 rgb(0, 112, 60, 0.5);
+}
+.adminSubmit {
+	margin: auto;
+}
+.adminSubmit button:hover i {
+	color: black;
+}
+.adminSubmit button {
+	border-radius: 7px;
+}
+#officerPositionsAdded li:hover i {
+	color: red;
 }
 
 
@@ -195,6 +268,10 @@ tr:hover {
 
 .pkpyellow {
 	color: rgb(238, 178, 17);
+}
+
+.transparent {
+	color: transparent;
 }
 
 .fontblack {

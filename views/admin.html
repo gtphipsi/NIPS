@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		<title>Phi Kappa Psi</title>
+		<link rel="stylesheet" href="/styles.css">
+		<script type="text/javascript" src="/controllers/utils.js"></script>
+		<script type="text/javascript" src="/controllers/adminController.js"></script>
+        <!-- Font Awesome Icons -->
+        <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
+	</head>
+	<body class="homeBackground">
+        <nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid topNav">
+                <a href="/home"><i class="fas fa-home"></i> Home</a>
+				<a href="/assign"><i class="far fa-plus-square"></i> Assign</a>
+				<a href="/admin"><i class="fas fa-cog"></i> Admin</a>
+                <a href="/login"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+			</div>
+		</nav>
+		<div class="container admin">
+			<div class="row">
+				<div class="col-md center" id="loginContainer">
+                    <h1>Admin Capabilities</h1>
+				</div>
+			</div>
+			<div class="column">
+				<div class="row">
+                    <h2 class="adminTitle">Create New User</h2>
+                    <form>
+                        <h3>First Name <input class="redInput" type="text" id="addUserFirstName"></h3>
+                        <h3>Last Name <input class="redInput" type="text" id="addUserLastName"></h3>
+                        <h3>Badge Number <input class="redInput" type="number" id="addUserBadgeNumber"></h3>
+                        <h3>Admin <input type="checkbox" id="addUserAdmin"></h3>
+                        <h3>Officer Positions
+                            <select id="officerPositions">
+                                <option>None</option>
+                                <option>GP</option>
+                                <option>VGP</option>
+                                <option>P</option>
+                                <option>NME</option>
+                                <option>Hod</option>
+                                <option>Hi</option>
+                                <option>AG</option>
+                                <option>SG</option>
+                                <option>BG</option>
+                                <option>Phu</option>
+                            </select>
+                            <button class="adminButton" id="addOfficerPositionButton" type="button">Add</button>
+                        </h3>
+                        <ul id="officerPositionsAdded">
+
+                        </ul>
+                    </form>
+                    <h2 class="adminSubmit"><button><i class="fas fa-user-plus"></i> Submit</h2>
+                </div>
+            </div>
+		</div>
+	</body>
+</html>

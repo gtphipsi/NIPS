@@ -47,6 +47,11 @@ app.get("/assign", (req, res) => {
     res.render("assign", { title: "Assign Points" });
 });
 
+app.get("/admin", (req, res) => {
+    console.log("GET ASSIGN");
+    res.render("admin", { title: "Perform Admin Actions" });
+});
+
 app.get("/users", (req, res) => {
     console.log('getting all users');
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
