@@ -48,7 +48,9 @@ $(document).ready(function() {
             groups.splice(index, 1);
             var members = COMMITTEES_BY_ID[groupId].members;
             for (var i = 0; i < members.length; i++) {
-                removeFromAllUserIds(members[i]);
+                if (!isInOtherGroup(groups, members[i])) {
+                    removeFromAllUserIds(members[i]);
+                }
             }
         }
         row.remove().draw();
@@ -240,6 +242,20 @@ function updateLogTable() {
 function removeFromAllUserIds(id) {
     var index = ALL_USER_IDS.indexOf(id);
     if (index >= 0) {
-        ALL_USER_IDS.splice(id, 1);
+        ALL_USER_IDS.splice(index, 1);
     }
+}
+
+function isInOtherGroup(groups, memberId) {
+    if (!memberId || !groups || groups.length == 0) {
+        return false;
+    }
+    var isFound = false;
+    for (var i = 0; i < groups.length; i++) {
+        if (COMMITTEES_BY_ID[groups[i]].members.indexOf(memberId) >= 0) {
+            isFound = true;
+            break;
+        }
+    }
+    return isFound;
 }
