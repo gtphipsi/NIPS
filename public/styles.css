@@ -30,6 +30,11 @@ input {
 .center {
     text-align: center;
 }
+.redTitle {
+	background: rgba(196, 18, 48, 0.8);
+	color: black;
+	border-radius: 5px;
+}
 input {
     margin-bottom: 10px;
     border-radius: 5px;
@@ -214,14 +219,18 @@ tr:hover {
 	transition: 0.5s;
 }
 .admin form {
-	border: 1px solid rgb(0, 112, 60, 0.3);
+	border-left: 1px solid rgb(0, 112, 60, 0.3);
+	border-right: 1px solid rgb(0, 112, 60, 0.3);
 	width: 100%;
 	margin-top: 25px;
 	margin-bottom: 25px;
 	padding: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 .admin form:hover {
-	border: 1px solid rgb(0, 112, 60, 1.0);
+	border-left: 1px solid rgb(0, 112, 60, 1.0);
+	border-right: 1px solid rgb(0, 112, 60, 1.0);
 }
 .admin input {
 	margin-left: 30px;
@@ -248,6 +257,13 @@ tr:hover {
 }
 #officerPositionsAdded li:hover i {
 	color: red;
+}
+.editable button {
+	float: right;
+	color: transparent;
+}
+.editable:hover button {
+	color: rgb(0, 112, 60);
 }
 
 

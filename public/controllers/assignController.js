@@ -19,7 +19,14 @@ $(document).ready(function() {
     $('#logTable').DataTable({
         searching: false,
         paging: false,
-        info: false
+        info: false,
+        "columnDefs": [{
+            "targets": 1,
+            "className": "editable"
+        }]
+    });
+    $('#logTable').on('click', 'tbody td.editable', function(e) {
+        console.log('edit amount');
     });
 
     var groupsTable = $('#groupsTable').DataTable({
@@ -233,7 +240,8 @@ function updateLogTable() {
     for (var i = 0; i < ALL_USER_IDS.length; i++) {
         var currentUser = USERS_BY_ID[ALL_USER_IDS[i]];
         var name = currentUser.firstName + ' ' + currentUser.lastName;
-        var newRow = [name, amount, reason, assigner];
+        var amountColumn = amount + " <button class='deleteGroupButton'><i class='fas fa-edit'></i></button>";
+        var newRow = [name, amountColumn, reason, assigner];
         $('#logTable').DataTable().row.add(newRow);
     }
     $('#logTable').DataTable().draw();
