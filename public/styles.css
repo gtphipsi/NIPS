@@ -146,6 +146,15 @@ tr:hover {
 .redInput {
 	border: 1px solid rgb(196, 18, 48);
 }
+.deleteButton {
+	background-color: transparent;
+	margin: auto;
+	text-align: center;
+}
+.deleteButton:hover {
+	background-color: transparent;
+	color: rgb(196, 18, 48);
+}
 
 
 /* Assign Page */
@@ -179,15 +188,6 @@ tr:hover {
 .assignButton:hover {
 	background-color: transparent;
 	box-shadow: 0 1px 2px 0 rgb(0, 112, 60, 0.5), 0 2px 3px 0 rgb(0, 112, 60, 0.5);
-}
-.deleteGroupButton {
-	background-color: transparent;
-	margin: auto;
-	text-align: center;
-}
-.deleteGroupButton:hover {
-	background-color: transparent;
-	color: rgb(196, 18, 48);
 }
 #submitPointsButton h2 {
 	margin-bottom: 0px;
