@@ -157,6 +157,35 @@ tr:hover {
 }
 
 
+/* Home Page */
+.homeContainer {
+	border: 1px solid rgba(196, 18, 48, 0.3);
+	border-radius: 5px;
+	width: 100%;
+}
+.homeContainer:hover {
+	border: 1px solid rgba(196, 18, 48, 0.836);
+}
+.rankContainer {
+	text-align: center;
+}
+.rankContainer:hover h1 {
+	color: rgb(0, 112, 60);
+}
+.logContainer {
+	text-align: center;
+}
+.graphsContainer {
+	text-align: center;
+}
+.fraternityContainer {
+	margin-top: 15px;
+	text-align: center;
+}
+.progressContainer {
+	text-align: center;
+}
+
 /* Assign Page */
 .assign h3 {
 	margin-bottom: 10px;
