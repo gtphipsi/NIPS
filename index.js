@@ -6,6 +6,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require('body-parser');
+const { use } = require("browser-sync");
 var ObjectId = require('mongodb').ObjectId;
 const MongoClient = require('mongodb').MongoClient;
 
@@ -24,6 +25,7 @@ app.engine('html', require('ejs').renderFile);
 app.set("view engine", "html");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 /**
  * Routes Definitions
@@ -47,6 +49,11 @@ app.get("/assign", (req, res) => {
     res.render("assign", { title: "Assign Points" });
 });
 
+app.get("/admin", (req, res) => {
+    console.log("GET ASSIGN");
+    res.render("admin", { title: "Perform Admin Actions" });
+});
+
 app.get("/users", (req, res) => {
     console.log('getting all users');
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
@@ -64,6 +71,41 @@ app.get("/users", (req, res) => {
                     res.send(result);
                 }
             });
+            client.close();
+        }
+    });
+});
+
+app.post("/users", (req, res) => {
+    console.log("adding new user");
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Users');
+            if (!req.body) {
+                console.log("No message body");
+                res.sendStatus(200);
+            } else {
+                var isAdmin = JSON.parse(req.body.admin);
+                var officerPositions = req.body.officerPositions;
+                for (var position in officerPositions) {
+                    officerPositions[position] = JSON.parse(req.body.officerPositions[position]);
+                }
+                req.body.admin = isAdmin;
+                collection.insertOne(req.body, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    } else {
+                        console.log('user added');
+                        console.log(req.body);
+                        res.sendStatus(200);
+                    }
+                });
+            }
             client.close();
         }
     });
@@ -152,6 +194,35 @@ app.get("/committees", (req, res) => {
                     res.send(result);
                 }
             });
+            client.close();
+        }
+    });
+});
+
+app.post("/committees", (req, res) => {
+    console.log("adding new committee");
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Committees');
+            if (!req.body) {
+                console.log("No message body");
+                res.sendStatus(200);
+            } else {
+                collection.insertOne(req.body, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    } else {
+                        console.log('user added');
+                        console.log(req.body);
+                        res.sendStatus(200);
+                    }
+                });
+            }
             client.close();
         }
     });
