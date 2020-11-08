@@ -117,7 +117,7 @@ app.get("/ledger/:userId", (req, res) => {
             var mongoId = ObjectId(userId);
             var db = client.db('NIPS');
             var collection = db.collection('Transactions');
-            collection.find({receiver: userId}).toArray(function(err, result) {
+            collection.find({$or: [{receiver: userId}, {assigner: userId}]}).toArray(function(err, result) {
                 if (err) {
                     console.log(err);
                     throw err;
