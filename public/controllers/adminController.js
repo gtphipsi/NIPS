@@ -94,6 +94,7 @@ $(document).ready(function() {
             console.log("Committee successfully added");
             console.log(newCommittee);
             alert('New Committee Added to Database');
+            location.reload();
         });
     });
 });
