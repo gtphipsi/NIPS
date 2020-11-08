@@ -195,6 +195,13 @@ tr:hover {
 #submitPointsButton {
 	border-radius: 7px;
 }
+.editable button {
+	float: right;
+	color: transparent;
+}
+.editable:hover button {
+	color: rgb(0, 112, 60);
+}
 
 
 /* Admin Page */
@@ -258,12 +265,8 @@ tr:hover {
 #officerPositionsAdded li:hover i {
 	color: red;
 }
-.editable button {
-	float: right;
-	color: transparent;
-}
-.editable:hover button {
-	color: rgb(0, 112, 60);
+#committeeMembersAdded li:hover i {
+	color: red;
 }
 
 

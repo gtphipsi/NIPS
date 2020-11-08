@@ -199,6 +199,35 @@ app.get("/committees", (req, res) => {
     });
 });
 
+app.post("/committees", (req, res) => {
+    console.log("adding new committee");
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Committees');
+            if (!req.body) {
+                console.log("No message body");
+                res.sendStatus(200);
+            } else {
+                collection.insertOne(req.body, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    } else {
+                        console.log('user added');
+                        console.log(req.body);
+                        res.sendStatus(200);
+                    }
+                });
+            }
+            client.close();
+        }
+    });
+});
+
 /**
  * Server Activation
  */

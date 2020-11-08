@@ -59,6 +59,27 @@
                     </form>
                     <h2 class="adminSubmit"><button id="submitUserButton"><i class="fas fa-user-plus"></i> Submit</h2>
                 </div>
+                <div class="row">
+                    <h2 class="adminTitle">Create New Committee</h2>
+                    <form>
+                        <h3>Committee Name <input class="redInput" type="text" id="addCommitteeName"></h3>
+                        <h3>Members
+                            <select id="committeeMembers">
+                                <option>None</option>
+                            </select>
+                            <button class="adminButton" id="addCommitteeMemberButton" type="button">Add</button>
+                        </h3>
+                        <ul id="committeeMembersAdded">
+
+                        </ul>
+                        <h3>Committee Head
+                            <select id="committeeHead">
+                                <option>None</option>
+                            </select>
+                        </h3>
+                    </form>
+                    <h2 class="adminSubmit"><button id="submitCommitteeButton"><i class="fas fa-users"></i> Submit</h2>
+                </div>
             </div>
 		</div>
 	</body>
