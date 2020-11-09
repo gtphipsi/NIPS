@@ -27,28 +27,27 @@
                     <h1>Ledger</h1>
 				</div>
 			</div>
-			<div id=ledgerFlters>
-				<button id="showAllButton">All</button>
-				<button id="showAssignedButton">Assigned</button>
-				<button id="showRecievedButton">Recieved</button>
-			</div>
 			<div class="column">
-				<div class="row">
-					<div style="width: 100%">
-						<table class="DataTable" id="ledgerTable">
-							<thead>
-								<tr>
-									<th>Points</th>
-									<th>Reason</th>
-									<th>Receiver</th>
-									<th>Assigner</th>
-								</tr>
-							</thead>
-							<tbody>
-	
-							</tbody>
-						</table>
-					</div>
+				<div id=ledgerFlters>
+					<button  class="filterButton" id="showAllButton">All</button>
+					<button class="filterButton" id="showAssignedButton">Assigned</button>
+					<button class="filterButton" id="showRecievedButton">Recieved</button>
+					<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
+				</div>
+				<div style="width: 100%">
+					<table class="DataTable" id="ledgerTable">
+						<thead>
+							<tr>
+								<th>Points</th>
+								<th>Reason</th>
+								<th>Receiver</th>
+								<th>Assigner</th>
+							</tr>
+						</thead>
+						<tbody>
+
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

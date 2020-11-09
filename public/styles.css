@@ -177,6 +177,21 @@ tr:hover {
 	margin-left: 10px;
 }
 
+.filterButton {
+	background-color: rgb(196, 18, 48, 0.7);
+	margin-bottom: 10px;
+}
+.filterButton:hover {
+	background-color: rgb(242, 131, 150, 0.7);
+	margin-bottom: 10px;
+}
+ 
+#ledgerSearchInput {
+	background-position: 10px 10px;
+	background-repeat: no-repeat;
+	border: 1px solid  rgb(196, 18, 48);
+	margin-bottom: 10px;
+  }
 
 /* Home Page */
 .homeBackground {

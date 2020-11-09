@@ -22,7 +22,8 @@ $(document).ready(function() {
         USERS_BY_ID = createHashmapById(USERS);
         var ledgerTable = $('#ledgerTable').DataTable({
             paging: false,
-            info: false,});
+            info: false,
+            searching: false});
     
         var userId = sessionStorage.getItem('userId');
         var userName = USERS_BY_ID[userId].firstName + ' '+  USERS_BY_ID[userId].lastName;
@@ -108,6 +109,35 @@ $(document).ready(function() {
             }
             console.log(TRANSACTIONS)
             $('#ledgerTable').DataTable().draw();
+        });
+
+        var ledgerSearchInput = $('#ledgerSearchInput');
+        ledgerSearchInput.keyup(function() {
+            console.log("Searching");
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("ledgerSearchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("ledgerTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 1; i < tr.length; i++) {
+                var contains = false
+                var cols = tr[i].getElementsByTagName("td").length;
+                for(j = 0; j < cols; j++){
+                    td = tr[i].getElementsByTagName("td")[j];
+                    if (td && !contains) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            contains = true;
+                        }
+                    }
+                }
+                
+                if (contains) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }       
+            }
         });
     });
 });
