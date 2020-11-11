@@ -48,6 +48,11 @@
 					</h3>
 				</div>
 				<div class="row">
+					<h3><i class="far fa-calendar-plus pkpgreen"></i> Date Earned
+						<input type="date" class="redInput" id="assignDate" onchange="updateDate()">
+					</h3>
+				</div>
+				<div class="row">
 					<h3><i class="far fa-address-book pkpgreen"></i> Groups
 						<select id="assigningGroup" onchange="updateGroup()">
 							<option value="None">None</option>
@@ -107,6 +112,7 @@
 									<th>Amount</th>
 									<th>Reason</th>
 									<th>Assigner</th>
+									<th>Date</th>
 								</tr>
 							</thead>
 							<tbody>
