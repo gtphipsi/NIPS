@@ -5,6 +5,8 @@ var COMMITTEES;
 var COMMITTEES_BY_ID;
 var ALL_USER_IDS = [];
 var TRANSACTIONS;
+var TODAY_DATE;
+var DATE_EARNED = new Date();
 var assigner = "";
 var reason = "";
 var amount = 0;
@@ -16,10 +18,20 @@ var log = [];
 $(document).ready(function() {
     console.log("Loading assign page...");
 
+    TODAY_DATE = new Date();
+    console.log("Today's Date", TODAY_DATE);
+
     $('#logTable').DataTable({
         searching: false,
         paging: false,
-        info: false
+        info: false,
+        "columnDefs": [{
+            "targets": 1,
+            "className": "editable"
+        }]
+    });
+    $('#logTable').on('click', 'tbody td.editable', function(e) {
+        console.log('edit amount');
     });
 
     var groupsTable = $('#groupsTable').DataTable({
@@ -30,7 +42,7 @@ $(document).ready(function() {
         "columnDefs": [{
             "targets": 0,
             "data": null,
-            "defaultContent": "<button class='deleteGroupButton'><i class='far fa-window-close'></i></button>",
+            "defaultContent": "<button class='deleteButton'><i class='far fa-window-close'></i></button>",
             "width": "10%",
             "className": "text-center"
         },
@@ -65,7 +77,7 @@ $(document).ready(function() {
         "columnDefs": [{
             "targets": 0,
             "data": null,
-            "defaultContent": "<button class='deleteGroupButton'><i class='far fa-window-close'></i></button>",
+            "defaultContent": "<button class='deleteButton'><i class='far fa-window-close'></i></button>",
             "width": "10%",
             "className": "text-center"
         },
@@ -174,25 +186,25 @@ $(document).ready(function() {
 
 function updateAssigningAs() {
     assigner = assigningAs.value;
-    console.log("Now Assigning As:", assigner);
     updateLogTable();
 }
 
 function updateReason() {
     reason = assignReason.value;
-    console.log("New Reason:", reason);
     updateLogTable();
 }
 
 function updateAmount() {
     amount = assignAmount.value;
-    console.log("New Amount:", amount);
     updateLogTable();
 }
 
 function updateGroup() {
     currentGroup = assigningGroup.value;
-    console.log("New Group:", currentGroup);
+}
+
+function updateDate() {
+    DATE_EARNED = $('#assignDate').val() + 'T00:00:00';
 }
 
 function updateGroupTable() {
@@ -233,7 +245,8 @@ function updateLogTable() {
     for (var i = 0; i < ALL_USER_IDS.length; i++) {
         var currentUser = USERS_BY_ID[ALL_USER_IDS[i]];
         var name = currentUser.firstName + ' ' + currentUser.lastName;
-        var newRow = [name, amount, reason, assigner];
+        var amountColumn = amount + " <button class='deleteButton'><i class='fas fa-edit'></i></button>";
+        var newRow = [name, amountColumn, reason, assigner, DATE_EARNED.toString().substring(0, 10)];
         $('#logTable').DataTable().row.add(newRow);
     }
     $('#logTable').DataTable().draw();

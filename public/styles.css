@@ -30,6 +30,11 @@ input {
 .center {
     text-align: center;
 }
+.redTitle {
+	background: rgba(196, 18, 48, 0.8);
+	color: black;
+	border-radius: 5px;
+}
 input {
     margin-bottom: 10px;
     border-radius: 5px;
@@ -40,6 +45,14 @@ select {
 ul {
     list-style-type: none;
     padding: 0px;
+}
+a {
+	border-bottom: 1px solid transparent;
+}
+a:hover {
+	text-decoration: none;
+	border-bottom: 1px solid rgb(238, 178, 17);
+	transition: 0.5s;
 }
 button {
     border-radius: 2px;
@@ -111,34 +124,6 @@ button:hover {
 	color: black;
 	border-radius: 5px;
 }
-.assignInput {
-	border: 1px solid rgb(196, 18, 48);
-}
-.buttonCenter {
-	margin: auto;
-}
-.assignButton {
-	background-color: transparent;
-	border: 1px solid grey;
-	border-radius: 3px;
-	margin-left: 5px;
-}
-.assignButton:hover {
-	background-color: transparent;
-	box-shadow: 0 1px 2px 0 rgb(0, 112, 60, 0.5), 0 2px 3px 0 rgb(0, 112, 60, 0.5);
-}
-.deleteGroupButton {
-	background-color: transparent;
-	margin: auto;
-	text-align: center;
-}
-.deleteGroupButton:hover {
-	background-color: transparent;
-	color: rgb(196, 18, 48);
-}
-#submitPointsButton h2 {
-	margin-bottom: 0px;
-}
 .DataTable {
 	width: 100%;
 }
@@ -158,7 +143,57 @@ th {
 tr:hover {
 	background-color: rgb(185, 185, 185);
 }
+.redInput {
+	border: 1px solid rgb(196, 18, 48);
+}
+.deleteButton {
+	background-color: transparent;
+	margin: auto;
+	text-align: center;
+}
+.deleteButton:hover {
+	background-color: transparent;
+	color: rgb(196, 18, 48);
+}
+
+
+/* Home Page */
+.homeRow {
+	margin-left: 0px;
+	margin-right: 0px;
+	width: 100%;
+}
+.homeContainer {
+	border: 1px solid rgba(196, 18, 48, 0.3);
+	border-radius: 5px;
+	width: 100%;
+}
+.homeContainer:hover {
+	border: 1px solid rgba(196, 18, 48, 0.836);
+}
+.rankContainer {
+	text-align: center;
+}
+.rankContainer:hover h1 {
+	color: rgb(0, 112, 60);
+}
+.logContainer {
+	text-align: center;
+}
+.graphsContainer {
+	text-align: center;
+}
+.fraternityContainer {
+	margin-top: 15px;
+	text-align: center;
+}
+.progressContainer {
+	text-align: center;
+}
+
+/* Assign Page */
 .assign h3 {
+	width: 100%;
 	margin-bottom: 10px;
 	border-bottom: 1px solid transparent;
 }
@@ -175,6 +210,98 @@ tr:hover {
 }
 .assign input {
 	margin-left: 10px;
+}
+.buttonCenter {
+	margin: auto;
+}
+.assignButton {
+	background-color: transparent;
+	border: 1px solid grey;
+	border-radius: 3px;
+	margin-left: 5px;
+}
+.assignButton:hover {
+	background-color: transparent;
+	box-shadow: 0 1px 2px 0 rgb(0, 112, 60, 0.5), 0 2px 3px 0 rgb(0, 112, 60, 0.5);
+}
+#submitPointsButton h2 {
+	margin-bottom: 0px;
+}
+#submitPointsButton {
+	border-radius: 7px;
+}
+.editable button {
+	float: right;
+	color: transparent;
+}
+.editable:hover button {
+	color: rgb(0, 112, 60);
+}
+
+
+/* Admin Page */
+.adminTitle {
+	margin: auto;
+	color: rgb(238, 178, 17);
+}
+.admin h2 {
+	margin-bottom: 10px;
+}
+.admin h3 {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid transparent;
+}
+.admin h3:hover {
+	border-bottom: 1px solid rgb(0, 112, 60, 1.0);
+	transition: 0.5s;
+}
+.admin h3:hover i {
+	color: rgb(196, 18, 48);
+	transition: 0.5s;
+}
+.admin form {
+	border-left: 1px solid rgb(0, 112, 60, 0.3);
+	border-right: 1px solid rgb(0, 112, 60, 0.3);
+	width: 100%;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	padding: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.admin form:hover {
+	border-left: 1px solid rgb(0, 112, 60, 1.0);
+	border-right: 1px solid rgb(0, 112, 60, 1.0);
+}
+.admin input {
+	margin-left: 30px;
+	margin: auto;
+}
+.adminButton {
+	background-color: transparent;
+	border: 1px solid grey;
+	border-radius: 3px;
+	margin-left: 5px;
+}
+.adminButton:hover {
+	background-color: transparent;
+	box-shadow: 0 1px 2px 0 rgb(0, 112, 60, 0.5), 0 2px 3px 0 rgb(0, 112, 60, 0.5);
+}
+.adminSubmit {
+	margin: auto;
+}
+.adminSubmit button:hover i {
+	color: black;
+}
+.adminSubmit button {
+	border-radius: 7px;
+}
+#officerPositionsAdded li:hover i {
+	color: red;
+}
+#committeeMembersAdded li:hover i {
+	color: red;
 }
 
 .filterButton {
@@ -222,6 +349,10 @@ tr:hover {
 
 .pkpyellow {
 	color: rgb(238, 178, 17);
+}
+
+.transparent {
+	color: transparent;
 }
 
 .fontblack {
