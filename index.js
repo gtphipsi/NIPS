@@ -228,6 +228,41 @@ app.post("/committees", (req, res) => {
     });
 });
 
+app.post("/transactions", (req, res) => {
+    console.log("adding new transactions");
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Transactions');
+            if (!req.body) {
+                console.log("No message body");
+                res.sendStatus(200);
+            } else {
+                console.log(req.body);
+                var transactions = req.body.transactions;
+                for (var i = 0; i < transactions.length; i++) {
+                    transactions[i].dateAssigned = new Date(transactions[i].dateAssigned);
+                    transactions[i].dateEarned = new Date(transactions[i].dateEarned);
+                }
+                collection.insertMany(req.body.transactions, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    } else {
+                        console.log('transactions added');
+                        console.log(req.body);
+                        res.sendStatus(200);
+                    }
+                });
+            }
+            client.close();
+        }
+    });
+});
+
 /**
  * Server Activation
  */

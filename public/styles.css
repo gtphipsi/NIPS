@@ -224,6 +224,17 @@ tr:hover {
 	background-color: transparent;
 	box-shadow: 0 1px 2px 0 rgb(0, 112, 60, 0.5), 0 2px 3px 0 rgb(0, 112, 60, 0.5);
 }
+.assignEditButton {
+	background-color: transparent;
+	margin: auto;
+	text-align: center;
+}
+.assignEditButton i {
+	color: rgb(0, 112, 60, 0.2);
+}
+.assignEditButton:hover i {
+	color: rgb(0, 112, 60, 1.0);
+}
 #submitPointsButton h2 {
 	margin-bottom: 0px;
 }
