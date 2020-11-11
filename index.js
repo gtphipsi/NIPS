@@ -178,7 +178,7 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/committees", (req, res) => {
-    console.log('getting all users');
+    console.log('getting all committees');
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
@@ -258,6 +258,28 @@ app.post("/transactions", (req, res) => {
                     }
                 });
             }
+            client.close();
+        }
+    });
+});
+
+app.get("/transactions", (req, res) => {
+    console.log('getting all transactions');
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Transactions');
+            collection.find({}).toArray(function(err, result) {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                } else {
+                    res.send(result);
+                }
+            });
             client.close();
         }
     });

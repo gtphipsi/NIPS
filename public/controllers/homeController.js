@@ -1,3 +1,6 @@
+var USER;
+var TRANSACTIONS;
+
 
 $(document).ready(function() {
     console.log("Loading home page...");
@@ -10,15 +13,27 @@ $(document).ready(function() {
     }
 
     var userURL = '/users/' + userId;
-    var user;
     $.get(userURL, function(data) {
-        user = data;
+        USER = data;
         console.log("retrieved user data");
         console.log(data);
     }).fail(function() {
         console.log("failed retrieving user data--returning to login page");
         window.location = '/';
     }).done(function() {
-        $('#welcomeMessage').text(`Welcome, Brother ${user.lastName}`);
+        $('#welcomeMessage').text(`Welcome, Brother ${USER.lastName}`);
+    });
+
+    $.get("/transactions", function(data) {
+        TRANSACTIONS = data;
+        console.log("retrieved transaction data");
+    }).fail(function() {
+        console.log("failed retrieving transaction data--returning to login page");
+        window.location = '/';
+    }).done(function() {
+        var leaderboard = getLeaderboard(TRANSACTIONS, timeframes.WEEKLY);
+        console.log(leaderboard);
+        var userRanking = getUserRanking(userId, leaderboard);
+        $('#userRank').text(userRanking);
     });
 });

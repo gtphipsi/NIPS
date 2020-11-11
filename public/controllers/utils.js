@@ -1,4 +1,13 @@
 /**
+ * JavaScript Enum implementation for timeframes
+ */
+const timeframes = {
+    WEEKLY: "weekly",
+    MONTHLY: "monthly",
+    SEMESTERLY: "semesterly"
+}
+
+/**
  * takes an array of objects with _id fields and creates a hashmap with
  * the _id value as the index for fast and easy access/reference
  * @param {*} data array of data (can be any object that has a _id field)
@@ -53,6 +62,17 @@ function getPositions(user) {
  */
 function getLeaderboard(transactions, timeframe) {
     var leaderboard = [];
+    var pointValues = getPointValues(transactions, timeframe);
+    for (userId in pointValues) {
+        var obj = {
+            id: userId,
+            points: pointValues[userId]
+        }
+        leaderboard.push(obj);
+    }
+    leaderboard.sort((a, b) => {
+        return b.points - a.points;
+    });
     return leaderboard;
 }
 
@@ -67,6 +87,16 @@ function getLeaderboard(transactions, timeframe) {
  */
 function getPointValues(transactions, timeframe) {
     var pointValues = {};
+    for (var i = 0; i < transactions.length; i++) {
+        if (isInTimeframe(transactions[i], timeframe)) {
+            var receiverId = transactions[i].receiver;
+            if (pointValues[receiverId]) {
+                pointValues[receiverId] += transactions[i].amount;
+            } else {
+                pointValues[receiverId] = transactions[i].amount;
+            }
+        }
+    }
     return pointValues;
 }
 
@@ -79,6 +109,12 @@ function getPointValues(transactions, timeframe) {
  */
 function getAllUserTransactions(user, all_transactions) {
     var transactions = [];
+    var userId = user._id;
+    for (var i = 0; i < all_transactions.length; i++) {
+        if (all_transactions[i].assigner == userId || all_transactions[i].receiver == userId) {
+            transactions.push(all_transactions[i]);
+        }
+    }
     return transactions;
 }
 
@@ -91,6 +127,9 @@ function getAllUserTransactions(user, all_transactions) {
  */
 function getUserAssignerTransactions(user, all_transactions) {
     var transactions = [];
+    for (var i = 0; i < all_transactions.length; i++) {
+
+    }
     return transactions;
 }
 
@@ -103,5 +142,44 @@ function getUserAssignerTransactions(user, all_transactions) {
  */
 function getUserReceiverTransactions(user, all_transactions) {
     var transactions = [];
+    for (var i = 0; i < all_transactions.length; i++) {
+        
+    }
     return transactions;
+}
+
+
+/**
+ * 
+ * @param {*} userId userId to search for
+ * @param {*} leaderboard array of objects containing userIds and points earned
+ */
+function getUserRanking(userId, leaderboard) {
+    var ranking = 0;
+    for (var i = 0; i < leaderboard.length; i++) {
+        if (leaderboard[i].id == userId) {
+            ranking = i + 1;
+            break;
+        }
+    }
+    return ranking;
+}
+
+
+/**
+ * use momentJS to check if a transaction falls within a certain timeframe
+ * @param {*} transaction transaction to check
+ * @param {*} timeframe "enum" indicating timeframe to check for
+ * @returns true if transaction is in timeframe, false otherwise
+ */
+function isInTimeframe(transaction, timeframe) {
+    var now = moment();
+    var dateEarned = moment(transaction.dateEarned);
+    if (timeframe == timeframes.WEEKLY) {
+        return (now.isoWeek() == dateEarned.isoWeek());
+    } else if (timeframe == timeframes.MONTHLY) {
+        return (now.isoMonth() == dateEarned.isoMonth());
+    } else if (timeframe == timeframes.SEMESTERLY) {
+        console.log("coming soon");
+    }
 }
