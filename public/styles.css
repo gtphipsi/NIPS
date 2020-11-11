@@ -158,6 +158,11 @@ tr:hover {
 
 
 /* Home Page */
+.homeRow {
+	margin-left: 0px;
+	margin-right: 0px;
+	width: 100%;
+}
 .homeContainer {
 	border: 1px solid rgba(196, 18, 48, 0.3);
 	border-radius: 5px;
@@ -188,6 +193,7 @@ tr:hover {
 
 /* Assign Page */
 .assign h3 {
+	width: 100%;
 	margin-bottom: 10px;
 	border-bottom: 1px solid transparent;
 }
