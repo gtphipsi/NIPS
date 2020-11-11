@@ -108,7 +108,6 @@ $(document).ready(function() {
                 }
             }
             console.log(TRANSACTIONS)
-            $('#ledgerTable').DataTable().draw();
         });
 
         var ledgerSearchInput = $('#ledgerSearchInput');

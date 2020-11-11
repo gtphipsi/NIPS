@@ -182,7 +182,7 @@ tr:hover {
 	margin-bottom: 10px;
 }
 .filterButton:hover {
-	background-color: rgb(242, 131, 150, 0.7);
+	background-color: rgb(196, 18, 48, 0.2);
 	margin-bottom: 10px;
 }
  
@@ -193,10 +193,22 @@ tr:hover {
 	margin-bottom: 10px;
   }
 
+ #ledgerContainer {
+    background: rgba(196, 18, 48, 0.836);
+	color: black;
+	border-radius: 5px;
+	margin-bottom: 30px;
+}
+#ledgerTableBody tr:nth-child(even) {
+	background-color: rgb(196, 18, 48, 0.2);;
+}
+
 /* Home Page */
 .homeBackground {
 	background-color: snow;
 }
+
+
 
 
 /**************** Color Classes ****************/
