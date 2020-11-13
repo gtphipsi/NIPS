@@ -8,6 +8,30 @@ const timeframes = {
 }
 
 /**
+ * JavaScript Enum implementations for semester timeframes
+ */
+const fallSemester = {
+    STARTDATE: new Date(2020, 08, 01),
+    ENDDATE: new Date(2020, 12, 31)
+}
+
+const springSemester = {
+    STARTDATE: new Date(2021, 01, 01),
+    ENDDATE: new Date(2021, 07, 30)
+}
+
+/**
+ * JavaScript Enum implementation for semester label
+ */
+const semester = {
+    FALL: "fall",
+    SPRING: "spring"
+}
+
+function getName(user) {
+    return user.firstName + " " + user.lastName;
+}
+/**
  * takes an array of objects with _id fields and creates a hashmap with
  * the _id value as the index for fast and easy access/reference
  * @param {*} data array of data (can be any object that has a _id field)
@@ -91,9 +115,9 @@ function getPointValues(transactions, timeframe) {
         if (isInTimeframe(transactions[i], timeframe)) {
             var receiverId = transactions[i].receiver;
             if (pointValues[receiverId]) {
-                pointValues[receiverId] += transactions[i].amount;
+                pointValues[receiverId] = parseInt(pointValues[receiverId]) + parseInt(transactions[i].amount);
             } else {
-                pointValues[receiverId] = transactions[i].amount;
+                pointValues[receiverId] = parseInt(transactions[i].amount);
             }
         }
     }
@@ -121,14 +145,16 @@ function getAllUserTransactions(user, all_transactions) {
 
 /**
  * sort through all transactions and return array of transactions where user is assigner
- * @param {*} user the user id to search for
+ * @param {*} userId the user id to search for
  * @param {*} transactions array of all transactions
  * @returns array of all transactions where user is assigner
  */
-function getUserAssignerTransactions(user, all_transactions) {
+function getUserAssignerTransactions(userId, all_transactions) {
     var transactions = [];
     for (var i = 0; i < all_transactions.length; i++) {
-
+        if (all_transactions[i].assigner == userId) {
+            transactions.push(all_transactions[i]);
+        }
     }
     return transactions;
 }
@@ -136,14 +162,16 @@ function getUserAssignerTransactions(user, all_transactions) {
 
 /**
  * sort through all transactions and return array of transactions where user is receiver
- * @param {*} user the user id to search for
+ * @param {*} userId the user id to search for
  * @param {*} transactions array of all transactions
  * @returns array of all transactions where user is receiver
  */
-function getUserReceiverTransactions(user, all_transactions) {
+function getUserReceiverTransactions(userId, all_transactions) {
     var transactions = [];
     for (var i = 0; i < all_transactions.length; i++) {
-        
+        if (all_transactions[i].receiver == userId) {
+            transactions.push(all_transactions[i]);
+        }
     }
     return transactions;
 }
@@ -173,13 +201,79 @@ function getUserRanking(userId, leaderboard) {
  * @returns true if transaction is in timeframe, false otherwise
  */
 function isInTimeframe(transaction, timeframe) {
-    var now = moment();
-    var dateEarned = moment(transaction.dateEarned);
     if (timeframe == timeframes.WEEKLY) {
-        return (now.isoWeek() == dateEarned.isoWeek());
+        return isThisWeek(transaction.dateEarned);
     } else if (timeframe == timeframes.MONTHLY) {
-        return (now.isoMonth() == dateEarned.isoMonth());
+        return isThisMonth(transaction.dateEarned);
     } else if (timeframe == timeframes.SEMESTERLY) {
-        console.log("coming soon");
+        var currentSemester = getCurrentSemester();
+        if (currentSemester == semester.FALL) {
+            return isInFallSemester(transaction.dateEarned);
+        } else if (currentSemester == semester.SPRING) {
+            return isInSpringSemester(transaction.dateEarned);
+        } else {
+            return false;
+        }
+    } else {
+        return false;
     }
+}
+
+function isInFallSemester(date) {
+    var now = new Date(date);
+    return fallSemester.STARTDATE <= now && now <= fallSemester.ENDDATE;
+}
+
+
+function isInSpringSemester(date) {
+    var now = new Date(date);
+    return springSemester.STARTDATE <= now && now <= springSemester.ENDDATE;
+}
+
+function isThisWeek(date) {
+    var now = new Date();
+    var earned = new Date(date);
+    var weekDay = now.getDay();
+    return (now - earned) / 86400000 <= weekDay;
+}
+
+function isThisMonth(date) {
+    var now = new Date();
+    var earned = new Date(date);
+    var monthDay = now.getDate();
+    return (now - earned) / 86400000 <= monthDay;
+}
+
+function getCurrentSemester() {
+    var now = new Date();
+    if (isInFallSemester(now)) {
+        return semester.FALL;
+    } else if (isInSpringSemester(now)) {
+        return semester.SPRING;
+    } else {
+        console.log("COULD NOT MATCH SEMESTER DATE");
+        return "none";
+    }
+}
+
+
+function getMean(leaderboard) {
+    var sum = 0;
+    for (var i = 0; i < leaderboard.length; i++) {
+        sum += parseInt(leaderboard[i].points);
+    }
+    return sum / leaderboard.length;
+}
+
+function getMedian(leaderboard) {
+    var middle = Math.floor(leaderboard.length / 2);
+    return leaderboard[middle].points;
+}
+
+function getHigh(leaderboard) {
+    return leaderboard[0].points;
+}
+
+function getLow(leaderboard) {
+    return leaderboard[leaderboard.length - 1].points;
 }

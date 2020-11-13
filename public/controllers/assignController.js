@@ -214,6 +214,9 @@ function updateGroup() {
     currentGroup = assigningGroup.value;
 }
 
+/**
+ * TODO: don't allow future dates
+ */
 function updateDate() {
     DATE_EARNED = $('#assignDate').val() + 'T00:00:00';
 }

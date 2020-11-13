@@ -5,6 +5,7 @@
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 		<title>Phi Kappa Psi</title>
@@ -33,17 +34,54 @@
 				<div class="col-lg">
 					<div class="row homeRow">
 						<div class="homeContainer rankContainer">
-							<h3><select>
-								<option>Weekly</option>
-								<option>Monthly</option>
-								<option>Semesterly</option>
-							</select> Rank</h3>
-							<h1 id="userRank">___</h1>
+							<h3><select id="rankTimeframe" onchange="updateTimeframe()">
+								<option value="weekly">Weekly</option>
+								<option value="monthly">Monthly</option>
+								<option value="semesterly">Semesterly</option>
+							</select></h3>
+							<h1 id="userRank"><i class="fas fa-spinner fa-pulse"></i></h1>
+							<h1 id="rankIcon"><i class="fas fa-hourglass-half"></i></h1>
+							<h3 id="pointsBehind"></h3>
 						</div>
 					</div>
 					<div class="row homeRow">
 						<div class="homeContainer logContainer">
-							<h1>User Log</h1>
+							<h1>Points Received</h1>
+							<table class="DataTable" id="userLogTable">
+								<thead>
+									<tr>
+										<th>Date</th>
+										<th>Reason</th>
+										<th>Amount</th>
+									</tr>
+								</thead>
+								<tbody>
+		
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row homeRow">
+						<div class="homeContainer fraternityContainer">
+							<h1>Fraternity Statistics</h1>
+							<table id="statsTable">
+								<tr>
+									<td class="statLabel"><h2>Mean</h2></td>
+									<td><h2 id="statMean">0</h2></td>
+								</tr>
+								<tr>
+									<td class="statLabel"><h2>Median</h2></td>
+									<td><h2 id="statMedian">0</h2></td>
+								</tr>
+								<tr>
+									<td class="statLabel"><h2>High</h2></td>
+									<td><h2 id="statHigh">0</h2></td>
+								</tr>
+								<tr style="border-bottom: 1px solid transparent;">
+									<td class="statLabel"><h2>Low</h2></td>
+									<td><h2 id="statLow">0</h2></td>
+								</tr>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -51,18 +89,19 @@
 					<div class="row homeRow">
 						<div class="homeContainer graphsContainer">
 							<h1>Graphs</h1>
+							<p><i class="fas fa-tools"></i> < coming soon (ish) /> <i class="fas fa-tools"></i></p>
+							<img src="/images/pkp_gb.jpg" style="width: 100%;border-radius: 5px;">
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="row homeRow">
-				<div class="homeContainer fraternityContainer">
-					<h1>Fraternity Statistics</h1>
-				</div>
-			</div>
+			<!-- <div class="row homeRow">
+				
+			</div> -->
 			<div class="row homeRow">
 				<div class="homeContainer progressContainer">
 					<h1>Progress</h1>
+					<p><i class="fas fa-tools"></i> < coming soon (ish) /> <i class="fas fa-tools"></i></p>
 				</div>
 			</div>
 		</div>
