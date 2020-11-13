@@ -1,4 +1,37 @@
 /**
+ * JavaScript Enum implementation for timeframes
+ */
+const timeframes = {
+    WEEKLY: "weekly",
+    MONTHLY: "monthly",
+    SEMESTERLY: "semesterly"
+}
+
+/**
+ * JavaScript Enum implementations for semester timeframes
+ */
+const fallSemester = {
+    STARTDATE: new Date(2020, 08, 01),
+    ENDDATE: new Date(2020, 12, 31)
+}
+
+const springSemester = {
+    STARTDATE: new Date(2021, 01, 01),
+    ENDDATE: new Date(2021, 07, 30)
+}
+
+/**
+ * JavaScript Enum implementation for semester label
+ */
+const semester = {
+    FALL: "fall",
+    SPRING: "spring"
+}
+
+function getName(user) {
+    return user.firstName + " " + user.lastName;
+}
+/**
  * takes an array of objects with _id fields and creates a hashmap with
  * the _id value as the index for fast and easy access/reference
  * @param {*} data array of data (can be any object that has a _id field)
@@ -53,6 +86,17 @@ function getPositions(user) {
  */
 function getLeaderboard(transactions, timeframe) {
     var leaderboard = [];
+    var pointValues = getPointValues(transactions, timeframe);
+    for (userId in pointValues) {
+        var obj = {
+            id: userId,
+            points: pointValues[userId]
+        }
+        leaderboard.push(obj);
+    }
+    leaderboard.sort((a, b) => {
+        return b.points - a.points;
+    });
     return leaderboard;
 }
 
@@ -67,6 +111,16 @@ function getLeaderboard(transactions, timeframe) {
  */
 function getPointValues(transactions, timeframe) {
     var pointValues = {};
+    for (var i = 0; i < transactions.length; i++) {
+        if (isInTimeframe(transactions[i], timeframe)) {
+            var receiverId = transactions[i].receiver;
+            if (pointValues[receiverId]) {
+                pointValues[receiverId] = parseInt(pointValues[receiverId]) + parseInt(transactions[i].amount);
+            } else {
+                pointValues[receiverId] = parseInt(transactions[i].amount);
+            }
+        }
+    }
     return pointValues;
 }
 
@@ -79,29 +133,147 @@ function getPointValues(transactions, timeframe) {
  */
 function getAllUserTransactions(user, all_transactions) {
     var transactions = [];
+    var userId = user._id;
+    for (var i = 0; i < all_transactions.length; i++) {
+        if (all_transactions[i].assigner == userId || all_transactions[i].receiver == userId) {
+            transactions.push(all_transactions[i]);
+        }
+    }
     return transactions;
 }
 
 
 /**
  * sort through all transactions and return array of transactions where user is assigner
- * @param {*} user the user id to search for
+ * @param {*} userId the user id to search for
  * @param {*} transactions array of all transactions
  * @returns array of all transactions where user is assigner
  */
-function getUserAssignerTransactions(user, all_transactions) {
+function getUserAssignerTransactions(userId, all_transactions) {
     var transactions = [];
+    for (var i = 0; i < all_transactions.length; i++) {
+        if (all_transactions[i].assigner == userId) {
+            transactions.push(all_transactions[i]);
+        }
+    }
     return transactions;
 }
 
 
 /**
  * sort through all transactions and return array of transactions where user is receiver
- * @param {*} user the user id to search for
+ * @param {*} userId the user id to search for
  * @param {*} transactions array of all transactions
  * @returns array of all transactions where user is receiver
  */
-function getUserReceiverTransactions(user, all_transactions) {
+function getUserReceiverTransactions(userId, all_transactions) {
     var transactions = [];
+    for (var i = 0; i < all_transactions.length; i++) {
+        if (all_transactions[i].receiver == userId) {
+            transactions.push(all_transactions[i]);
+        }
+    }
     return transactions;
+}
+
+
+/**
+ * 
+ * @param {*} userId userId to search for
+ * @param {*} leaderboard array of objects containing userIds and points earned
+ */
+function getUserRanking(userId, leaderboard) {
+    var ranking = 0;
+    for (var i = 0; i < leaderboard.length; i++) {
+        if (leaderboard[i].id == userId) {
+            ranking = i + 1;
+            break;
+        }
+    }
+    return ranking;
+}
+
+
+/**
+ * use momentJS to check if a transaction falls within a certain timeframe
+ * @param {*} transaction transaction to check
+ * @param {*} timeframe "enum" indicating timeframe to check for
+ * @returns true if transaction is in timeframe, false otherwise
+ */
+function isInTimeframe(transaction, timeframe) {
+    if (timeframe == timeframes.WEEKLY) {
+        return isThisWeek(transaction.dateEarned);
+    } else if (timeframe == timeframes.MONTHLY) {
+        return isThisMonth(transaction.dateEarned);
+    } else if (timeframe == timeframes.SEMESTERLY) {
+        var currentSemester = getCurrentSemester();
+        if (currentSemester == semester.FALL) {
+            return isInFallSemester(transaction.dateEarned);
+        } else if (currentSemester == semester.SPRING) {
+            return isInSpringSemester(transaction.dateEarned);
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function isInFallSemester(date) {
+    var now = new Date(date);
+    return fallSemester.STARTDATE <= now && now <= fallSemester.ENDDATE;
+}
+
+
+function isInSpringSemester(date) {
+    var now = new Date(date);
+    return springSemester.STARTDATE <= now && now <= springSemester.ENDDATE;
+}
+
+function isThisWeek(date) {
+    var now = new Date();
+    var earned = new Date(date);
+    var weekDay = now.getDay();
+    return (now - earned) / 86400000 <= weekDay;
+}
+
+function isThisMonth(date) {
+    var now = new Date();
+    var earned = new Date(date);
+    var monthDay = now.getDate();
+    return (now - earned) / 86400000 <= monthDay;
+}
+
+function getCurrentSemester() {
+    var now = new Date();
+    if (isInFallSemester(now)) {
+        return semester.FALL;
+    } else if (isInSpringSemester(now)) {
+        return semester.SPRING;
+    } else {
+        console.log("COULD NOT MATCH SEMESTER DATE");
+        return "none";
+    }
+}
+
+
+function getMean(leaderboard) {
+    var sum = 0;
+    for (var i = 0; i < leaderboard.length; i++) {
+        sum += parseInt(leaderboard[i].points);
+    }
+    return sum / leaderboard.length;
+}
+
+function getMedian(leaderboard) {
+    var middle = Math.floor(leaderboard.length / 2);
+    return leaderboard[middle].points;
+}
+
+function getHigh(leaderboard) {
+    return leaderboard[0].points;
+}
+
+function getLow(leaderboard) {
+    return leaderboard[leaderboard.length - 1].points;
 }

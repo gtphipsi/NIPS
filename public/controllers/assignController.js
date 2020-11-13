@@ -4,12 +4,12 @@ var USERS_BY_ID;
 var COMMITTEES;
 var COMMITTEES_BY_ID;
 var ALL_USER_IDS = [];
-var TRANSACTIONS;
-var TODAY_DATE;
+var TRANSACTIONS = [];
+var DATE_ASSIGNED;
 var DATE_EARNED = new Date();
-var assigner = "";
-var reason = "";
-var amount = 0;
+var ASSIGNER = "";
+var REASON = "";
+var AMOUNT = 0;
 var currentGroup;
 var currentBrother;
 var groups = [];
@@ -18,8 +18,8 @@ var log = [];
 $(document).ready(function() {
     console.log("Loading assign page...");
 
-    TODAY_DATE = new Date();
-    console.log("Today's Date", TODAY_DATE);
+    DATE_ASSIGNED = new Date();
+    console.log("Today's Date", DATE_ASSIGNED);
 
     $('#logTable').DataTable({
         searching: false,
@@ -28,6 +28,10 @@ $(document).ready(function() {
         "columnDefs": [{
             "targets": 1,
             "className": "editable"
+        },
+        {
+            "targets": -1,
+            "visible": false
         }]
     });
     $('#logTable').on('click', 'tbody td.editable', function(e) {
@@ -177,25 +181,32 @@ $(document).ready(function() {
 
     submitPointsButton.off('click');
     submitPointsButton.click(function() {
+        // CHECK DATA FIRST
+        // ---check for missing inputs---
         if (confirm('Are you sure you want to submit these points?')) {
-            location.reload();
+            var transactions = getTransactions();
+            console.log(transactions);
+            $.post("/transactions", {transactions}).done(function() {
+                alert('Transactions Submitted Successfully');
+                location.reload();
+            });
         }
     });
 });
 
 
 function updateAssigningAs() {
-    assigner = assigningAs.value;
+    ASSIGNER = assigningAs.value;
     updateLogTable();
 }
 
 function updateReason() {
-    reason = assignReason.value;
+    REASON = assignReason.value;
     updateLogTable();
 }
 
 function updateAmount() {
-    amount = assignAmount.value;
+    AMOUNT = assignAmount.value;
     updateLogTable();
 }
 
@@ -203,6 +214,9 @@ function updateGroup() {
     currentGroup = assigningGroup.value;
 }
 
+/**
+ * TODO: don't allow future dates
+ */
 function updateDate() {
     DATE_EARNED = $('#assignDate').val() + 'T00:00:00';
 }
@@ -245,8 +259,15 @@ function updateLogTable() {
     for (var i = 0; i < ALL_USER_IDS.length; i++) {
         var currentUser = USERS_BY_ID[ALL_USER_IDS[i]];
         var name = currentUser.firstName + ' ' + currentUser.lastName;
-        var amountColumn = amount + " <button class='deleteButton'><i class='fas fa-edit'></i></button>";
-        var newRow = [name, amountColumn, reason, assigner, DATE_EARNED.toString().substring(0, 10)];
+        var amountColumn = AMOUNT + " <button class='assignEditButton'><i class='fas fa-edit'></i></button>";
+        var newRow = [
+            name,
+            amountColumn,
+            REASON,
+            ASSIGNER,
+            DATE_ASSIGNED.toString().substring(0, 10),
+            ALL_USER_IDS[i]
+        ];
         $('#logTable').DataTable().row.add(newRow);
     }
     $('#logTable').DataTable().draw();
@@ -271,4 +292,28 @@ function isInOtherGroup(groups, memberId) {
         }
     }
     return isFound;
+}
+
+function getTransactions() {
+    var assignerId = USER._id;
+    var logTable = $('#logTable').DataTable();
+    var transactions = [];
+    var data = logTable.rows().data();
+    for (var i = 0; i < data.length; i++) {
+        var row = data[i];
+        var receiverId = row[5];
+        var amountString = row[1];
+        var htmlIndex = amountString.indexOf('<');
+        var amount = amountString.substring(0, htmlIndex - 1);
+        var new_transaction = {
+            reason: REASON, // reason
+            assigner: assignerId, // assigner
+            receiver: receiverId, // receiver
+            amount: amount, // amount
+            dateAssigned: new Date(DATE_ASSIGNED), // dateAssigned
+            dateEarned: new Date(DATE_EARNED) // dateEarned
+        }
+        transactions.push(new_transaction);
+    }
+    return transactions;
 }
