@@ -172,7 +172,7 @@ tr:hover {
 	margin-top: 25px;
 	width: 100%;
 }
-.homeContainer {
+.homeContainer{
 	background-color: rgb(238, 178, 17, 0.7);
 	border: 1px solid transparent;
 	border-radius: 5px;
@@ -422,12 +422,8 @@ tr:hover {
 	margin-bottom: 30px;
 }
 
-#ledgerTableBody tr:nth-child(even) {
-	background-color: rgb(238, 178, 17, 0.7);
-}
-
 #ledgerTableBody tr:nth-child(odd) {
-	background-color: rgb(238, 178, 17, 0.5);
+	background-color: rgb(255, 255, 255, 0.2);
 }
 
 #ledgerTableBody td {
@@ -442,7 +438,29 @@ tr:hover {
 	padding: 10px;
 	background-color: rgb(196, 18, 48, 0.8);
 }
+#ledgerTable_wrapper {
+	background-color: rgb(238, 178, 17, 0.7);
+	border: 1px solid transparent;
+	border-radius: 5px;
+	box-shadow:  0 16px 24px 2px rgba(29,17,51,.04),0 6px 32px 4px rgba(9,32,77,.12),0 8px 12px -5px rgba(29,17,51,.12);
+	max-height: 500px;
+	overflow-y: scroll;
+	width: 80%;
+	margin-left: 10%;
+    margin-right: 10%;
+}
 
+#ledgerFlters {
+	margin-top: 50px;
+	width: 80%;
+	margin-left: 10%;
+    margin-right: 10%;
+}
+
+#ledgerLoadingIcon {
+	margin-top: 30px;
+	text-align: center;
+}
 
 #ledgerTable tr:hover {
 	background-color: rgb(248, 211, 110);

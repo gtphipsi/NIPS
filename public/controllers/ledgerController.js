@@ -54,9 +54,11 @@ $(document).ready(function() {
                 console.log(newRow);
                 $('#ledgerTable').DataTable().row.add(newRow);
             }
-            console.log(TRANSACTIONS)
+            console.log(TRANSACTIONS);
             $('#ledgerTable').DataTable().draw();
+            $("#ledgerLoadingIcon").text("");
         });
+
         var showAllButton = $('#showAllButton');
         var showAssignedButton = $('#showAssignedButton');
         var showRecievedButton = $('#showRecievedButton');

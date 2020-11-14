@@ -24,36 +24,37 @@
 				<a href="/login"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
 			</div>
 		</nav>
-		<div class="container ledger">
+		<div class="container">
 			<div class="row">
-				<div class="col-md center redTitle" id="ledgerContainer">
+				<div class="col-md center redTitle">
                     <h1>Ledger</h1>
 				</div>
 			</div>
-			<div class="column">
-				<div id=ledgerFlters>
-					<button  class="filterButton" id="showAllButton">All</button>
-					<button class="filterButton" id="showAssignedButton">Assigned</button>
-					<button class="filterButton" id="showRecievedButton">Recieved</button>
-					<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
-				</div>
-				<div style="width: 100%">
-					<table class="DataTable row-border" id="ledgerTable">
-						<thead>
-							<tr>
-								<th>Points</th>
-								<th>Reason</th>
-								<th>Receiver</th>
-								<th>Assigner</th>
-								<th>Date Earned</th>
-								<th>Date Assigned</th>
-							</tr>
-						</thead>
-						<tbody id="ledgerTableBody">
+			<div id="ledgerFlters">
+				<button  class="filterButton" id="showAllButton">All</button>
+				<button class="filterButton" id="showAssignedButton">Assigned</button>
+				<button class="filterButton" id="showRecievedButton">Recieved</button>
+				<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
+			</div>
+			<div style="width: 100%" class="ledgerContainer">
+				<table class="DataTable row-border" id="ledgerTable">
+					<thead>
+						<tr>
+							<th>Points</th>
+							<th>Reason</th>
+							<th>Receiver</th>
+							<th>Assigner</th>
+							<th>Date Earned</th>
+							<th>Date Assigned</th>
+						</tr>
+					</thead>
+					<tbody id="ledgerTableBody">
 
-						</tbody>
-					</table>
-				</div>
+					</tbody>
+				</table>
+			</div>
+			<div id="ledgerLoadingIcon">
+				<i class="fas fa-spinner fa-pulse fa-3x"></i>
 			</div>
 		</div>
 	</body>
