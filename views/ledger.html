@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		<title>Phi Kappa Psi</title>
+		<link rel="stylesheet" href="/styles.css">
+		<script type="text/javascript" src="/controllers/utils.js"></script>
+		<script type="text/javascript" src="/controllers/ledgerController.js"></script>
+        <!-- Font Awesome Icons -->
+        <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
+	</head>
+	<body class="homeBackground">
+        <nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid topNav">
+				<a href="/home"><i class="fas fa-home"></i> Home</a>
+				<a href="/assign"><i class="fas fa-plus"></i> Assign</a>
+				<a href="/ledger"><i class="fas fa-book"></i> Ledger</a>
+				<a href="/admin"><i class="fas fa-cog"></i> Admin</a>
+				<a href="/login"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+			</div>
+		</nav>
+		<div class="container">
+			<div class="row">
+				<div class="col-md center redTitle">
+                    <h1>Ledger</h1>
+				</div>
+			</div>
+			<div id="ledgerFlters">
+				<button  class="filterButton" id="showAllButton">All</button>
+				<button class="filterButton" id="showAssignedButton">Assigned</button>
+				<button class="filterButton" id="showRecievedButton">Recieved</button>
+				<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
+			</div>
+			<div style="width: 100%" class="ledgerContainer">
+				<table class="DataTable row-border" id="ledgerTable">
+					<thead>
+						<tr>
+							<th>Points</th>
+							<th>Reason</th>
+							<th>Receiver</th>
+							<th>Assigner</th>
+							<th>Date Earned</th>
+							<th>Date Assigned</th>
+						</tr>
+					</thead>
+					<tbody id="ledgerTableBody">
+
+					</tbody>
+				</table>
+			</div>
+			<div id="ledgerLoadingIcon">
+				<i class="fas fa-spinner fa-pulse fa-3x"></i>
+			</div>
+		</div>
+	</body>
+</html>
