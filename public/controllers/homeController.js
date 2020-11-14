@@ -30,7 +30,8 @@ $(document).ready(function() {
         console.log("failed retrieving user data--returning to login page");
         window.location = '/';
     }).done(function() {
-        $('#welcomeMessage').text(`Welcome, Brother ${USER.lastName}`);
+        $('#welcomeMessage').text(`Welcome, Brother ${USER.lastName} `);
+        $('#welcomeMessage').append(getRandomUserIcon());
         $.get("/users", function(data) {
             USERS = data;
             console.log("retrieved user data");
@@ -73,10 +74,18 @@ function updateTimeframe() {
 function updateRank() {
     var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME);
     var userRanking = getUserRanking(USER._id, leaderboard);
+    console.log(userRanking);
+    var userPoints;
+    if (userRanking == 0) {
+        userPoints = 0;
+    } else {
+        userPoints = leaderboard[userRanking - 1].points;
+    }
     $('#userRank').text('Rank: ' +  userRanking);
     addRankIcon(userRanking);
     $('#pointsBehind').text(getPointsBehindMessage(userRanking, leaderboard));
     updateStatistics(leaderboard);
+    updateProgressBar(userPoints);
 }
 
 function updateStatistics(leaderboard) {
@@ -92,8 +101,10 @@ function updateStatistics(leaderboard) {
 
 function addRankIcon(ranking) {
     $('#rankIcon').html('');
-    if (ranking == 1) {
-        $('#rankIcon').append('<i class="fas fa-chess-king"></i>')
+    if (ranking < 1) {
+        $('#rankIcon').append('<i class="fas fa-chess"></i>');
+    } else if (ranking == 1) {
+        $('#rankIcon').append('<i class="fas fa-chess-king"></i>');
     } else if (ranking <= 2) {
         $('#rankIcon').append('<i class="fas fa-chess-queen"></i>');
     } else if (ranking <= 5) {
@@ -108,6 +119,9 @@ function addRankIcon(ranking) {
 }
 
 function getPointsBehindMessage(userRanking, leaderboard) {
+    if (!userRanking || !leaderboard) {
+        return;
+    }
     var userAhead = {};
     var userPoints = leaderboard[userRanking - 1].points;
     if (userRanking > 1) {
@@ -121,5 +135,55 @@ function getPointsBehindMessage(userRanking, leaderboard) {
     } else {
         var pointsBehind = Math.floor(Math.random() * 4200) + 690;
         return "You are " + pointsBehind + " points behind Wysong";
+    }
+}
+
+function updateProgressBar(userPoints) {
+    var recommendedPoints;
+    if (TIMEFRAME == timeframes.WEEKLY) {
+        recommendedPoints = recommended.WEEK;
+    } else if (TIMEFRAME == timeframes.MONTHLY) {
+        recommendedPoints = recommended.MONTH;
+    } else if (TIMEFRAME == timeframes.SEMESTERLY) {
+        recommendedPoints = recommended.SEMESTER;
+    }
+    var progress;
+    if (userPoints == 0) {
+        progress = 1;
+    } else if (userPoints >= recommendedPoints) {
+        progress = 100;
+    } else {
+        progress = Math.floor(100 * userPoints / recommendedPoints);
+    }
+    var percentage = progress + '%';
+    $('#userProgress').width(percentage);
+    setProgressIcon(progress);
+}
+
+function getRandomUserIcon() {
+    var random = Math.floor(Math.random() * 4);
+    var icons = [
+        '<i class="fas fa-user-tie"></i>',
+        '<i class="fas fa-user-secret"></i>',
+        '<i class="fas fa-user-ninja"></i>',
+        '<i class="fas fa-user-astronaut"></i>'
+    ]
+    return icons[random];
+}
+
+function setProgressIcon(progress) {
+    $('#progressIcon').html('');
+    if (progress < 10) {
+        $('#progressIcon').append('<i class="far fa-flushed"></i>');
+    } else if (progress == 25) {
+        $('#progressIcon').append('<i class="far fa-grimace"></i>');
+    } else if (progress <= 40) {
+        $('#progressIcon').append('<i class="far fa-smile"></i>');
+    } else if (progress <= 55) {
+        $('#progressIcon').append('<i class="far fa-star"></i>');
+    } else if (progress <= 70) {
+        $('#progressIcon').append('<i class="far fa-thumbs-up"></i>');
+    } else {
+        $('#progressIcon').append('<i class="fas fa-trophy"></i>');
     }
 }

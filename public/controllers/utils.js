@@ -28,6 +28,15 @@ const semester = {
     SPRING: "spring"
 }
 
+/**
+ * 
+ */
+const recommended = {
+    WEEK: 6,
+    MONTH: 24,
+    SEMESTER: 100
+}
+
 function getName(user) {
     return user.firstName + " " + user.lastName;
 }
@@ -195,7 +204,7 @@ function getUserRanking(userId, leaderboard) {
 
 
 /**
- * use momentJS to check if a transaction falls within a certain timeframe
+ * check if a transaction falls within a certain timeframe
  * @param {*} transaction transaction to check
  * @param {*} timeframe "enum" indicating timeframe to check for
  * @returns true if transaction is in timeframe, false otherwise
