@@ -44,6 +44,11 @@ app.get("/home", (req, res) => {
     res.render("home", { title: "Home" });
 });
 
+app.get("/ledger", (req, res) => {
+    console.log("GET LEDGER");
+    res.render("ledger", { title: "ledger" });
+});
+
 app.get("/assign", (req, res) => {
     console.log("GET ASSIGN");
     res.render("assign", { title: "Assign Points" });
@@ -142,6 +147,33 @@ app.get("/users/:userId", (req, res) => {
     });
 });
 
+app.get("/ledger/:userId", (req, res) => {
+    console.log('getting user by ID');
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var userId = req.params.userId;
+            console.log("FINDING ONE USER'S LEDGER");
+            var mongoId = ObjectId(userId);
+            var db = client.db('NIPS');
+            var collection = db.collection('Transactions');
+            collection.find({$or: [{receiver: userId}, {assigner: userId}]}).toArray(function(err, result) {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                } else {
+                    console.log('result');
+                    console.log(result);
+                    res.send(result);
+                }
+            });
+            client.close();
+        }      
+    });
+});
+
 app.post("/login", (req, res) => {
     console.log("POST LOGIN");
     console.log("body:");
@@ -176,6 +208,8 @@ app.post("/login", (req, res) => {
         }
     });
 });
+
+
 
 app.get("/committees", (req, res) => {
     console.log('getting all committees');
