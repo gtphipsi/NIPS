@@ -33,7 +33,7 @@ $(document).ready(function() {
         if (index < 0) {
             USER_OFFICER_POSITIONS.push(position);
             officerPositionsAdded.append(`<li id=${position}><i class="fas fa-caret-right"></i> ${officerPositions.val()} <button class='deleteButton' ` +
-            `type='button' onclick='deleteOfficerPosition(${position})'><i class='far fa-window-close transparent'></i></button></li>`);
+            `type='button' onclick='deleteOfficerPosition(${position})'><i class='far fa-window-close fontgrey'></i></button></li>`);
         } else {
             console.log("Position already added");
         }
@@ -77,7 +77,7 @@ $(document).ready(function() {
         if (index < 0) {
             COMMITTEE_MEMBERS.push(MEMBER_SELECTED);
             committeeMembersAdded.append(`<li id=${id}><i class="fas fa-caret-right"></i> ${name} <button class='deleteButton' ` +
-            `type='button' onclick='deleteCommitteeMember(${id})'><i class='far fa-window-close transparent'></i></button></li>`);
+            `type='button' onclick='deleteCommitteeMember(${id})'><i class='far fa-window-close fontgrey'></i></button></li>`);
         } else {
             console.log("Member already added");
         }
