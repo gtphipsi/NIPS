@@ -107,7 +107,7 @@ button:hover {
 
 /******************** Custom Stylings ********************/
 
-/* Login Page */
+/***** LOGIN PAGE *****/
 .loginBackground {
     background-image: url("/images/gt_background.jpg");
      /* Full height */
@@ -165,7 +165,7 @@ tr:hover {
 }
 
 
-/* Home Page */
+/***** HOME PAGE *****/
 .homeRow {
 	margin-left: 0px;
 	margin-right: 0px;
@@ -192,12 +192,6 @@ tr:hover {
 .rankContainer h3 {
 	color: black;
 }
-/* .rankContainer:hover h1 {
-	color: rgb(75, 75, 255);
-}
-.rankContainer:hover h3 {
-	color: rgb(75, 75, 255);
-} */
 .logContainer {
 	text-align: center;
 }
@@ -234,7 +228,7 @@ tr:hover {
 	background-color: wheat;
 }
 #statsTable {
-	width: 50%;
+	width: 75%;
 	margin: auto;
 	border-left: 1px solid grey;
 	border-right: 1px solid grey

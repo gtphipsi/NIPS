@@ -150,6 +150,7 @@ function updateProgressBar(userPoints) {
     var progress;
     if (userPoints == 0) {
         progress = 1;
+        // $('#progressBar').text('');
     } else if (userPoints >= recommendedPoints) {
         progress = 100;
     } else {
