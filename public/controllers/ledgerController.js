@@ -48,7 +48,9 @@ $(document).ready(function() {
                 var reason = currentTransaction.reason;
                 var receiver = USERS_BY_ID[currentTransaction.receiver].firstName + ' ' + USERS_BY_ID[currentTransaction.receiver].lastName;
                 var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
-                var newRow = [amount, reason, receiver, assigner];
+                var dateAssigned = changeDateString(currentTransaction.dateAssigned);
+                var dateEarned = changeDateString(currentTransaction.dateEarned);
+                var newRow = [amount, reason, receiver, assigner, dateEarned, dateAssigned];
                 console.log(newRow);
                 $('#ledgerTable').DataTable().row.add(newRow);
             }
@@ -68,10 +70,11 @@ $(document).ready(function() {
                 var reason = currentTransaction.reason;
                 var receiver = USERS_BY_ID[currentTransaction.receiver].firstName + ' ' + USERS_BY_ID[currentTransaction.receiver].lastName;
                 var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
-                var newRow = [amount, reason, receiver, assigner];
+                var dateAssigned = changeDateString(currentTransaction.dateAssigned);
+                var dateEarned = changeDateString(currentTransaction.dateEarned);
+                var newRow = [amount, reason, receiver, assigner, dateEarned, dateAssigned];
                 $('#ledgerTable').DataTable().row.add(newRow); 
             }
-            console.log(TRANSACTIONS)
             $('#ledgerTable').DataTable().draw();
         });
 
@@ -84,12 +87,13 @@ $(document).ready(function() {
                 var reason = currentTransaction.reason;
                 var receiver = USERS_BY_ID[currentTransaction.receiver].firstName + ' ' + USERS_BY_ID[currentTransaction.receiver].lastName;
                 var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
-                var newRow = [amount, reason, receiver, assigner];
-                if (userName == assigner) {
+                var dateAssigned = changeDateString(currentTransaction.dateAssigned);
+                var dateEarned = changeDateString(currentTransaction.dateEarned);
+                var newRow = [amount, reason, receiver, assigner, dateEarned, dateAssigned];
+                if (assigner == userName) {
                     $('#ledgerTable').DataTable().row.add(newRow); 
                 }
             }
-            console.log(TRANSACTIONS)
             $('#ledgerTable').DataTable().draw();
         });
 
@@ -102,12 +106,14 @@ $(document).ready(function() {
                 var reason = currentTransaction.reason;
                 var receiver = USERS_BY_ID[currentTransaction.receiver].firstName + ' ' + USERS_BY_ID[currentTransaction.receiver].lastName;
                 var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
-                var newRow = [amount, reason, receiver, assigner];
-                if (userName == receiver) {
+                var dateAssigned = changeDateString(currentTransaction.dateAssigned);
+                var dateEarned = changeDateString(currentTransaction.dateEarned);
+                var newRow = [amount, reason, receiver, assigner, dateEarned, dateAssigned];
+                if (receiver == userName) {
                     $('#ledgerTable').DataTable().row.add(newRow); 
                 }
             }
-            console.log(TRANSACTIONS)
+            $('#ledgerTable').DataTable().draw();
         });
 
         var ledgerSearchInput = $('#ledgerSearchInput');
@@ -130,7 +136,6 @@ $(document).ready(function() {
                         }
                     }
                 }
-                
                 if (contains) {
                     tr[i].style.display = "";
                 } else {
@@ -141,4 +146,6 @@ $(document).ready(function() {
     });
 });
 
-
+function changeDateString(rawDate) {
+    return rawDate.slice(5,7)+'/'+rawDate.slice(8,10)+'/'+rawDate.slice(0,4)
+}
