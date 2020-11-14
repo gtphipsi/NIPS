@@ -24,7 +24,7 @@ $(document).ready(function() {
     var userURL = '/users/' + userId;
     $.get(userURL, function(data) {
         USER = data;
-        console.log("retrieved user data");
+        console.log("retrieved one user data");
         console.log(data);
     }).fail(function() {
         console.log("failed retrieving user data--returning to login page");
@@ -34,7 +34,7 @@ $(document).ready(function() {
         $('#welcomeMessage').append(getRandomUserIcon());
         $.get("/users", function(data) {
             USERS = data;
-            console.log("retrieved user data");
+            console.log("retrieved all user data");
         }).done(function() {
             USERS_BY_ID = createHashmapById(USERS);
             $.get("/transactions", function(data) {
@@ -74,14 +74,13 @@ function updateTimeframe() {
 function updateRank() {
     var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME);
     var userRanking = getUserRanking(USER._id, leaderboard);
-    console.log(userRanking);
     var userPoints;
     if (userRanking == 0) {
         userPoints = 0;
     } else {
         userPoints = leaderboard[userRanking - 1].points;
     }
-    $('#userRank').text('Rank: ' +  userRanking);
+    $('#userRank').text('Rank: ' +  userRanking + ' | Points: ' + userPoints);
     addRankIcon(userRanking);
     $('#pointsBehind').text(getPointsBehindMessage(userRanking, leaderboard));
     updateStatistics(leaderboard);
@@ -102,19 +101,19 @@ function updateStatistics(leaderboard) {
 function addRankIcon(ranking) {
     $('#rankIcon').html('');
     if (ranking < 1) {
-        $('#rankIcon').append('<i class="fas fa-chess"></i>');
+        $('#rankIcon').append('<i class="fas fa-chess pkpgreen"></i>');
     } else if (ranking == 1) {
-        $('#rankIcon').append('<i class="fas fa-chess-king"></i>');
+        $('#rankIcon').append('<i class="fas fa-chess-king pkpgreen"></i>');
     } else if (ranking <= 2) {
-        $('#rankIcon').append('<i class="fas fa-chess-queen"></i>');
+        $('#rankIcon').append('<i class="fas fa-chess-queen pkpgreen"></i>');
     } else if (ranking <= 5) {
-        $('#rankIcon').append('<i class="fas fa-chess-knight"></i>');
+        $('#rankIcon').append('<i class="fas fa-chess-knight pkpgreen"></i>');
     } else if (ranking <= 7) {
-        $('#rankIcon').append('<i class="fas fa-chess-rook"></i>');
+        $('#rankIcon').append('<i class="fas fa-chess-rook pkpgreen"></i>');
     } else if (ranking <= 10) {
-        $('#rankIcon').append('<i class="fas fa-chess-bishop"></i>');
+        $('#rankIcon').append('<i class="fas fa-chess-bishop pkpgreen"></i>');
     } else {
-        $('#rankIcon').append('<i class="fas fa-chess-pawn"></i>');
+        $('#rankIcon').append('<i class="fas fa-chess-pawn pkpgreen"></i>');
     }
 }
 

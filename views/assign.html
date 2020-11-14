@@ -26,7 +26,7 @@
 		</nav>
 		<div class="container assign">
 			<div class="row">
-				<div class="col-md center redTitle">
+				<div class="col-md center redTitle boxShadow">
                     <h1>Assign Points</h1>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 				</div>
 				<div class="row">
 					<h3><i class="far fa-calendar-plus pkpgreen"></i> Date Earned
-						<input type="date" class="redInput" id="assignDate" onchange="updateDate()">
+						<input type="date" placeholder="mm/dd/yyyy" class="redInput" id="assignDate" onchange="updateDate()">
 					</h3>
 				</div>
 				<div class="row">
@@ -63,7 +63,7 @@
 				</div>
 				<div class="row">
 					<div style="width: 100%">
-						<table class="DataTable defaultRedTable" i="groupsTable" >
+						<table class="DataTable defaultRedTable" id="groupsTable">
 							<thead>
 								<tr>
 									<th>Delete</th>
@@ -83,7 +83,7 @@
 							<option>None</option>
 						</select>
 					<button class="assignButton" id="addBrotherButton">Add</button>
-					</h3>					
+					</h3>
 				</div>
 				<div class="row">
 					<div style="width: 100%">

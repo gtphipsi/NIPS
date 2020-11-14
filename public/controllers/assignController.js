@@ -10,6 +10,7 @@ var DATE_EARNED = new Date();
 var ASSIGNER = "";
 var REASON = "";
 var AMOUNT = 0;
+var CUSTOM_AMOUNTS = {};
 var currentGroup;
 var currentBrother;
 var groups = [];
@@ -35,7 +36,15 @@ $(document).ready(function() {
         }]
     });
     $('#logTable').on('click', 'tbody td.editable', function(e) {
+        var table = $('#logTable').DataTable();
         console.log('edit amount');
+        var row = table.row($(this).parents('tr'));
+        console.log(row.data());
+        var data = row.data();
+        var newAmount = window.prompt('Amount', AMOUNT);
+        CUSTOM_AMOUNTS[data[5]] = newAmount;
+        data[1] = newAmount + "<i class='fas fa-edit assignEditButton'></i>";
+        table.row($(this).parents('tr')).data(data).draw();
     });
 
     var groupsTable = $('#groupsTable').DataTable({
@@ -259,7 +268,11 @@ function updateLogTable() {
     for (var i = 0; i < ALL_USER_IDS.length; i++) {
         var currentUser = USERS_BY_ID[ALL_USER_IDS[i]];
         var name = currentUser.firstName + ' ' + currentUser.lastName;
-        var amountColumn = AMOUNT + " <button class='assignEditButton'><i class='fas fa-edit'></i></button>";
+        var amt = AMOUNT;
+        if (CUSTOM_AMOUNTS[ALL_USER_IDS[i]]) {
+            amt = CUSTOM_AMOUNTS[ALL_USER_IDS[i]];
+        }
+        var amountColumn = amt + "<i class='fas fa-edit assignEditButton'></i>";
         var newRow = [
             name,
             amountColumn,
@@ -303,8 +316,10 @@ function getTransactions() {
         var row = data[i];
         var receiverId = row[5];
         var amountString = row[1];
+        console.log(amountString);
         var htmlIndex = amountString.indexOf('<');
-        var amount = amountString.substring(0, htmlIndex - 1);
+        var amount = amountString.substring(0, htmlIndex);
+        console.log(amount);
         var new_transaction = {
             reason: REASON, // reason
             assigner: assignerId, // assigner
