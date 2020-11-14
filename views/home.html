@@ -7,7 +7,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 		<title>Phi Kappa Psi</title>
 		<link rel="stylesheet" href="/styles.css">
 		<script type="text/javascript" src="/controllers/utils.js"></script>
@@ -15,8 +14,8 @@
         <!-- Font Awesome Icons -->
         <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
 	</head>
-	<body class="homeBackground">
-		<nav class="navbar navbar-default navbar-fixed-top">
+	<body class="snowBackground">
+        <nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container-fluid topNav">
 				<a href="/home"><i class="fas fa-home"></i> Home</a>
 				<a href="/assign"><i class="fas fa-plus"></i> Assign</a>
@@ -27,11 +26,21 @@
 		</nav>
 		<div class="container">
 			<div class="row">
-				<div class="col-md center" id="loginContainer">
+				<div class="col-md center redTitle">
 					<h1 id="welcomeMessage">Welcome, Brother </h1>
 				</div>
 			</div>
 			<div class="row homeRow">
+				<div class="homeContainer progressContainer">
+					<h1 id="progressIcon"><i class="fas fa-hourglass-half fa-spin"></i></h1>
+					<div class="progress" id="progressBar">
+						<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+						style="width:1%" id="userProgress">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row homeRow pageRow">
 				<div class="col-lg">
 					<div class="row homeRow">
 						<div class="homeContainer rankContainer">
@@ -47,7 +56,7 @@
 					</div>
 					<div class="row homeRow">
 						<div class="homeContainer logContainer">
-							<h1>Points Received</h1>
+							<h1 class="fas fa-gift" >Points Received</h1>
 							<table class="DataTable defaultRedTable" id="userLogTable">
 								<thead>
 									<tr>
@@ -68,18 +77,22 @@
 							<table class="defaultRedTable" id="statsTable">
 								<tr>
 									<td class="statLabel"><h2>Mean</h2></td>
+									<td><i class="fas fa-ellipsis-v"></i></td>
 									<td><h2 id="statMean">0</h2></td>
 								</tr>
 								<tr>
 									<td class="statLabel"><h2>Median</h2></td>
+									<td><i class="fas fa-ellipsis-v"></i></td>
 									<td><h2 id="statMedian">0</h2></td>
 								</tr>
 								<tr>
 									<td class="statLabel"><h2>High</h2></td>
+									<td><i class="fas fa-ellipsis-v"></i></td>
 									<td><h2 id="statHigh">0</h2></td>
 								</tr>
 								<tr style="border-bottom: 1px solid transparent;">
 									<td class="statLabel"><h2>Low</h2></td>
+									<td><i class="fas fa-ellipsis-v"></i></td>
 									<td><h2 id="statLow">0</h2></td>
 								</tr>
 							</table>
@@ -89,20 +102,11 @@
 				<div class="col-lg">
 					<div class="row homeRow">
 						<div class="homeContainer graphsContainer">
-							<h1>Graphs</h1>
+							<h1><i class="fas fa-chart-line"></i> Graphs</h1>
 							<p><i class="fas fa-tools"></i> < coming soon (ish) /> <i class="fas fa-tools"></i></p>
 							<img src="/images/pkp_gb.jpg" style="width: 100%;border-radius: 5px;">
 						</div>
 					</div>
-				</div>
-			</div>
-			<!-- <div class="row homeRow">
-				
-			</div> -->
-			<div class="row homeRow">
-				<div class="homeContainer progressContainer">
-					<h1>Progress</h1>
-					<p><i class="fas fa-tools"></i> < coming soon (ish) /> <i class="fas fa-tools"></i></p>
 				</div>
 			</div>
 		</div>
