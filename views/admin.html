@@ -16,12 +16,8 @@
 	</head>
 	<body class="snowBackground">
         <nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container-fluid topNav">
-                <a href="/home"><i class="fas fa-home"></i> Home</a>
-                <a href="/assign"><i class="fas fa-plus"></i> Assign</a>
-                <a href="/ledger"><i class="fas fa-book"></i> Ledger</a>
-				<a href="/admin"><i class="fas fa-cog"></i> Admin</a>
-                <a href="/login"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+			<div class="container-fluid topNav" id="navbar">
+                <!-- GENERATE VIA UTILS FUNCTION -->
 			</div>
 		</nav>
 		<div class="container admin">
@@ -78,6 +74,8 @@
                                 <option>None</option>
                             </select>
                         </h3>
+                        <h3>Meeting Time <input class="redInput" type="text" id="addCommitteeMeeting"></h3>
+                        <h3>Budget <input class="redInput" type="number" id="addCommitteeBudget"></h3>
                     </form>
                     <h2 class="adminSubmit"><button id="submitCommitteeButton"><i class="fas fa-users"></i> Submit</h2>
                 </div>
