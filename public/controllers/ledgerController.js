@@ -15,6 +15,8 @@ var log = [];
 $(document).ready(function() {
     console.log("Loading assign page...");
 
+    createNavBar();
+
     $.get("/users", function(data) {
         USERS = data;
         console.log("retrieved user data");
@@ -51,10 +53,8 @@ $(document).ready(function() {
                 var dateAssigned = changeDateString(currentTransaction.dateAssigned);
                 var dateEarned = changeDateString(currentTransaction.dateEarned);
                 var newRow = [amount, reason, receiver, assigner, dateEarned, dateAssigned];
-                console.log(newRow);
                 $('#ledgerTable').DataTable().row.add(newRow);
             }
-            console.log(TRANSACTIONS);
             $('#ledgerTable').DataTable().draw();
             $("#ledgerLoadingIcon").text("");
         });

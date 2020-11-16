@@ -8,6 +8,8 @@ var MEMBER_SELECTED = ''; // variable to track current selection in adding membe
 $(document).ready(function() {
     console.log("Loading admin page...");
 
+    createNavBar();
+
     $.get("/users", function(data) {
         USERS = data;
         console.log("retrieved user data");
@@ -88,13 +90,15 @@ $(document).ready(function() {
         var newCommittee = {
             committee: $('#addCommitteeName').val(),
             members: COMMITTEE_MEMBERS,
-            head: $('#committeeHead').val()
+            head: $('#committeeHead').val(),
+            meetings: $('#addCommitteeMeeting').val(),
+            budget: $('#addCommitteeBudget').val()
         }
         $.post("/committees", newCommittee).done(function() {
             console.log("Committee successfully added");
             console.log(newCommittee);
             alert('New Committee Added to Database');
-            location.reload();
+            // location.reload();
         });
     });
 });

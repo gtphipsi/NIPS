@@ -59,6 +59,11 @@ app.get("/admin", (req, res) => {
     res.render("admin", { title: "Perform Admin Actions" });
 });
 
+app.get("/viewcommittees", (req, res) => {
+    console.log("GET COMMITTEES");
+    res.render("committees", { title: "View Committees" });
+});
+
 app.get("/users", (req, res) => {
     console.log('getting all users');
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
@@ -156,7 +161,6 @@ app.get("/ledger/:userId", (req, res) => {
         } else {
             var userId = req.params.userId;
             console.log("FINDING ONE USER'S LEDGER");
-            var mongoId = ObjectId(userId);
             var db = client.db('NIPS');
             var collection = db.collection('Transactions');
             collection.find({$or: [{receiver: userId}, {assigner: userId}]}).toArray(function(err, result) {
@@ -164,8 +168,6 @@ app.get("/ledger/:userId", (req, res) => {
                     console.log(err);
                     throw err;
                 } else {
-                    console.log('result');
-                    console.log(result);
                     res.send(result);
                 }
             });

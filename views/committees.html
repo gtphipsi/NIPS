@@ -10,48 +10,27 @@
 		<title>Phi Kappa Psi</title>
 		<link rel="stylesheet" href="/styles.css">
 		<script type="text/javascript" src="/controllers/utils.js"></script>
-		<script type="text/javascript" src="/controllers/ledgerController.js"></script>
+        <script type="text/javascript" src="/controllers/committeesController.js"></script>
         <!-- Font Awesome Icons -->
         <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
 	</head>
-	<body class="homeBackground">
+	<body class="snowBackground">
         <nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container-fluid topNav" id="navbar">
-				<!-- GENERATE VIA UTILS FUNCTION -->
+				<!-- GENERATED VIA UTILS FUNCTION -->
 			</div>
 		</nav>
 		<div class="container">
 			<div class="row">
 				<div class="col-md center redTitle boxShadow">
-                    <h1>Ledger</h1>
+                    <h1>Committees</h1>
 				</div>
-			</div>
-			<div id="ledgerFlters">
-				<button  class="filterButton" id="showAllButton">All</button>
-				<button class="filterButton" id="showAssignedButton">Assigned</button>
-				<button class="filterButton" id="showRecievedButton">Recieved</button>
-				<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
-			</div>
-			<div style="width: 100%" class="ledgerContainer">
-				<table class="DataTable row-border" id="ledgerTable">
-					<thead>
-						<tr>
-							<th>Points <i class="fas fa-sort"></i></th>
-							<th>Reason <i class="fas fa-sort"></i></th>
-							<th>Receiver <i class="fas fa-sort"></i></th>
-							<th>Assigner <i class="fas fa-sort"></i></th>
-							<th>Date Earned <i class="fas fa-sort"></i></th>
-							<th>Date Assigned <i class="fas fa-sort"></i></th>
-						</tr>
-					</thead>
-					<tbody id="ledgerTableBody">
-
-					</tbody>
-				</table>
-			</div>
-			<div id="ledgerLoadingIcon">
-				<i class="fas fa-spinner fa-pulse fa-3x"></i>
-			</div>
+            </div>
+            <div class="col-lg" id="committeesContainer">
+                <div id="loadingSpinner">
+                    <i class="fas fa-spinner fa-pulse fa-3x"></i>
+                </div>
+            </div>
 		</div>
 	</body>
 </html>

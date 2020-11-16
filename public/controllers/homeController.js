@@ -8,6 +8,8 @@ var TIMEFRAME;
 $(document).ready(function() {
     console.log("Loading home page...");
 
+    createNavBar();
+
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     if (!userId) {
@@ -27,7 +29,7 @@ $(document).ready(function() {
         console.log("retrieved one user data");
         console.log(data);
     }).fail(function() {
-        console.log("failed retrieving user data--returning to login page");
+        alert("failed retrieving user data--returning to login page");
         window.location = '/';
     }).done(function() {
         $('#welcomeMessage').text(`Welcome, Brother ${USER.lastName} `);
@@ -73,6 +75,7 @@ function updateTimeframe() {
 
 function updateRank() {
     var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME);
+    console.log(leaderboard);
     var userRanking = getUserRanking(USER._id, leaderboard);
     var userPoints;
     if (userRanking == 0) {

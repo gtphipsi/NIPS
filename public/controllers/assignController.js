@@ -19,6 +19,8 @@ var log = [];
 $(document).ready(function() {
     console.log("Loading assign page...");
 
+    createNavBar();
+
     DATE_ASSIGNED = new Date();
     console.log("Today's Date", DATE_ASSIGNED);
 
@@ -26,6 +28,7 @@ $(document).ready(function() {
         searching: false,
         paging: false,
         info: false,
+        autoWidth: false,
         "columnDefs": [{
             "targets": 1,
             "className": "editable"

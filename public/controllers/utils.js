@@ -32,9 +32,9 @@ const semester = {
  * 
  */
 const recommended = {
-    WEEK: 6,
-    MONTH: 24,
-    SEMESTER: 100
+    WEEK: 10,
+    MONTH: 40,
+    SEMESTER: 150
 }
 
 function getName(user) {
@@ -228,24 +228,33 @@ function isInTimeframe(transaction, timeframe) {
     }
 }
 
+/**
+ * Below are functions performing calculations to determine if
+ * a given date is within a certain range
+ * @param {*} date the date to check
+ * @returns true if date is within range, false otherwise
+ */
 function isInFallSemester(date) {
     var now = new Date(date);
     return fallSemester.STARTDATE <= now && now <= fallSemester.ENDDATE;
 }
-
-
 function isInSpringSemester(date) {
     var now = new Date(date);
     return springSemester.STARTDATE <= now && now <= springSemester.ENDDATE;
 }
-
 function isThisWeek(date) {
     var now = new Date();
     var earned = new Date(date);
     var weekDay = now.getDay();
+    // convert to week ending sunday and starting monday
+    if (weekDay == 0) {
+        weekDay = 6;
+    } else {
+        weekDay = weekDay - 1;
+    }
+    console.log(weekDay);
     return (now - earned) / 86400000 <= weekDay;
 }
-
 function isThisMonth(date) {
     var now = new Date();
     var earned = new Date(date);
@@ -253,6 +262,10 @@ function isThisMonth(date) {
     return (now - earned) / 86400000 <= monthDay;
 }
 
+/**
+ * Checks what current semester is
+ * @returns fall or spring semester "enum" values
+ */
 function getCurrentSemester() {
     var now = new Date();
     if (isInFallSemester(now)) {
@@ -266,23 +279,59 @@ function getCurrentSemester() {
 }
 
 
+/**
+ * Below are functions performing statistical calculations
+ * relating to overall fraternity point amounts
+ * @param {*} leaderboard the leaderboard array to get point values from
+ */
 function getMean(leaderboard) {
+    if (!leaderboard || leaderboard.length == 0) {
+        return 0;
+    }
     var sum = 0;
     for (var i = 0; i < leaderboard.length; i++) {
         sum += parseInt(leaderboard[i].points);
     }
     return sum / leaderboard.length;
 }
-
 function getMedian(leaderboard) {
+    if (!leaderboard || leaderboard.length == 0) {
+        return 0;
+    }
     var middle = Math.floor(leaderboard.length / 2);
     return leaderboard[middle].points;
 }
-
 function getHigh(leaderboard) {
+    if (!leaderboard || leaderboard.length == 0) {
+        return 0;
+    }
     return leaderboard[0].points;
 }
-
 function getLow(leaderboard) {
+    if (!leaderboard || leaderboard.length == 0) {
+        return 0;
+    }
     return leaderboard[leaderboard.length - 1].points;
+}
+
+
+/**
+ * function to create top navbar on each page
+ * useful for not having to edit every html file when a new page is added
+ * TO USE: call at beginning of $(document).ready function
+ * ensure that there is a navbar div with id="navbar" in correct place in html file
+ */
+function createNavBar() {
+    var home = '<a href="/home"><i class="fas fa-home"></i> Home</a>';
+    var assign = '<a href="/assign"><i class="fas fa-plus"></i> Assign</a>';
+    var ledger = '<a href="/ledger"><i class="fas fa-book"></i> Ledger</a>';
+    var admin = '<a href="/admin"><i class="fas fa-cog"></i> Admin</a>';
+    var signout = '<a href="/login"><i class="fas fa-sign-out-alt"></i> Sign Out</a>';
+    var committees = '<a href = "/viewcommittees"><i class="fas fa-users"></i> Committees';
+    $('#navbar').append(home);
+    $('#navbar').append(assign);
+    $('#navbar').append(ledger);
+    $('#navbar').append(admin);
+    $('#navbar').append(committees);
+    $('#navbar').append(signout);
 }

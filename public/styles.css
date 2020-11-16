@@ -177,8 +177,8 @@ th {
 	margin-top: 25px;
 	width: 100%;
 }
-.homeContainer{
-	background-color: rgb(238, 178, 17, 0.7);
+.homeContainer {
+	background-color: rgb(238, 178, 17);
 	border: 1px solid transparent;
 	border-radius: 5px;
 	width: 100%;
@@ -188,7 +188,7 @@ th {
 	color: rgb(196, 18, 48);
 }
 .homeContainer:hover {
-	background-color: rgb(238, 178, 17, 0.8);
+	background-color: rgb(238, 178, 17, 0.7);
 }
 .rankContainer {
 	text-align: center;
@@ -422,33 +422,31 @@ th {
 	background-color: rgb(196, 18, 48, 0.2);
 	margin-bottom: 10px;
 }
- 
 #ledgerSearchInput {
 	background-position: 10px 10px;
 	background-repeat: no-repeat;
 	border: 1px solid  rgb(196, 18, 48);
 	margin-bottom: 10px;
 }
-
 #ledgerContainer {
 	margin-bottom: 30px;
 }
-
 #ledgerTableBody tr:nth-child(odd) {
 	background-color: rgb(255, 255, 255, 0.2);
 }
-
 #ledgerTableBody td {
 	border: none;
 	text-align: center;
 	padding: 10px;
 }
-
 #ledgerTable th {
 	border: none;
 	text-align: center;
 	padding: 10px;
 	background-color: rgb(196, 18, 48, 0.8);
+}
+#ledgerTable th:hover {
+	cursor: pointer;
 }
 #ledgerTable th:hover i {
 	color: white;
@@ -460,25 +458,58 @@ th {
 	box-shadow:  0 16px 24px 2px rgba(29,17,51,.04),0 6px 32px 4px rgba(9,32,77,.12),0 8px 12px -5px rgba(29,17,51,.12);
 	max-height: 500px;
 	overflow-y: scroll;
-	width: 80%;
-	margin-left: 10%;
-    margin-right: 10%;
+	width: 100%;
+	margin: 0px;
 }
-
 #ledgerFlters {
 	margin-top: 50px;
 	width: 80%;
-	margin-left: 10%;
-    margin-right: 10%;
 }
-
 #ledgerLoadingIcon {
 	margin-top: 30px;
 	text-align: center;
 }
-
 #ledgerTable tr:hover {
 	background-color: wheat;
+}
+
+
+/***** COMMITTEES PAGE *****/
+#committeesContainer {
+	height: 75vh;
+	overflow-y: auto;
+	border-bottom: 1px solid rgb(196, 18, 48, 0.85);
+}
+.committeeCard {
+	margin: auto;
+	background-color: rgb(238, 178, 17);
+	border-radius: 5px;
+	padding: 5px;
+}
+.committeeCard:hover {
+	background-color: rgb(238, 178, 17, 0.7);
+	transition: 0.3s;
+}
+.committeeCard h1 {
+	text-align: center;
+	color: black;
+	/* text-decoration: underline; */
+}
+.committeeCard i {
+	color: rgb(196, 18, 48);
+}
+.committeeCard ul {
+	text-align: center;
+	text-decoration: underline;
+}
+.committeeName {
+	background-color: wheat;
+	margin-bottom: 15px;
+}
+#loadingSpinner {
+	margin-top: 20px;
+	width: 100%;
+	text-align: center;
 }
 
 /**************** Color Classes ****************/
