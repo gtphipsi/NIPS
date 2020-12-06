@@ -29,12 +29,29 @@ const semester = {
 }
 
 /**
- * 
+ * JavaScript Enum implementation for recommmended participation
  */
 const recommended = {
     WEEK: 10,
     MONTH: 40,
     SEMESTER: 150
+}
+
+/**
+ * JavaScript Enum implementation for positions
+ */
+const positions = {
+    GP: "GP",
+    VGP: "VGP",
+    P: "P",
+    NME: "NME",
+    BG: "BG",
+    SG: "SG",
+    AG: "AG",
+    PHU: "Phu",
+    HI: "Hi",
+    MISC: "Misc",
+    COMMITTEE: "Committee"
 }
 
 function getName(user) {
@@ -328,10 +345,12 @@ function createNavBar() {
     var admin = '<a href="/admin"><i class="fas fa-cog"></i> Admin</a>';
     var signout = '<a href="/login"><i class="fas fa-sign-out-alt"></i> Sign Out</a>';
     var committees = '<a href = "/viewcommittees"><i class="fas fa-users"></i> Committees';
+    var matrix = '<a href = "/matrix"><i class="fas fa-th-list"></i> Matrix';
     $('#navbar').append(home);
     $('#navbar').append(assign);
     $('#navbar').append(ledger);
     $('#navbar').append(admin);
     $('#navbar').append(committees);
+    $('#navbar').append(matrix);
     $('#navbar').append(signout);
 }

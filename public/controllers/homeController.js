@@ -160,7 +160,7 @@ function updateProgressBar(userPoints) {
     }
     var percentage = progress + '%';
     $('#userProgress').width(percentage);
-    setProgressIcon(progress);
+    $('#progressIcon').hide();
 }
 
 function getRandomUserIcon() {

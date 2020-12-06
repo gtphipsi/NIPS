@@ -35,33 +35,38 @@ app.get("/", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-    console.log("GET LOGIN");
+    console.log("RENDER LOGIN");
     res.render("login", { title: "Login" });
 });
 
 app.get("/home", (req, res) => {
-    console.log("GET HOME");
+    console.log("RENDER HOME");
     res.render("home", { title: "Home" });
 });
 
 app.get("/ledger", (req, res) => {
-    console.log("GET LEDGER");
+    console.log("RENDER LEDGER");
     res.render("ledger", { title: "ledger" });
 });
 
 app.get("/assign", (req, res) => {
-    console.log("GET ASSIGN");
+    console.log("RENDER ASSIGN");
     res.render("assign", { title: "Assign Points" });
 });
 
 app.get("/admin", (req, res) => {
-    console.log("GET ASSIGN");
+    console.log("RENDER ASSIGN");
     res.render("admin", { title: "Perform Admin Actions" });
 });
 
 app.get("/viewcommittees", (req, res) => {
-    console.log("GET COMMITTEES");
+    console.log("RENDER COMMITTEES");
     res.render("committees", { title: "View Committees" });
+});
+
+app.get("/matrix", (req, res) => {
+    console.log("RENDER MATRIX");
+    res.render("matrix", { title: "View Committees" });
 });
 
 app.get("/users", (req, res) => {
