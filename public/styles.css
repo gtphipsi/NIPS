@@ -22,6 +22,31 @@ body {
 input {
 	border: solid white;
 }
+footer {
+	background-color: lavender;
+	text-align: center;
+	margin-top: 15px;
+	margin-bottom: 5px;
+}
+footer button {
+	background-color: transparent;
+	border: 1px solid transparent;
+	margin-bottom: 0px;
+}
+footer a {
+	color: black !important;
+}
+footer button:hover {
+	background-color: transparent;
+	border: 1px solid black !important;
+	color: black;
+}
+footer button:hover a {
+	color: black !important;
+}
+footer button a {
+	padding: 0px;
+}
 /* Create three equal columns that floats next to each other */
 .row {
     margin-top: 50px;
@@ -53,6 +78,8 @@ ul {
 }
 a {
 	border-bottom: 1px solid transparent;
+	padding-left: 2px;
+	padding-right: 2px;
 }
 a:hover {
 	text-decoration: none;
@@ -106,6 +133,24 @@ button:hover {
 
 
 /******************** Custom Stylings ********************/
+
+#signoutButton {
+	background-color: lavender;
+	border: 1px solid lavender;
+	margin-bottom: 0px;
+}
+#signoutButton:hover {
+	border-color: black;
+}
+.currentPage {
+	color: snow;
+	border-radius: 3px;
+	background-color: grey;
+}
+.currentPage:hover {
+	color: snow;
+	border-bottom: 1px solid transparent;
+}
 
 /***** LOGIN PAGE *****/
 .loginBackground {

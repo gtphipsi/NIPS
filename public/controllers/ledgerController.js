@@ -15,7 +15,24 @@ var log = [];
 $(document).ready(function() {
     console.log("Loading assign page...");
 
-    createNavBar();
+    createNavBar('ledger');
+
+    $('#signoutButton').off('click');
+    $('#signoutButton').click(function() {
+        sessionStorage.setItem('userId', '');
+        location.href = '/login';
+    });
+
+    $('#reportIssueButton').off('click');
+    $('#reportIssueButton').click(function() {
+        location.href ="https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
+    });
+
+    addFooter();
+
+    var userId = sessionStorage.getItem('userId');
+    console.log(userId);
+    checkLoggedIn(userId);
 
     $.get("/users", function(data) {
         USERS = data;
@@ -27,9 +44,7 @@ $(document).ready(function() {
             info: false,
             searching: false});
     
-        var userId = sessionStorage.getItem('userId');
         var userName = USERS_BY_ID[userId].firstName + ' '+  USERS_BY_ID[userId].lastName;
-        console.log(userId);
     
         var userURL = '/ledger/' + userId;
         $.get(userURL, function(data) {

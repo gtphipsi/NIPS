@@ -295,7 +295,7 @@ function getCurrentSemester() {
     }
 }
 
-
+/* *********************************************************************** */
 /**
  * Below are functions performing statistical calculations
  * relating to overall fraternity point amounts
@@ -330,6 +330,7 @@ function getLow(leaderboard) {
     }
     return leaderboard[leaderboard.length - 1].points;
 }
+/* *********************************************************************** */
 
 
 /**
@@ -338,14 +339,14 @@ function getLow(leaderboard) {
  * TO USE: call at beginning of $(document).ready function
  * ensure that there is a navbar div with id="navbar" in correct place in html file
  */
-function createNavBar() {
-    var home = '<a href="/home"><i class="fas fa-home"></i> Home</a>';
-    var assign = '<a href="/assign"><i class="fas fa-plus"></i> Assign</a>';
-    var ledger = '<a href="/ledger"><i class="fas fa-book"></i> Ledger</a>';
-    var admin = '<a href="/admin"><i class="fas fa-cog"></i> Admin</a>';
-    var signout = '<a href="/login"><i class="fas fa-sign-out-alt"></i> Sign Out</a>';
-    var committees = '<a href = "/viewcommittees"><i class="fas fa-users"></i> Committees';
-    var matrix = '<a href = "/matrix"><i class="fas fa-th-list"></i> Matrix';
+function createNavBar(page) {
+    var home = '<a id=homeNav href="/home"><i class="fas fa-home"></i> Home</a>';
+    var assign = '<a id=assignNav href="/assign"><i class="fas fa-plus"></i> Assign</a>';
+    var ledger = '<a id=ledgerNav href="/ledger"><i class="fas fa-book"></i> Ledger</a>';
+    var admin = '<a id=adminNav href="/admin"><i class="fas fa-cog"></i> Admin</a>';
+    var committees = '<a id=committeesNav href = "/viewcommittees"><i class="fas fa-users"></i> Committees';
+    var matrix = '<a id=matrixNav href="/matrix"><i class="fas fa-th-list"></i> Matrix';
+    var signout = '<button id=signoutButton><i class="fas fa-sign-out-alt"></i> Sign Out</button>';
     $('#navbar').append(home);
     $('#navbar').append(assign);
     $('#navbar').append(ledger);
@@ -353,4 +354,51 @@ function createNavBar() {
     $('#navbar').append(committees);
     $('#navbar').append(matrix);
     $('#navbar').append(signout);
+
+    switch (page) {
+        case 'home':
+            $('#homeNav').addClass('currentPage');
+            break;
+        case 'assign':
+            $('#assignNav').addClass('currentPage');
+            break;
+        case 'ledger':
+            $('#ledgerNav').addClass('currentPage');
+            break;
+        case 'admin':
+            $('#adminNav').addClass('currentPage');
+            break;
+        case 'committees':
+            $('#committeesNav').addClass('currentPage');
+            break;
+        case 'matrix':
+            $('#matrixNav').addClass('currentPage');
+            break;
+        default:
+            break;
+    }
+}
+
+
+/**
+ * helper function to alert and redirect user if no userId is found in sessionStorage
+ * @param {*} userId value retrieved from sessionStorage
+ */
+function checkLoggedIn(userId) {
+    if (!userId) {
+        alert("USER NOT LOGGED IN\nRETURNING TO LOGIN PAGE");
+        console.log("failed retrieving userId--returning to login page");
+        window.location = '/';
+    }
+}
+
+
+/**
+ * helper function to add common footer to html
+ * requires jquery code in controller files to activate button click
+ */
+function addFooter() {
+    var label = "<button><a href='https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION' target='_blank'><h3>";
+    label += "<i class='fas fa-exclamation-triangle'></i> Report an Issue</h3></a></button>";
+    $('footer').append(label);
 }

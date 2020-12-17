@@ -8,7 +8,24 @@ var MEMBER_SELECTED = ''; // variable to track current selection in adding membe
 $(document).ready(function() {
     console.log("Loading admin page...");
 
-    createNavBar();
+    createNavBar('admin');
+
+    $('#signoutButton').off('click');
+    $('#signoutButton').click(function() {
+        sessionStorage.setItem('userId', '');
+        location.href = '/login';
+    });
+
+    $('#reportIssueButton').off('click');
+    $('#reportIssueButton').click(function() {
+        location.href ="https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
+    });
+
+    addFooter();
+
+    var userId = sessionStorage.getItem('userId');
+    console.log(userId);
+    checkLoggedIn(userId);
 
     $.get("/users", function(data) {
         USERS = data;
