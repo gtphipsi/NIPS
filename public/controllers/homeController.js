@@ -8,14 +8,24 @@ var TIMEFRAME;
 $(document).ready(function() {
     console.log("Loading home page...");
 
-    createNavBar();
+    createNavBar('home');
+
+    $('#signoutButton').off('click');
+    $('#signoutButton').click(function() {
+        sessionStorage.setItem('userId', '');
+        location.href = '/login';
+    });
+
+    $('#reportIssueButton').off('click');
+    $('#reportIssueButton').click(function() {
+        location.href ="https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
+    });
+
+    addFooter();
 
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
-    if (!userId) {
-        console.log("failed retrieving userId--returning to login page");
-        window.location = '/';
-    }
+    checkLoggedIn(userId);
 
     $('#userLogTable').DataTable({
         searching: false,

@@ -19,7 +19,24 @@ var log = [];
 $(document).ready(function() {
     console.log("Loading assign page...");
 
-    createNavBar();
+    createNavBar('assign');
+
+    $('#signoutButton').off('click');
+    $('#signoutButton').click(function() {
+        sessionStorage.setItem('userId', '');
+        location.href = '/login';
+    });
+
+    $('#reportIssueButton').off('click');
+    $('#reportIssueButton').click(function() {
+        location.href ="https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
+    });
+
+    addFooter();
+
+    var userId = sessionStorage.getItem('userId');
+    console.log(userId);
+    checkLoggedIn(userId);
 
     DATE_ASSIGNED = new Date();
     console.log("Today's Date", DATE_ASSIGNED);
@@ -122,9 +139,6 @@ $(document).ready(function() {
     var addGroupButton = $('#addGroupButton');
     var addBrotherButton = $('#addBrotherButton');
     var submitPointsButton = $('#submitPointsButton');
-
-    var userId = sessionStorage.getItem('userId');
-    console.log(userId);
 
     var userURL = '/users/' + userId;
     $.get(userURL, function(data) {
