@@ -13,7 +13,7 @@ to make what I thought would be the simplest and most maintainable code structur
 This site will use a Javascript/HTML/CSS frontend with an ExpressJS/MongoDB backend to track and display brothers' points.<br></br>
 To get started, you will need to <b>clone the repository</b> on your local machine.<br></br>
 To run the site, <b>cd</b> into the repository and run 
-<code>npm run dev</code> or <code>node ./index.js</code><br></br>
+<code>npm run dev</code> or <code>npm start</code><br></br>
 You will likely get many errors on the first try, and to resolve these you will probably need to run various <code>npm install</code> commands.
 <strong>Before your first server run, you will need to install the npm packages.</strong><br></br>
 <ul>
