@@ -319,6 +319,9 @@ th {
 }
 
 /* Assign Page */
+.amount {
+	text-align: center !important;
+}
 .assignColumn {
 	border-left: 1px solid rgb(0, 112, 60, 0.3);
 	border-right: 1px solid rgb(0, 112, 60, 0.3);
@@ -359,15 +362,9 @@ th {
 	background-color: transparent;
 	box-shadow: 0 1px 2px 0 rgb(0, 112, 60, 0.5), 0 2px 3px 0 rgb(0, 112, 60, 0.5);
 }
-#logTable td.editable i {
-	color: grey;
-}
 #logTable td.editable:hover {
-	background-color: rgb(105, 192, 105);
+	background-color: wheat;
 	cursor: pointer;
-}
-#logTable td.editable:hover i {
-	color: black;
 }
 .assignEditButton {
 	background-color: transparent;

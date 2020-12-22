@@ -48,7 +48,7 @@ $(document).ready(function() {
         autoWidth: false,
         "columnDefs": [{
             "targets": 1,
-            "className": "editable"
+            "className": "editable amount"
         },
         {
             "targets": -1,
@@ -57,13 +57,14 @@ $(document).ready(function() {
     });
     $('#logTable').on('click', 'tbody td.editable', function(e) {
         var table = $('#logTable').DataTable();
-        console.log('edit amount');
         var row = table.row($(this).parents('tr'));
-        console.log(row.data());
         var data = row.data();
         var newAmount = window.prompt('Amount', AMOUNT);
+        if (!newAmount) {
+            newAmount = 0;
+        }
         CUSTOM_AMOUNTS[data[5]] = newAmount;
-        data[1] = newAmount + "<i class='fas fa-edit assignEditButton'></i>";
+        data[1] = newAmount;
         table.row($(this).parents('tr')).data(data).draw();
     });
 
@@ -153,7 +154,7 @@ $(document).ready(function() {
 
     $.get("/users", function(data) {
         USERS = data;
-        console.log("retrieved user data");
+        console.log("retrieved all user data");
     }).done(function() {
         for (var i = 0; i < USERS.length; i++) {
             assigningBrother.append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
@@ -207,15 +208,18 @@ $(document).ready(function() {
 
     submitPointsButton.off('click');
     submitPointsButton.click(function() {
-        // CHECK DATA FIRST
-        // ---check for missing inputs---
         if (confirm('Are you sure you want to submit these points?')) {
+            var validForm = validateForm();
             var transactions = getTransactions();
             console.log(transactions);
-            $.post("/transactions", {transactions}).done(function() {
-                alert('Transactions Submitted Successfully');
-                location.reload();
-            });
+            if (validForm && transactions.length > 0) {
+                $.post("/transactions", {transactions}).done(function() {
+                    alert('Transactions Submitted Successfully');
+                    location.reload();
+                });
+            } else {
+                alert('Unable to submit points :(');
+            }
         }
     });
 });
@@ -289,7 +293,7 @@ function updateLogTable() {
         if (CUSTOM_AMOUNTS[ALL_USER_IDS[i]]) {
             amt = CUSTOM_AMOUNTS[ALL_USER_IDS[i]];
         }
-        var amountColumn = amt + "<i class='fas fa-edit assignEditButton'></i>";
+        var amountColumn = amt;
         var newRow = [
             name,
             amountColumn,
@@ -332,20 +336,87 @@ function getTransactions() {
     for (var i = 0; i < data.length; i++) {
         var row = data[i];
         var receiverId = row[5];
-        var amountString = row[1];
-        console.log(amountString);
-        var htmlIndex = amountString.indexOf('<');
-        var amount = amountString.substring(0, htmlIndex);
-        console.log(amount);
+        var amount = row[1];
         var new_transaction = {
-            reason: REASON, // reason
-            assigner: assignerId, // assigner
-            receiver: receiverId, // receiver
-            amount: amount, // amount
-            dateAssigned: new Date(DATE_ASSIGNED), // dateAssigned
-            dateEarned: new Date(DATE_EARNED) // dateEarned
+            reason: REASON,
+            assigner: assignerId,
+            receiver: receiverId,
+            amount: amount,
+            dateAssigned: new Date(DATE_ASSIGNED),
+            dateEarned: new Date(DATE_EARNED)
         }
-        transactions.push(new_transaction);
+        if (validateTransaction(new_transaction, i + 1)) {
+            transactions.push(new_transaction);
+        }
     }
     return transactions;
 }
+
+/**
+ * helper function to check each transaction before adding to database
+ * if a function has some missing/corrupted data, we want to alert the user and not add it
+ * @param {*} transaction transaction to check to ensure proper data
+ */
+function validateTransaction(transaction, rowNumber) {
+    console.log(`Validating transaction ${rowNumber}`);
+    console.log(transaction);
+    var alertMessage = `TRANSACTION ${rowNumber}` + '\n';
+    var errorCaught = false;
+    if (!transaction.reason || transaction.reason == '') {
+        alertMessage += `--MISSING REASON` + '\n';
+        errorCaught = true;
+    }
+    if (!transaction.assigner || transaction.assigner == '') {
+        alertMessage += '--UNABLE TO DETERMINE ASSIGNER ID' + '\n';
+        errorCaught = true;
+    }
+    if (!transaction.receiver || transaction.receiver == '') {
+        alertMessage += '--UNABLE TO DETERMINE RECEIVER ID' + '\n';
+        errorCaught = true;
+    }
+    if (!transaction.amount) {
+        alertMessage += `--MISSING AMOUNT` + '\n';
+        errorCaught = true;
+    } else if (isNaN(transaction.amount)) {
+        alertMessage += `--AMOUNT NOT A NUMBER: ${transaction.amount}` + '\n';
+    }
+    if (!transaction.assigner || transaction.assigner == '') {
+        alertMessage += '--UNABLE TO DETERMINE ASSIGNER ID' + '\n';
+        errorCaught = true;
+    }
+    if (!isValidDate(transaction.dateEarned)) {
+        alertMessage += `--DATE EARNED NOT VALID: ${transaction.dateEarned}` + '\n';
+        errorCaught = true;
+    }
+    if (errorCaught) {
+        alert(alertMessage);
+        return false;
+    }
+    return true;
+}
+
+/**
+ * helper function to ensure form is filled out and data will
+ * not be null/undefined
+ */
+function validateForm() {
+    var alertMessage = '';
+    var errorCaught = false;
+    if (!REASON || REASON == '') {
+        alertMessage += 'Please fill out the \"Reason\" field\n';
+        errorCaught = true;
+    }
+    if (!isValidDate(DATE_EARNED)) {
+        alertMessage = 'Please enter a valid date in the format mm/dd/yyyy\n';
+        errorCaught = true;
+    }
+    if (errorCaught) {
+        alert(alertMessage);
+        return false;
+    }
+    return true;
+}
+
+function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
