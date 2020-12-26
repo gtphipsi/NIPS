@@ -52,6 +52,7 @@ $(document).ready(function() {
                         createCommitteeCard(committeeId);
                     }
                 }
+                $("#loadingIcon").html('');
             });
         });
     });
@@ -87,14 +88,26 @@ function getCommitteeIcon(committeeId) {
         case "Technology":
             icon = '<i class="fas fa-laptop-code"></i>';
             break;
-        case "Events":
+        case "Membership":
             icon = '<i class="fas fa-calendar-alt"></i>';
             break;
-        case "FAT":
+        case "Finance":
             icon = '<i class="fas fa-money-check-alt"></i>';
             break;
-        case "SW":
+        case "Social":
             icon = '<i class="far fa-laugh"></i>';
+            break;
+        case "Scholarship":
+            icon = '<i class="fas fa-university"></i>';
+            break;
+        case "Philanthropy":
+            icon = '<i class="fas fa-donate"></i>';
+            break;
+        case "APR":
+            icon = '<i class="fas fa-graduation-cap"></i>';
+            break;
+        case "Health and Wellness":
+            icon = '<i class="fas fa-dumbbell"></i>';
             break;
         default:
             icon = '<i class="fas fa-briefcase"></i>';

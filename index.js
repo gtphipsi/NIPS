@@ -55,7 +55,7 @@ app.get("/assign", (req, res) => {
 });
 
 app.get("/admin", (req, res) => {
-    console.log("RENDER ASSIGN");
+    console.log("RENDER ADMIN");
     res.render("admin", { title: "Perform Admin Actions" });
 });
 
@@ -157,8 +157,53 @@ app.get("/users/:userId", (req, res) => {
     });
 });
 
+app.put("/users/:userId", (req, res) => {
+    console.log('editing user by ID');
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            try {
+                var userId = req.params.userId;
+                console.log("UPDATING ONE USER");
+                var mongoId = ObjectId(userId);
+                var db = client.db('NIPS');
+                var collection = db.collection('Users');
+                var query = {_id: mongoId};
+                var isAdmin = JSON.parse(req.body.admin);
+                var officerPositions = req.body.officerPositions;
+                for (var position in officerPositions) {
+                    officerPositions[position] = JSON.parse(req.body.officerPositions[position]);
+                }
+                req.body.admin = isAdmin;
+                var update = {$set: {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    admin: req.body.admin,
+                    officerPositions: req.body.officerPositions
+                }};
+                console.log(req.body);
+                collection.updateOne(query, update, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(404);
+                    } else {
+                        res.send(result);
+                    }
+                });
+            } catch(e) {
+                console.log("ERROR FINDING USER");
+                console.log(err);
+                res.sendStatus(404);
+            }
+            client.close();
+        }
+    });
+});
+
 app.get("/ledger/:userId", (req, res) => {
-    console.log('getting user by ID');
+    console.log('getting user ledger by ID');
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
@@ -240,6 +285,37 @@ app.get("/committees", (req, res) => {
     });
 });
 
+app.get("/committees/:committeeId", (req, res) => {
+    console.log('getting committee by ID');
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            try {
+                var committeeId = req.params.committeeId;
+                console.log("FINDING ONE USER");
+                var mongoId = ObjectId(committeeId);
+                var db = client.db('NIPS');
+                var collection = db.collection('Committees');
+                collection.findOne({_id: mongoId}, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(404);
+                    } else {
+                        res.send(result);
+                    }
+                });
+            } catch(e) {
+                console.log("ERROR FINDING USER");
+                console.log(err);
+                res.sendStatus(404);
+            }
+            client.close();
+        }
+    });
+});
+
 app.post("/committees", (req, res) => {
     console.log("adding new committee");
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
@@ -263,6 +339,45 @@ app.post("/committees", (req, res) => {
                         res.sendStatus(200);
                     }
                 });
+            }
+            client.close();
+        }
+    });
+});
+
+app.put("/committees/:committeeId", (req, res) => {
+    console.log('editing committee by ID');
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            try {
+                var committeeId = req.params.committeeId;
+                console.log("UPDATING ONE COMMITTEE");
+                var mongoId = ObjectId(committeeId);
+                var db = client.db('NIPS');
+                var collection = db.collection('Committees');
+                var query = {_id: mongoId};
+                var update = {$set: {
+                    members: req.body.members,
+                    meetings: req.body.meetings,
+                    head: req.body.head,
+                    budget: req.body.budget
+                }};
+                console.log(req.body);
+                collection.updateOne(query, update, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(404);
+                    } else {
+                        res.send(result);
+                    }
+                });
+            } catch(e) {
+                console.log("ERROR FINDING COMMITTEE");
+                console.log(err);
+                res.sendStatus(404);
             }
             client.close();
         }

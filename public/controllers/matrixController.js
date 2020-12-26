@@ -50,7 +50,7 @@ $(document).ready(function() {
             TRANSACTIONS = data;
             console.log("retrieved transaction data");
         }).done(function() {
-            
+            $("#loadingIcon").html('');
         });
 
         /* Show Buttons */

@@ -280,18 +280,11 @@ th {
 #statsTable {
 	width: 75%;
 	margin: auto;
-	border-left: 1px solid wheat;
-	border-right: 1px solid wheat;
-}
-#statsTable:hover {
 	border-left: 1px solid black;
 	border-right: 1px solid black;
 }
-#statsTable:hover tr {
-	border-bottom: 1px solid black;
-}
 #statsTable tr {
-	border-bottom: 1px solid wheat;
+	border-bottom: 1px solid black;
 }
 #statsTable tr:hover {
 	background-color: wheat;
@@ -318,7 +311,7 @@ th {
 	height: 30px;
 }
 
-/* Assign Page */
+/* ASSIGN PAGE */
 .amount {
 	text-align: center !important;
 }
@@ -453,7 +446,13 @@ th {
 #officerPositionsAdded li:hover i {
 	color: red;
 }
+#editOfficerPositionsAdded li:hover i {
+	color: red;
+}
 #committeeMembersAdded li:hover i {
+	color: red;
+}
+#editCommitteeMembersAdded li:hover i {
 	color: red;
 }
 
@@ -510,7 +509,7 @@ th {
 	margin-top: 50px;
 	width: 80%;
 }
-#ledgerLoadingIcon {
+#loadingIcon {
 	margin-top: 30px;
 	text-align: center;
 }
@@ -521,15 +520,23 @@ th {
 
 /***** COMMITTEES PAGE *****/
 #committeesContainer {
+	margin-top: 10px;
 	height: 75vh;
 	overflow-y: auto;
-	border-bottom: 1px solid rgb(196, 18, 48, 0.85);
+	border: 1px solid rgba(196, 18, 48, 0.3);
+}
+#committeesContainer:hover {
+	border: 1px solid rgba(196, 18, 48, 1.0);
 }
 .committeeCard {
 	margin: auto;
 	background-color: rgb(238, 178, 17);
 	border-radius: 5px;
 	padding: 5px;
+}
+.committeeRow {
+	margin-top: 5px !important;
+	margin-bottom: 15px !important;
 }
 .committeeCard:hover {
 	background-color: rgb(238, 178, 17, 0.7);
