@@ -25,6 +25,9 @@
 				<div class="col-md center redTitle boxShadow">
                     <h1>Admin Capabilities</h1>
 				</div>
+            </div>
+            <div id="loadingIcon">
+				<i class="fas fa-spinner fa-pulse fa-3x"></i>
 			</div>
 			<div class="column">
 				<div class="row">
@@ -57,6 +60,40 @@
                     <h2 class="adminSubmit"><button id="submitUserButton"><i class="fas fa-user-plus"></i> Submit</h2>
                 </div>
                 <div class="row">
+                    <h2 class="adminTitle">Edit User</h2>
+                    <form>
+                        <h3>Member
+                            <select id="editMembers" onchange="updateEditUser()">
+                                <option>None</option>
+                            </select>
+                        </h3>
+                        <h3>First Name <input class="redInput" type="text" id="editUserFirstName"></h3>
+                        <h3>Last Name <input class="redInput" type="text" id="editUserLastName"></h3>
+                        <h3>Badge Number <input class="redInput" type="number" id="editUserBadgeNumber"></h3>
+                        <h3>Admin <input type="checkbox" id="editUserAdmin"></h3>
+                        <h3>Officer Positions
+                            <select id="editOfficerPositions">
+                                <option>None</option>
+                                <option>GP</option>
+                                <option>VGP</option>
+                                <option>P</option>
+                                <option>NME</option>
+                                <option>Hod</option>
+                                <option>Hi</option>
+                                <option>AG</option>
+                                <option>SG</option>
+                                <option>BG</option>
+                                <option>Phu</option>
+                            </select>
+                            <button class="adminButton" id="editOfficerPositionButton" type="button">Add</button>
+                        </h3>
+                        <ul id="editOfficerPositionsAdded">
+
+                        </ul>
+                    </form>
+                    <h2 class="adminSubmit"><button id="submitEditUserButton"><i class="fas fa-user-edit"></i> Submit</h2>
+                </div>
+                <div class="row">
                     <h2 class="adminTitle">Create New Committee</h2>
                     <form>
                         <h3>Committee Name <input class="redInput" type="text" id="addCommitteeName"></h3>
@@ -78,6 +115,33 @@
                         <h3>Budget <input class="redInput" type="number" id="addCommitteeBudget"></h3>
                     </form>
                     <h2 class="adminSubmit"><button id="submitCommitteeButton"><i class="fas fa-users"></i> Submit</h2>
+                </div>
+                <div class="row">
+                    <h2 class="adminTitle">Edit Committee</h2>
+                    <form>
+                        <h3>Committee
+                            <select id="editCommittees">
+                                <option>None</option>
+                            </select>
+                        </h3>
+                        <h3>Members
+                            <select id="editCommitteeMembers">
+                                <option>None</option>
+                            </select>
+                            <button class="adminButton" id="editCommitteeMemberButton" type="button">Add</button>
+                        </h3>
+                        <ul id="editCommitteeMembersAdded">
+
+                        </ul>
+                        <h3>Committee Head
+                            <select id="editCommitteeHead">
+                                <option>None</option>
+                            </select>
+                        </h3>
+                        <h3>Meeting Time <input class="redInput" type="text" id="editCommitteeMeeting"></h3>
+                        <h3>Budget <input class="redInput" type="number" id="editCommitteeBudget"></h3>
+                    </form>
+                    <h2 class="adminSubmit"><button id="submitEditCommitteeButton"><i class="fas fa-users-cog"></i> Submit</h2>
                 </div>
             </div>
         </div>

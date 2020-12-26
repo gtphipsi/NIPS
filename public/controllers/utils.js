@@ -83,9 +83,10 @@ function createHashmapById(data) {
  * @param {*} user a User object from MongoDB
  * @returns array of officer and committee head positions held
  */
-function getPositions(user) {
+function getPositions(user, committees) {
+    console.log('getting positions');
     var positions = [];
-    if (!user || !user.officerPositions || !user.committeePositions) {
+    if (!user || !user.officerPositions || !committees) {
         return [];
     }
     for (o in user.officerPositions) {
@@ -93,9 +94,10 @@ function getPositions(user) {
             positions.push(o);
         }
     }
-    for (c in user.committeePositions) {
-        if (user.committeePositions[c]) {
-            positions.push(c + ' Head');
+    for (c in committees) {
+        console.log(committees[c].head);
+        if (committees[c].head == user._id) {
+            positions.push(committees[c].committee + ' Head');
         }
     }
     return positions;

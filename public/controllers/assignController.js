@@ -146,30 +146,29 @@ $(document).ready(function() {
         USER = data;
         console.log("retrieved user data");
     }).done(function() {
-        var positions = getPositions(USER);
-        for (var i = 0; i < positions.length; i++) {
-            assigningAs.append(`<option value=${positions[i]}>${positions[i]}</option>`);
-        }
-    });
-
-    $.get("/users", function(data) {
-        USERS = data;
-        console.log("retrieved all user data");
-    }).done(function() {
-        for (var i = 0; i < USERS.length; i++) {
-            assigningBrother.append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
-        }
-        USERS_BY_ID = createHashmapById(USERS);
-    });
-
-    $.get('/committees', function(data) {
-        COMMITTEES = data;
-        console.log("retrieved committee data");
-    }).done(function() {
-        for (var i = 0; i < COMMITTEES.length; i++) {
-            assigningGroup.append(`<option value=${COMMITTEES[i]._id}>${COMMITTEES[i].committee}</option>`);
-        }
-        COMMITTEES_BY_ID = createHashmapById(COMMITTEES);
+        $.get('/committees', function(data) {
+            COMMITTEES = data;
+            console.log("retrieved committee data");
+        }).done(function() {
+            for (var i = 0; i < COMMITTEES.length; i++) {
+                assigningGroup.append(`<option value=${COMMITTEES[i]._id}>${COMMITTEES[i].committee}</option>`);
+            }
+            COMMITTEES_BY_ID = createHashmapById(COMMITTEES);
+            var positions = getPositions(USER, COMMITTEES);
+            for (var i = 0; i < positions.length; i++) {
+                assigningAs.append(`<option value=${positions[i]}>${positions[i]}</option>`);
+            }
+            $.get("/users", function(data) {
+                USERS = data;
+                console.log("retrieved all user data");
+            }).done(function() {
+                for (var i = 0; i < USERS.length; i++) {
+                    assigningBrother.append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
+                }
+                USERS_BY_ID = createHashmapById(USERS);
+                $("#loadingIcon").html('');
+            });
+        });
     });
 
     addGroupButton.off('click');
@@ -374,7 +373,9 @@ function validateTransaction(transaction, rowNumber) {
         alertMessage += '--UNABLE TO DETERMINE RECEIVER ID' + '\n';
         errorCaught = true;
     }
-    if (!transaction.amount) {
+    if (transaction.amount === undefined) {
+        console.log(transaction.amount);
+        console.log(!transaction.amount);
         alertMessage += `--MISSING AMOUNT` + '\n';
         errorCaught = true;
     } else if (isNaN(transaction.amount)) {
