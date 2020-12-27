@@ -51,7 +51,9 @@ const positions = {
     PHU: "Phu",
     HI: "Hi",
     MISC: "Misc",
-    COMMITTEE: "Committee"
+    COMMITTEE: "Committee",
+    RISK_MANAGER: "Risk Manager",
+    RUSH_CHAIR: "Rush Chair"
 }
 
 function getName(user) {

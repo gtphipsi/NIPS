@@ -5,6 +5,7 @@ var COMMITTEES;
 var COMMITTEES_BY_ID;
 var ALL_USER_IDS = [];
 var TRANSACTIONS;
+var MATRIX;
 var FILTERS = [];
 var assigner = "";
 var reason = "";
@@ -16,6 +17,10 @@ var log = [];
 
 $(document).ready(function() {
     console.log("Loading assign page...");
+
+    var userId = sessionStorage.getItem('userId');
+    console.log(userId);
+    checkLoggedIn(userId);
 
     hideFilters();
 
@@ -34,23 +39,46 @@ $(document).ready(function() {
 
     addFooter();
 
+    var matrixTable = $('#matrixTable').DataTable({
+        paging: false,
+        info: false,
+        searching: false,
+        fixedColumns: true,
+        autoWidth: false,
+        "columnDefs": [
+        {
+            "targets": -1,
+            "visible": false
+        }]
+    });
+
     $.get("/users", function(data) {
         USERS = data;
         console.log("retrieved user data");
     }).done(function() {
         USERS_BY_ID = createHashmapById(USERS);
     
-        var userId = sessionStorage.getItem('userId');
-        console.log(userId);
-        checkLoggedIn(userId);
-        var userName = USERS_BY_ID[userId].firstName + ' '+  USERS_BY_ID[userId].lastName;
-    
         var userURL = '/ledger/' + userId;
         $.get(userURL, function(data) {
             TRANSACTIONS = data;
             console.log("retrieved transaction data");
         }).done(function() {
-            $("#loadingIcon").html('');
+            $.get("/matrixItems", function(data) {
+                MATRIX = data;
+                console.log("retrieved matrix data");
+            }).done(function() {
+                console.log("updating matrix table");
+                $('#matrixTable').DataTable().clear().draw();
+                for (var i = 0; i < MATRIX.length; i++) {
+                    var currentMatrix = MATRIX[i];
+                    console.log(currentMatrix);
+                    var newRow = [currentMatrix.title, currentMatrix.positivePoints, currentMatrix.negativePoints, currentMatrix.assigner, currentMatrix.tag];
+                    $('#matrixTable').DataTable().row.add(newRow);
+                }
+                $('#matrixTable').DataTable().draw();
+                $('#matrixTable').DataTable().columns.adjust().draw();
+                $("#loadingIcon").hide();
+            });
         });
 
         /* Show Buttons */
@@ -143,6 +171,24 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.COMMITTEE);
             $('#hideCommitteeButton').show();
+        });
+
+        $('#showRiskManagerButton').off('click');
+        $('#showRiskManagerButton').click(function() {
+            if (FILTERS.indexOf(positions.RISK_MANAGER) >= 0) {
+                return;
+            }
+            FILTERS.push(positions.RISK_MANAGER);
+            $('#hideRiskManagerButton').show();
+        });
+
+        $('#showRushChairButton').off('click');
+        $('#showRushChairButton').click(function() {
+            if (FILTERS.indexOf(positions.RUSH_CHAIR) >= 0) {
+                return;
+            }
+            FILTERS.push(positions.RUSH_CHAIR);
+            $('#hideRushChairButton').show();
         });
 
         /* Hide Buttons */
@@ -248,6 +294,26 @@ $(document).ready(function() {
             }
         });
 
+        $('#hideRiskManagerButton').off('click');
+        $('#hideRiskManagerButton').click(function() {
+            if (FILTERS.indexOf(positions.RISK_MANAGER) >= 0) {
+                console.log('removing');
+                FILTERS.splice(FILTERS.indexOf(positions.RISK_MANAGER), 1);
+                console.log(FILTERS);
+                $('#hideRiskManagerButton').hide();
+            }
+        });
+
+        $('#hideRushChairButton').off('click');
+        $('#hideRushChairButton').click(function() {
+            if (FILTERS.indexOf(positions.RUSH_CHAIR) >= 0) {
+                console.log('removing');
+                FILTERS.splice(FILTERS.indexOf(positions.RUSH_CHAIR), 1);
+                console.log(FILTERS);
+                $('#hideRushChairButton').hide();
+            }
+        });
+
         var ledgerSearchInput = $('#ledgerSearchInput');
         ledgerSearchInput.keyup(function() {
             console.log("Searching");
@@ -293,31 +359,6 @@ function hideFilters() {
     $('#hidePhuButton').hide();
     $('#hideHiButton').hide();
     $('#hideCommitteeButton').hide();
-}
-
-function addFilter(position) {
-    switch (position) {
-        case positions.GP:
-            return "<button class='filterHideButton' id='hideGPButton'>GP</button>";
-        case positions.VGP:
-            return "<button class='filterHideButton' id='hideVGPButton'>VGP</button>";
-        case positions.P:
-            return "<button class='filterHideButton' id='hidePButton'>P</button>";
-        case positions.NME:
-            return "<button class='filterHideButton' id='hideNMEButton'>NME</button>";    
-        case positions.BG:
-            return "<button class='filterHideButton' id='hideBGButton'>BG</button>";
-        case positions.SG:
-            return "<button class='filterHideButton' id='hideSGButton'>SG</button>";
-        case positions.AG:
-            return "<button class='filterHideButton' id='hideAGButton'>AG</button>";
-        case positions.PHU:
-            return "<button class='filterHideButton' id='hidePhuButton'>Phu</button>";
-        case positions.HI:
-            return "<button class='filterHideButton' id='hideHiButton'>Hi</button>";
-        case positions.COMMITTEE:
-            return "<button class='filterHideButton' id='hideCommitteeButton'>Committee</button>";
-        default:
-            return '';
-    }
+    $('#hideRiskManagerButton').hide();
+    $('#hideRushChairButton').hide();
 }

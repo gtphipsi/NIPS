@@ -52,7 +52,7 @@ $(document).ready(function() {
                         createCommitteeCard(committeeId);
                     }
                 }
-                $("#loadingIcon").html('');
+                $("#loadingIcon").hide();
             });
         });
     });
@@ -65,12 +65,12 @@ function createCommitteeCard(committeeId) {
     "<div class='row committeeRow'>" +
     "<div class='committeeCard boxShadow'>";
     var icon = getCommitteeIcon(committeeId);
-    var name = `<h1 class="committeeName">${icon} ${committee.committee}</h1>`;
+    var name = `<h2 class="committeeName">${icon} ${committee.committee}</h2>`;
     var headUser = USERS_BY_ID[committee.head];
-    var head = `<h1><i class="fas fa-user-cog"></i> Head: ${headUser.firstName} ${headUser.lastName}</h1>`;
-    var members = '<h1><i class="fas fa-user-friends"></i> Members</h1>' + getMembersList(committee.members);
-    var meetings = `<h1><i class="far fa-calendar-check"></i> Meetings: ${committee.meetings}</h1>`;
-    var budget = `<h1><i class="fas fa-dollar-sign"></i> Budget: $${committee.budget}</h1>`;
+    var head = `<h2><i class="fas fa-user-cog"></i> Head: ${headUser.firstName} ${headUser.lastName}</h2>`;
+    var members = '<h2><i class="fas fa-user-friends"></i> Members</h2>' + getMembersList(committee.members);
+    var meetings = `<h2><i class="far fa-calendar-check"></i> Meetings: ${committee.meetings}</h2>`;
+    var budget = `<h2><i class="fas fa-dollar-sign"></i> Budget: $${committee.budget}</h2>`;
 
     newCard += name;
     newCard += head;

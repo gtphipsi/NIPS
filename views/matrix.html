@@ -20,7 +20,7 @@
 				<!-- GENERATE VIA UTILS FUNCTION -->
 			</div>
 		</nav>
-		<div class="container">
+		<div class="matrixContainer">
 			<div class="row">
 				<div class="col-md center redTitle boxShadow">
                     <h1>Matrix</h1>
@@ -42,6 +42,8 @@
                         <li><button class="filterButton" id="showPhuButton">Phu</button></li>
                         <li><button class="filterButton" id="showHiButton">Hi</button></li>
                         <li><button class="filterButton" id="showCommitteeButton">Committee</button></li>
+                        <li><button class="filterButton" id="showRiskManagerButton">Risk Manager</button></li>
+                        <li><button class="filterButton" id="showRushChairButton">Rush Chair</button></li>
                     </ul>
                 </div>
                 <div class="col-lg dataCol">
@@ -57,15 +59,18 @@
                         <button class="filterHideButton" id="hidePhuButton"><i class="fas fa-backspace"></i> Phu</button>
                         <button class="filterHideButton" id="hideHiButton"><i class="fas fa-backspace"></i> Hi</button>
                         <button class="filterHideButton" id="hideCommitteeButton"><i class="fas fa-backspace"></i> Committee</button>
+                        <button class="filterHideButton" id="hideRiskManagerButton"><i class="fas fa-backspace"></i> Risk Manager</button>
+                        <button class="filterHideButton" id="hideRushChairButton"><i class="fas fa-backspace"></i> Rush Chair</button>
                     </div>
                     <div class="matrixContainer">
-                        <table class="DataTable row-border" id="ledgerTable">
+                        <table class="DataTable row-border" id="matrixTable">
                             <thead>
                                 <tr>
-                                    <th>Assigner <i class="fas fa-sort"></i></th>
-                                    <th>Reason <i class="fas fa-sort"></i></th>
+                                    <th>Title <i class="fas fa-sort"></i></th>
                                     <th>Positive Points <i class="fas fa-sort"></i></th>
                                     <th>Negative Points <i class="fas fa-sort"></i></th>
+                                    <th>Assigner <i class="fas fa-sort"></i></th>
+                                    <th>Tag</th>                                   
                                 </tr>
                             </thead>
                             <tbody id="matrixTableBody">

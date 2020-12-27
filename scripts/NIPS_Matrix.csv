@@ -1,0 +1,88 @@
+NOT OFFICIAL GOVERNING DOCUMENT: THIS IS USED FOR POPULATING NIPS DATABASE,,,,,
+Title,Postive Points,Negative Points,Notes: ,Assigner,Tag
+Committee Member Attendance,2,"0, -5",Excuses accepted/rejected at Committee Head's disgression,Committee Head,Committee
+Committee Non-Member Attendance,1,0,Excluding GP/VGP,Committee Head,Committee
+Committee Head Attendance,4,-10,None,Committee Head/VGP,Committee
+AG (check/bring mail),1,-2,"Going to APR, -2 if you do not get the mail",Committee Head,AG
+Missing Deadlines (Committee Head),0,"-2,-10",None,VGP,VGP
+Missing Deadlines (Committee Member),0,"-2,-10",None,Committee Head,Committee
+Chapter Meeting Per Roll Call,2,-4/-2,"-4 Unexcued, -2 Excused (under Absence Outline, section 1, subsection a, subsubsection (v))",BG,BG
+"(After missing 3 roll calls, per roll call) ",0,-25,Invalid excuses go towards missed roll call count,BG,BG
+GP,4,0,In Addition to Roll Call (total = 8/chapter),BG,BG
+VGP,2,0,In Addition to Roll Call (total = 6/chapter),BG,BG
+BG,4,0,In Addition to Roll Call (total = 8/chapter),BG,BG
+Hod,2,0,In Addition to Roll Call (total = 6/chapter),BG,BG
+Hi,2,0,In Addition to Roll Call (total = 6/chapter),BG,BG
+Phu,2,0,In Addition to Roll Call (total = 6/chapter),BG,BG
+2nd Code of Conduct (Fraternity Duties Section 2) Violation,0,X,"X is # of positive points member gets from chapter, so total = 0 for that day",Phu,Phu
+3rd Code of Conduct (Fraternity Duties Section 2) Violation,0,-4,Removed from chapter and -4 for missing two roll calls,Phu,Phu
+GP,0,0,Covered in chapter & committees,VGP,VGP
+VGP,0,0,Covered in chapter & committees,VGP,VGP
+P,4,-10,Equivalent to Finance head points,VGP,VGP
+AG,0,-20,"Forms, accreditation(per deadline) ",VGP,VGP
+BG,0,-10,Per resolution not put into bylaws by the end of sem.,VGP,VGP
+SG,2,0,Posting on social media,SG,SG
+Hod,5,-20,Planning Initiation/Induction,Hod,Hod
+Hi,5,-20,Planning Brotherhood Retreat,Hi,Hi
+Phu,0,0,N/A,VGP,VGP
+NME classes,5,-20,Per NME (up to 7),NME,NME
+NME continuing Education,3,0,Planning,BG,BG
+Risk Manager,3,0,Per presentation,BG,BG
+Rush Chair,5,-50,5 extra points to the rush chair for every night of rush,Rush Chair,Rush Chair
+Going to Officer Training/Seminars,2,-10,2/hr to a max of 20 points,VGP,VGP
+Philo Hours (per hour),5,-20,Only after completing 10 communitty service hours,Philo Chair,Committee
+Paying Dues/Make Payment Plan/Discuss Financial Situation with Treasurer,N/A,-300,Deadline is by the 3rd chapter meeting of the semester,Treasurer/Finance Chair,P
+Rush (per day),5,-40,None,Rush Chair,Rush Chair
+Late to Rush (per day),0,-1,6-10 minutes late,Rush Chair,Rush Chair
+Late to Rush (per day),0,-2,11-20 minutes late,Rush Chair,Rush Chair
+Late to Rush (per day),0,-3,21-30min late,Rush Chair,Rush Chair
+Late to Rush (per day),0,-4,30-60min late,Rush Chair,Rush Chair
+Late to Rush (per day),0,X,">60 = no positive points, counts as missed rush night",Rush Chair,Rush Chair
+4.00 Semester GPA,20,0,"Not cumulative, awarded end of sem.",Scholarship Chair,Committee
+3.55-3.99 Semester GPA,10,0,"Not cumulative, awarded end of sem.",Scholarship Chair,Committee
+3.30-3.54 Semester GPA,5,0,"Not cumulative, awarded end of sem.",Scholarship Chair,Committee
+3.15-3.32 Semester GPA,0,0,"Not cumulative, awarded end of sem.",Scholarship Chair,Committee
+3.0-3.14 Semester GPA,0,0,"Not cumulative, awarded end of sem.",Scholarship Chair,Committee
+2.75-2.99 Semester GPA,0,0,"Not cumulative, awarded end of sem.",Scholarship Chair,Committee
+GPA Below 2.75 for active brothers,0,0,"Not cumulative, awarded end of sem. ",Scholarship Chair,Committee
+GPA Below 2.75 for inactive brothers,0,-3 per 0.01 GPA,"Not cumulative, awarded end of sem. ",Scholarship Chair,Committee
+Being a Big Bro,2,-4,Meeting Little Per week (During NME),NME,NME
+Bring a potential new member,8,0,"For the first time per person, 2 pts for each additional time",Membership Chair,Committee
+Transition Binders,2,-20,Old reps doing transition binders before deadline,GP,GP
+Non-reimbursed driver for official event,1,0,None,Event hoster/leader,None
+Workout points,1,0,"40+min, 2+= brothers, <= 3x per week",Athletic Chair,Committee
+Study session,1,0,1 point/hour attended,Scholarship Chair,Committee
+IFC General Assembly Meetings,2,-4,Negative if you don't go and didn't find a replacement,GP,GP
+Brotherhood Retreat,5,-20,None,Hi,Hi
+Initiation,5,-100,None,HOD,Hod
+Induction,5,-100,None,HOD,Hod
+Tailgate,2,-4,Need to be there for at least half of the time,Head of Tailgate,Committee
+Tailgate above minimum requirement,1,X,If at tailgate more than required time. 1point/hour,Head of Tailgate,Committee
+Planning Tailgate,1,X,None,Head of Tailgate,Committee
+Setup/Takedown,2,-15,This is in addition to attending tailgate,Head of Tailgate,Committee
+Setup/Takedown (Last Minute Subsitute),1,X,This is in addition to attending tailgate,Head of Tailgate,Committee
+Going to a football game,2,X,Per game,Head of Tailgate,Committee
+Mixer,8,-30,"Mandatory, must provide excuse to social chair in a timely manner to miss",Social Chair,Committee
+Date Night,3,-10,If you RSVP and don't go it's negative points,Social Chair,Committee
+Cleaning the house for an event,1,-10,For each committee,Scholarship Chair or future House Manager,Committee
+Semi-Formal / Formal,10,-40,Negative only if you RSVP but then you ditch,Social Chair,Committee
+Generic Social Event,2,0,None,Hod,Hod
+General Transition Day,4,-20,"Both reps get points (old and new), if not transitioning meet with GP/VGP",GP,GP
+Planning Formal/Semi-Formal,10,0,None,Social Chair,Committee
+Sober Monitor - Generic Social Event,5,-20,Negative if you abandon post or start drinking,Risk Manager/Social Chair,Risk Manager
+Sober Monitor - Semi/formal or retreat,10,-20,(10 per night) Negative if you abandon post or start drinking,Risk Manager/Social Chair,Risk Manager
+Sober Monitor - Large Social Event,5-10,-20,"Event and amount decided by Governing, negative if you abandon post",Risk Manager/Social Chair,Risk Manager
+Woodrow Wilson Participant,30,-50,"Negative if you sign up but don't go (without a good reason), assigned the following fall semester",AG,AG
+Grand Arch Council Participant,30,-50,"Negative if you sign up but don't go (without a good reason), assigned the following fall semester",AG,AG
+Founder's Day Attendance,4,0,None,AG,AG
+Attending New Member Education,2,0,None,NME,NME
+Google Drive Addition,1,0,One point per five additions,Scholarship Chair,Committee
+Google Drive Addition - Cheat Sheet,1,0,One point per cheat sheet,Scholarship Chair,Committee
+Failing to assign points on time,-4,0,Flat penalty no matter the points to be awarded,VGP,VGP
+Club President,20,0,None,Scholarship Chair,Committee
+Club Vice President,15,0,None,Scholarship Chair,Committee
+Club Treasurer,10,0,None,Scholarship Chair,Committee
+Other Executive Board Officer,5,0,None,Scholarship Chair,Committee
+Other Officer  (Please Sepcify),2-5,0,Depending on importance of officer,Scholarship Chair,Committee
+Member of Organization,2,0,This is not in addition to officer points above,Scholarship Chair,Committee
+No Campus Involvement,0,0,Will be applicable in the future when we start requiring this,Scholarship Chair,Committee
