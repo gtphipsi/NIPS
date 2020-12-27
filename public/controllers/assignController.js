@@ -166,7 +166,7 @@ $(document).ready(function() {
                     assigningBrother.append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
                 }
                 USERS_BY_ID = createHashmapById(USERS);
-                $("#loadingIcon").html('');
+                $("#loadingIcon").hide();
             });
         });
     });

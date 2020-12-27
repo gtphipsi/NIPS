@@ -520,8 +520,10 @@ th {
 
 /***** COMMITTEES PAGE *****/
 #committeesContainer {
-	margin-top: 10px;
+	margin: auto;
+	margin-top: 15px;
 	height: 75vh;
+	width: 75vw;
 	overflow-y: auto;
 	border: 1px solid rgba(196, 18, 48, 0.3);
 }
@@ -542,10 +544,9 @@ th {
 	background-color: rgb(238, 178, 17, 0.7);
 	transition: 0.3s;
 }
-.committeeCard h1 {
+.committeeCard h2 {
 	text-align: center;
 	color: black;
-	/* text-decoration: underline; */
 }
 .committeeCard i {
 	color: rgb(196, 18, 48);
@@ -566,24 +567,29 @@ th {
 
 
 /***** MATRIX PAGE *****/
+.matrixContainer {
+	width: 100%;
+}
 .matrixRow {
 	width: 100%;
 	margin: auto;
 }
 .filtersCol {
-	margin: auto;
-	margin-top: 15px;
-	max-width: 10% !important;
+	margin-top: 50px;
+	max-width: 125px;
+	padding-right: 0px;
 }
 .dataCol {
-	width: 70%;
+	width: 80%;
 	margin: auto;
 	margin-top: 10px;
+	margin-left: 0px !important;
+	padding-left: 0px;
 }
 .filtersCol ul {
-	/* background-color: rgb(0, 112, 60, 0.5); */
+	text-align: left;
 	border-radius: 10px;
-	font-size: 125%;
+	font-size: 85%;
 }
 .filtersCol li {
 	padding-left: 5px;
@@ -600,6 +606,39 @@ th {
 }
 .filterHideButton:hover {
 	background-color: rgb(196, 18, 48, 0.5);
+}
+#matrixTableBody tr:nth-child(odd) {
+	background-color: rgb(255, 255, 255, 0.2);
+}
+#matrixTableBody td {
+	border: none;
+	text-align: center;
+	padding: 10px;
+}
+#matrixTable th {
+	border: none;
+	text-align: center;
+	padding: 10px;
+	background-color: rgb(196, 18, 48, 0.8);
+}
+#matrixTable th:hover {
+	cursor: pointer;
+}
+#matrixTable th:hover i {
+	color: white;
+}
+#matrixTable_wrapper {
+	background-color: rgb(238, 178, 17, 0.7);
+	border: 1px solid transparent;
+	border-radius: 5px;
+	box-shadow:  0 16px 24px 2px rgba(29,17,51,.04),0 6px 32px 4px rgba(9,32,77,.12),0 8px 12px -5px rgba(29,17,51,.12);
+	max-height: 500px;
+	overflow-y: scroll;
+	width: 100%;
+	margin: 0px;
+}
+#matrixTable tr:hover {
+	background-color: wheat;
 }
 
 

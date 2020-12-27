@@ -71,7 +71,7 @@ $(document).ready(function() {
                 $('#ledgerTable').DataTable().row.add(newRow);
             }
             $('#ledgerTable').DataTable().draw();
-            $("#loadingIcon").html('');
+            $("#loadingIcon").hide();
         });
 
         var showAllButton = $('#showAllButton');

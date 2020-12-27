@@ -35,6 +35,7 @@ $(document).ready(function() {
     }).done(function() {
         for (var i = 0; i < USERS.length; i++) {
             $('#committeeMembers').append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
+            $('#editMembers').append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
             $('#committeeHead').append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
             $('#editCommitteeHead').append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
             $('#editCommitteeMembers').append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
@@ -50,7 +51,7 @@ $(document).ready(function() {
                 }
             }
             COMMITTEES_BY_ID = createHashmapById(COMMITTEES);
-            $("#loadingIcon").html('');
+            $("#loadingIcon").hide();
         });
     });
 

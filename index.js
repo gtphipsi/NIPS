@@ -441,6 +441,58 @@ app.get("/transactions", (req, res) => {
     });
 });
 
+
+app.get("/matrixItems", (req, res) => {
+    console.log('getting all matrix items');
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Matrix');
+            collection.find({}).toArray(function(err, result) {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                } else {
+                    res.send(result);
+                }
+            });
+            client.close();
+        }
+    });
+});
+
+app.post("/matrix", (req, res) => {
+    console.log("adding new matrix item");
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Matrix');
+            if (!req.body) {
+                console.log("No message body");
+                res.sendStatus(200);
+            } else {
+                collection.insertOne(req.body, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    } else {
+                        console.log('user added');
+                        console.log(req.body);
+                        res.sendStatus(200);
+                    }
+                });
+            }
+            client.close();
+        }
+    });
+});
+
 /**
  * Server Activation
  */
