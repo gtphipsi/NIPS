@@ -361,22 +361,22 @@ function createNavBar(page) {
 
     switch (page) {
         case 'home':
-            $('#homeNav').addClass('currentPage');
+            $('#homeNav').addClass('currentPage boxShadow');
             break;
         case 'assign':
-            $('#assignNav').addClass('currentPage');
+            $('#assignNav').addClass('currentPage boxShadow');
             break;
         case 'ledger':
-            $('#ledgerNav').addClass('currentPage');
+            $('#ledgerNav').addClass('currentPage boxShadow');
             break;
         case 'admin':
-            $('#adminNav').addClass('currentPage');
+            $('#adminNav').addClass('currentPage boxShadow');
             break;
         case 'committees':
-            $('#committeesNav').addClass('currentPage');
+            $('#committeesNav').addClass('currentPage boxShadow');
             break;
         case 'matrix':
-            $('#matrixNav').addClass('currentPage');
+            $('#matrixNav').addClass('currentPage boxShadow');
             break;
         default:
             break;

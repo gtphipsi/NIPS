@@ -90,6 +90,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.GP);
             $('#hideGPButton').show();
+            updateMatrix();
         });
 
         $('#showVGPButton').off('click');
@@ -99,6 +100,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.VGP);
             $('#hideVGPButton').show();
+            updateMatrix();
         });
 
         $('#showPButton').off('click');
@@ -108,6 +110,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.P);
             $('#hidePButton').show();
+            updateMatrix();
         });
 
         $('#showNMEButton').off('click');
@@ -117,6 +120,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.NME);
             $('#hideNMEButton').show();
+            updateMatrix();
         });
 
         $('#showBGButton').off('click');
@@ -126,6 +130,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.BG);
             $('#hideBGButton').show();
+            updateMatrix();
         });
 
         $('#showSGButton').off('click');
@@ -135,6 +140,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.SG);
             $('#hideSGButton').show();
+            updateMatrix();
         });
 
         $('#showAGButton').off('click');
@@ -144,6 +150,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.AG);
             $('#hideAGButton').show();
+            updateMatrix();
         });
 
         $('#showPhuButton').off('click');
@@ -153,6 +160,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.PHU);
             $('#hidePhuButton').show();
+            updateMatrix();
         });
 
         $('#showHiButton').off('click');
@@ -162,6 +170,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.HI);
             $('#hideHiButton').show();
+            updateMatrix();
         });
 
         $('#showCommitteeButton').off('click');
@@ -171,6 +180,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.COMMITTEE);
             $('#hideCommitteeButton').show();
+            updateMatrix();
         });
 
         $('#showRiskManagerButton').off('click');
@@ -180,6 +190,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.RISK_MANAGER);
             $('#hideRiskManagerButton').show();
+            updateMatrix();
         });
 
         $('#showRushChairButton').off('click');
@@ -189,6 +200,7 @@ $(document).ready(function() {
             }
             FILTERS.push(positions.RUSH_CHAIR);
             $('#hideRushChairButton').show();
+            updateMatrix();
         });
 
         /* Hide Buttons */
@@ -197,20 +209,18 @@ $(document).ready(function() {
         $('#hideGPButton').click(function() {
             console.log('CLICKED');
             if (FILTERS.indexOf(positions.GP) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.GP), 1);
+                $('#hideGPButton').hide();
+                updateMatrix();
             }
-            console.log(FILTERS);
-            $('#hideGPButton').hide();
         });
 
         $('#hideVGPButton').off('click');
         $('#hideVGPButton').click(function() {
             if (FILTERS.indexOf(positions.VGP) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.VGP), 1);
-                console.log(FILTERS);
                 $('#hideVGPButton').hide();
+                updateMatrix();
             }
         });
 
@@ -221,124 +231,88 @@ $(document).ready(function() {
                 FILTERS.splice(FILTERS.indexOf(positions.P), 1);
                 console.log(FILTERS);
                 $('#hidePButton').hide();
+                updateMatrix();
             }
         });
 
         $('#hideNMEButton').off('click');
         $('#hideNMEButton').click(function() {
             if (FILTERS.indexOf(positions.NME) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.NME), 1);
-                console.log(FILTERS);
                 $('#hideNMEButton').hide();
+                updateMatrix();
             }
         });
 
         $('#hideBGButton').off('click');
         $('#hideBGButton').click(function() {
             if (FILTERS.indexOf(positions.BG) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.BG), 1);
-                console.log(FILTERS);
                 $('#hideBGButton').hide();
+                updateMatrix();
             }
         });
 
         $('#hideSGButton').off('click');
         $('#hideSGButton').click(function() {
             if (FILTERS.indexOf(positions.SG) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.SG), 1);
-                console.log(FILTERS);
                 $('#hideSGButton').hide();
+                updateMatrix();
             }
         });
 
         $('#hideAGButton').off('click');
         $('#hideAGButton').click(function() {
             if (FILTERS.indexOf(positions.AG) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.AG), 1);
-                console.log(FILTERS);
                 $('#hideAGButton').hide();
+                updateMatrix();
             }
         });
 
         $('#hidePhuButton').off('click');
         $('#hidePhuButton').click(function() {
             if (FILTERS.indexOf(positions.PHU) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.PHU), 1);
-                console.log(FILTERS);
                 $('#hidePhuButton').hide();
+                updateMatrix();
             }
         });
 
         $('#hideHiButton').off('click');
         $('#hideHiButton').click(function() {
             if (FILTERS.indexOf(positions.HI) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.HI), 1);
-                console.log(FILTERS);
                 $('#hideHiButton').hide();
+                updateMatrix();
             }
         });
 
         $('#hideCommitteeButton').off('click');
         $('#hideCommitteeButton').click(function() {
             if (FILTERS.indexOf(positions.COMMITTEE) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.COMMITTEE), 1);
-                console.log(FILTERS);
                 $('#hideCommitteeButton').hide();
+                updateMatrix();
             }
         });
 
         $('#hideRiskManagerButton').off('click');
         $('#hideRiskManagerButton').click(function() {
             if (FILTERS.indexOf(positions.RISK_MANAGER) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.RISK_MANAGER), 1);
-                console.log(FILTERS);
                 $('#hideRiskManagerButton').hide();
+                updateMatrix();
             }
         });
 
         $('#hideRushChairButton').off('click');
         $('#hideRushChairButton').click(function() {
             if (FILTERS.indexOf(positions.RUSH_CHAIR) >= 0) {
-                console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.RUSH_CHAIR), 1);
-                console.log(FILTERS);
                 $('#hideRushChairButton').hide();
-            }
-        });
-
-        var ledgerSearchInput = $('#ledgerSearchInput');
-        ledgerSearchInput.keyup(function() {
-            console.log("Searching");
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("ledgerSearchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("ledgerTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 1; i < tr.length; i++) {
-                var contains = false
-                var cols = tr[i].getElementsByTagName("td").length;
-                for(j = 0; j < cols; j++){
-                    td = tr[i].getElementsByTagName("td")[j];
-                    if (td && !contains) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            contains = true;
-                        }
-                    }
-                }
-                if (contains) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
+                updateMatrix();
             }
         });
     });
@@ -361,4 +335,18 @@ function hideFilters() {
     $('#hideCommitteeButton').hide();
     $('#hideRiskManagerButton').hide();
     $('#hideRushChairButton').hide();
+}
+
+function updateMatrix() {
+    $('#matrixTable').DataTable().clear().draw();
+    for (var i = 0; i < MATRIX.length; i++) {
+        var currentMatrix = MATRIX[i];
+        var filterTag = currentMatrix.tag;
+        var newRow = [currentMatrix.title, currentMatrix.positivePoints, currentMatrix.negativePoints, currentMatrix.assigner, currentMatrix.tag];
+        if (FILTERS.length == 0 || FILTERS.indexOf(filterTag) >= 0) {
+            $('#matrixTable').DataTable().row.add(newRow);
+        }
+    }
+    $('#matrixTable').DataTable().draw();
+    $('#matrixTable').DataTable().columns.adjust().draw();
 }
