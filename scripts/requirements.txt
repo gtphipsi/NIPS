@@ -1,4 +1,2 @@
-use python3
-pip3 install pymongo
-pip3 install pymongo[srv]
-- go to your python3 folder, double click "Install Certificates.command"
+pymongo
+pymongo[srv]
