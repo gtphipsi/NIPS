@@ -70,6 +70,29 @@ $(document).ready(function() {
             });
         });
     });
+
+    $('.requestContainer').off('click');
+    $('.requestContainer').click(function() {
+        alert('clicked');
+    });
+
+    $("#requestDialog").dialog('close'); 
+    $("requestDialog").dialog({
+        autoOpen: false,
+        height: 400,
+        width: 350,
+        modal: true,
+        buttons: {
+          "Create an account": addUser,
+          Cancel: function() {
+            dialog.dialog( "close" );
+          }
+        },
+        close: function() {
+          form[ 0 ].reset();
+          allFields.removeClass( "ui-state-error" );
+        }
+    });
 });
 
 function updateTimeframe() {

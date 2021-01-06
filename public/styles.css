@@ -76,14 +76,17 @@ ul {
     list-style-type: none;
     padding: 0px;
 }
+.topNavLink:hover {
+	background-color: lavender;
+}
 a {
-	border-bottom: 1px solid transparent;
+	border-bottom: 2px solid transparent;
 	padding-left: 3px;
 	padding-right: 3px;
 }
 a:hover {
 	text-decoration: none;
-	border-bottom: 1px solid rgb(238, 178, 17);
+	border-bottom: 2px solid rgb(238, 178, 17);
 	transition: 0.5s;
 }
 button {
@@ -149,7 +152,7 @@ button:hover {
 }
 .currentPage:hover {
 	color: snow;
-	border-bottom: 1px solid transparent;
+	border-bottom: 2px solid transparent;
 }
 
 /***** LOGIN PAGE *****/
@@ -246,6 +249,15 @@ th {
 }
 .graphsContainer {
 	text-align: center;
+}
+.requestContainer {
+	text-align: center;
+}
+.requestContainer:hover {
+	background-color: lavender;
+	border: 1px solid black;
+	cursor: pointer;
+	text-decoration: underline solid rgb(0, 112, 60);
 }
 .fraternityContainer {
 	text-align: center;
@@ -643,6 +655,12 @@ th {
 }
 #matrixTable tr:hover {
 	background-color: wheat;
+}
+#matrixSearchInput {
+	background-position: 10px 10px;
+	background-repeat: no-repeat;
+	border: 1px solid  rgb(196, 18, 48);
+	margin-bottom: 10px;
 }
 
 

@@ -73,6 +73,11 @@
 				</div>
 				<div class="col-lg">
 					<div class="row homeRow">
+						<div class="homeContainer requestContainer">
+							<h1><i class="far fa-comment-dots pkpgreen"></i> Request Points</h1>
+						</div>
+					</div>
+					<div class="row homeRow">
 						<div class="homeContainer fraternityContainer">
 							<h1><i class="fas fa-calculator pkpgreen"></i> Fraternity Statistics</h1>
 							<table class="defaultRedTable" id="statsTable">
@@ -99,13 +104,19 @@
 							</table>
 						</div>
 					</div>
-					<div class="row homeRow">
-						<div hidden class="homeContainer graphsContainer">
-							<h1><i class="fas fa-chart-line pkpgreen"></i> Graphs</h1>
-							<p><i class="fas fa-tools"></i> < coming soon (ish) /> <i class="fas fa-tools"></i></p>
-							<img src="/images/pkp_gb.jpg" style="width: 100%;border-radius: 5px;">
-						</div>
-					</div>
+				</div>
+				<div id="requestDialog" title="Create new user" class="hidden">				   
+					<form>
+						<fieldset>
+							<label for="name">Reason</label>
+							<input type="text" name="name" id="requestReason" value="want NIPS" class="text ui-widget-content ui-corner-all">
+							<label for="email">Assigner</label>
+							<input type="text" name="email" id="requestAssigner" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
+							
+							<!-- Allow form submission with keyboard without duplicating the dialog button -->
+							<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+						</fieldset>
+					</form>
 				</div>
 			</div>
 		</div>
