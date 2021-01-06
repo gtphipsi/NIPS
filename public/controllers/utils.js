@@ -344,12 +344,12 @@ function getLow(leaderboard) {
  * ensure that there is a navbar div with id="navbar" in correct place in html file
  */
 function createNavBar(page) {
-    var home = '<a id=homeNav href="/home"><i class="fas fa-home"></i> Home</a>';
-    var assign = '<a id=assignNav href="/assign"><i class="fas fa-plus"></i> Assign</a>';
-    var ledger = '<a id=ledgerNav href="/ledger"><i class="fas fa-book"></i> Ledger</a>';
-    var admin = '<a id=adminNav href="/admin"><i class="fas fa-cog"></i> Admin</a>';
-    var committees = '<a id=committeesNav href = "/viewcommittees"><i class="fas fa-users"></i> Committees';
-    var matrix = '<a id=matrixNav href="/matrix"><i class="fas fa-th-list"></i> Matrix';
+    var home = '<a class=topNavLink id=homeNav href="/home"><i class="fas fa-home"></i> Home</a>';
+    var assign = '<a class=topNavLink id=assignNav href="/assign"><i class="fas fa-plus"></i> Assign</a>';
+    var ledger = '<a class=topNavLink id=ledgerNav href="/ledger"><i class="fas fa-book"></i> Ledger</a>';
+    var admin = '<a class=topNavLink id=adminNav href="/admin"><i class="fas fa-cog"></i> Admin</a>';
+    var committees = '<a class=topNavLink id=committeesNav href = "/viewcommittees"><i class="fas fa-users"></i> Committees';
+    var matrix = '<a class=topNavLink id=matrixNav href="/matrix"><i class="fas fa-th-list"></i> Matrix';
     var signout = '<button id=signoutButton><i class="fas fa-sign-out-alt"></i> Sign Out</button>';
     $('#navbar').append(home);
     $('#navbar').append(assign);
@@ -361,22 +361,28 @@ function createNavBar(page) {
 
     switch (page) {
         case 'home':
-            $('#homeNav').addClass('currentPage boxShadow');
+            $('#homeNav').addClass('currentPage');
+            $('#homeNav').removeClass('topNavLink');
             break;
         case 'assign':
-            $('#assignNav').addClass('currentPage boxShadow');
+            $('#assignNav').addClass('currentPage');
+            $('#assignNav').removeClass('topNavLink');
             break;
         case 'ledger':
-            $('#ledgerNav').addClass('currentPage boxShadow');
+            $('#ledgerNav').addClass('currentPage');
+            $('#ledgerNav').removeClass('topNavLink');
             break;
         case 'admin':
-            $('#adminNav').addClass('currentPage boxShadow');
+            $('#adminNav').addClass('currentPage');
+            $('#adminNav').removeClass('topNavLink');
             break;
         case 'committees':
-            $('#committeesNav').addClass('currentPage boxShadow');
+            $('#committeesNav').addClass('currentPage');
+            $('#committeesNav').removeClass('topNavLink');
             break;
         case 'matrix':
-            $('#matrixNav').addClass('currentPage boxShadow');
+            $('#matrixNav').addClass('currentPage');
+            $('#matrixNav').removeClass('topNavLink');
             break;
         default:
             break;

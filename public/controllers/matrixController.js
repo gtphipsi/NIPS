@@ -316,6 +316,33 @@ $(document).ready(function() {
             }
         });
     });
+    var matrixSearchInput = $('#matrixSearchInput');
+        matrixSearchInput.keyup(function() {
+            console.log("Searching");
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("matrixSearchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("matrixTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 1; i < tr.length; i++) {
+                var contains = false
+                var cols = tr[i].getElementsByTagName("td").length;
+                for(j = 0; j < cols; j++){
+                    td = tr[i].getElementsByTagName("td")[j];
+                    if (td && !contains) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            contains = true;
+                        }
+                    }
+                }
+                if (contains) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }       
+            }
+        });
 });
 
 function changeDateString(rawDate) {
