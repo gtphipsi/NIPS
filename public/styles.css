@@ -78,8 +78,8 @@ ul {
 }
 a {
 	border-bottom: 1px solid transparent;
-	padding-left: 2px;
-	padding-right: 2px;
+	padding-left: 3px;
+	padding-right: 3px;
 }
 a:hover {
 	text-decoration: none;
@@ -145,7 +145,7 @@ button:hover {
 .currentPage {
 	color: snow;
 	border-radius: 3px;
-	background-color: grey;
+	background-color: rgb(238, 178, 17);
 }
 .currentPage:hover {
 	color: snow;
@@ -388,7 +388,11 @@ th {
 /***** ADMIN PAGE *****/
 .adminTitle {
 	margin: auto;
-	color: rgb(238, 178, 17);
+	background: rgb(238, 178, 17);
+	color: snow;
+	border-radius: 3px;
+	padding-left: 4px;
+	padding-right: 4px;
 }
 .admin h2 {
 	margin-bottom: 10px;
@@ -487,7 +491,7 @@ th {
 	border: none;
 	text-align: center;
 	padding: 10px;
-	background-color: rgb(196, 18, 48, 0.8);
+	background-color: rgb(196, 18, 48, 0.85);
 }
 #ledgerTable th:hover {
 	cursor: pointer;
@@ -619,7 +623,7 @@ th {
 	border: none;
 	text-align: center;
 	padding: 10px;
-	background-color: rgb(196, 18, 48, 0.8);
+	background: rgba(196, 18, 48, 0.85);
 }
 #matrixTable th:hover {
 	cursor: pointer;

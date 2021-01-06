@@ -65,7 +65,8 @@ $(document).ready(function() {
                     var newRow = [dateEarned, transaction.reason, transaction.amount];
                     $('#userLogTable').DataTable().row.add(newRow);
                 }
-                $('#userLogTable').DataTable().draw();                            
+                $('#userLogTable').DataTable().draw();
+                $("#loadingIcon").hide();
             });
         });
     });
