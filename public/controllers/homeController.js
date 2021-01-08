@@ -8,7 +8,7 @@ var TIMEFRAME;
 $(document).ready(function() {
     console.log("Loading home page...");
 
-    createNavBar('home');
+    
 
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
@@ -42,6 +42,8 @@ $(document).ready(function() {
         alert("failed retrieving user data--returning to login page");
         window.location = '/';
     }).done(function() {
+        createNavBar('home',USER);
+        checkAccess('home',USER);
         $('#welcomeMessage').text(`Welcome, Brother ${USER.lastName} `);
         $('#welcomeMessage').append(getRandomUserIcon());
         $.get("/users", function(data) {
