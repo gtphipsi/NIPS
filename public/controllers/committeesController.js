@@ -7,20 +7,6 @@ var COMMITTEES_BY_ID;
 $(document).ready(function() {
     console.log("Loading committees page...");
 
-    var userURL = '/users/' + userId;
-    var USER;
-    $.get(userURL, function(data) {
-        USER = data;
-        console.log("retrieved one user data");
-        console.log(data);
-    }).fail(function() {
-        alert("failed retrieving user data--returning to login page");
-        window.location = '/';
-    }).done(function() {
-        createNavBar('committees',USER);
-        checkAccess('committees',USER);
-    });
-    
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
         sessionStorage.setItem('userId', '');
@@ -37,6 +23,20 @@ $(document).ready(function() {
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
+
+    var userURL = '/users/' + userId;
+    var USER;
+    $.get(userURL, function(data) {
+        USER = data;
+        console.log("retrieved one user data");
+        console.log(data);
+    }).fail(function() {
+        alert("failed retrieving user data--returning to login page");
+        window.location = '/';
+    }).done(function() {
+        createNavBar('committees',USER);
+        checkAccess('committees',USER);
+    });
 
     var userURL = '/users/' + userId;
     $.get(userURL, function(data) {
