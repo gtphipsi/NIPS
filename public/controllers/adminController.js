@@ -65,6 +65,7 @@ $(document).ready(function() {
     addOfficerPositionButton.off('click');
     addOfficerPositionButton.click(function() {
         var position = officerPositions.val();
+        console.log(position);
         var index = USER_OFFICER_POSITIONS.indexOf(position);
         if (index < 0) {
             USER_OFFICER_POSITIONS.push(position);
@@ -82,10 +83,18 @@ $(document).ready(function() {
     editOfficerPositionButton.off('click');
     editOfficerPositionButton.click(function() {
         var position = editOfficerPositions.val();
+        var positionLabel = position;
+        if (position == 'rushChair') {
+            positionLabel = 'Rush Chair';
+        } else if (position == 'riskManager') {
+            positionLabel = 'Risk Manager';
+        }
+        console.log(position);
+        console.log(positionLabel);
         var index = EDIT_USER_OFFICER_POSITIONS.indexOf(position);
         if (index < 0) {
             EDIT_USER_OFFICER_POSITIONS.push(position);
-            editOfficerPositionsAdded.append(`<li id=edit${position}><i class="fas fa-caret-right"></i> ${editOfficerPositions.val()} <button class='deleteButton' ` +
+            editOfficerPositionsAdded.append(`<li id=edit${position}><i class="fas fa-caret-right"></i> ${positionLabel} <button class='deleteButton' ` +
             `type='button' onclick='deleteEditOfficerPosition(edit${position})'><i class='far fa-window-close fontgrey'></i></button></li>`);
         } else {
             console.log("Position already added");
@@ -104,10 +113,6 @@ $(document).ready(function() {
             badgeNumber: badgeNumber,
             admin: JSON.parse(isAdmin),
             officerPositions: officerPositionsToBoolean(USER_OFFICER_POSITIONS)
-        }
-        var postData = {
-            currentUser: USER,
-            newUser: newUser
         }
         $.post("/users", newUser).done(function() {
             console.log("User successfully added");
@@ -325,7 +330,9 @@ function officerPositionsToBoolean(positions) {
         AG: false,
         SG: false,
         BG: false,
-        Phu: false
+        Phu: false,
+        riskManager: false,
+        rushChair: false
     }
     for (var i = 0; i < positions.length; i++) {
         var position = positions[i];
@@ -367,7 +374,15 @@ function updateEditUser() {
         var position = keys[k];
         if (user.officerPositions[position]) {
             EDIT_USER_OFFICER_POSITIONS.push(position);
-            $('#editOfficerPositionsAdded').append(`<li id=edit${position}><i class="fas fa-caret-right"></i> ${position} <button class='deleteButton' ` +
+            var positionLabel = position;
+            if (position == 'rushChair') {
+                positionLabel = 'Rush Chair';
+            } else if (position == 'riskManager') {
+                positionLabel = 'Risk Manager';
+            }
+            console.log(position);
+            console.log(positionLabel);
+            $('#editOfficerPositionsAdded').append(`<li id=edit${position}><i class="fas fa-caret-right"></i> ${positionLabel} <button class='deleteButton' ` +
             `type='button' onclick='deleteEditOfficerPosition(edit${position})'><i class='far fa-window-close fontgrey'></i></button></li>`);
         }
     }

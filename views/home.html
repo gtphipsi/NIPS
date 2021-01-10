@@ -2,19 +2,25 @@
 <html>
     <head>
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Bootstrap CSS -->
+		<!-- Bootstrap -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		<!-- jQuery Scripts -->
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-		<title>Phi Kappa Psi</title>
+		<!-- DataTables Scripts -->
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+		<link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
+		<script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
+		<!-- Custom Styles and Controllers -->
 		<link rel="stylesheet" href="/styles.css">
 		<script type="text/javascript" src="/controllers/utils.js"></script>
         <script type="text/javascript" src="/controllers/homeController.js"></script>
         <!-- Font Awesome Icons -->
-        <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
+		<script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
+		<!-- Metadata -->
+		<title>Phi Kappa Psi</title>
 	</head>
 	<body class="snowBackground">
         <nav class="navbar navbar-default navbar-fixed-top">
@@ -83,10 +89,12 @@
 							<table class="DataTable defaultRedTable" id="userRequestsTable">
 								<thead>
 									<tr>
+										<th>requesterId</th>
 										<th>Date</th>
 										<th>Reason</th>
 										<th>Requester</th>
-										<th>Assigner</th>
+										<th></th>
+										<th>ObjectId</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -142,8 +150,8 @@
 					<option>AG</option>
 					<option>Phu</option>
 					<option>Hi</option>
-					<option>Risk Manager</option>
-					<option>Rush Chair</option>
+					<option value="riskManager">Risk Manager</option>
+					<option value="rushChair">Rush Chair</option>
 					<option>Finance Head</option>
 					<option>APR Head</option>
 					<option>Technology Head</option>

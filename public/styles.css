@@ -57,6 +57,9 @@ footer button a {
 .center {
     text-align: center;
 }
+.center-margin {
+	margin: auto;
+}
 .redTitle {
 	background: rgba(196, 18, 48, 0.85);
 	color: white;
