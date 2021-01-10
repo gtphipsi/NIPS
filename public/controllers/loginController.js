@@ -19,6 +19,8 @@ $(document).ready(function() {
                 console.log(data);
                 sessionStorage.setItem('userId', data._id);
                 window.location = "/home";
+            }).fail(function() {
+                alert("Incorrect Password or Username");
             });
         }
     });
