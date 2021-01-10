@@ -160,7 +160,13 @@ $(document).ready(function() {
             COMMITTEES_BY_ID = createHashmapById(COMMITTEES);
             var positions = getPositions(USER, COMMITTEES);
             for (var i = 0; i < positions.length; i++) {
-                assigningAs.append(`<option value=${positions[i]}>${positions[i]}</option>`);
+                var positionLabel = positions[i];
+                if (positions[i] == 'rushChair') {
+                    positionLabel = 'Rush Chair';
+                } else if (positions[i] == 'riskManager') {
+                    positionLabel = 'Risk Manager';
+                }
+                assigningAs.append(`<option value=${positions[i]}>${positionLabel}</option>`);
             }
             $.get("/users", function(data) {
                 USERS = data;
@@ -301,11 +307,17 @@ function updateLogTable() {
             amt = CUSTOM_AMOUNTS[ALL_USER_IDS[i]];
         }
         var amountColumn = amt;
+        var assignerLabel = ASSIGNER;
+        if (ASSIGNER == 'rushChair') {
+            assignerLabel = 'Rush Chair';
+        } else if (ASSIGNER == 'riskManager') {
+            assignerLabel = 'Risk Manager';
+        }
         var newRow = [
             name,
             amountColumn,
             REASON,
-            ASSIGNER,
+            assignerLabel,
             DATE_ASSIGNED.toString().substring(0, 10),
             ALL_USER_IDS[i]
         ];
