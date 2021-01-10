@@ -224,13 +224,18 @@ $(document).ready(function() {
             var transactions = getTransactions();
             console.log(transactions);
             if (validForm && transactions.length > 0) {
-                var postData = {'USER':USERS_BY_ID[userId], 'transactions':transactions}
-                $.post("/transactions", postData).done(function() {
-                    alert('Transactions Submitted Successfully');
-                    location.reload();
-                }).fail( function() {
-                    alert('Access Denied');
-                });;
+                
+                $.get("/comitteess", function(data){
+                    COMMITTEES = data;
+                }).done(function() {
+                    var postData = {'user':USER, 'transactions':transactions, 'committees':COMMITTEES}
+                    $.post("/transactions", postData).done(function() {
+                        alert('Transactions Submitted Successfully');
+                        location.reload();
+                    }).fail( function() {
+                        alert('Access Denied');
+                    });
+                });
             } else {
                 alert('Unable to submit points :(');
             }

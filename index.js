@@ -91,6 +91,7 @@ app.get("/users", (req, res) => {
     });
 });
 
+//Accessible by admin only
 app.post("/users", (req, res) => {
     console.log("adding new user");
     console.log(req.body.USER.admin);
@@ -164,6 +165,7 @@ app.get("/users/:userId", (req, res) => {
     });
 });
 
+//Accessible by admin only
 app.put("/users/:userId", (req, res) => {
     console.log('editing user by ID');
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
@@ -323,6 +325,7 @@ app.get("/committees/:committeeId", (req, res) => {
     });
 });
 
+//Accessible by admin only
 app.post("/committees", (req, res) => {
     console.log("adding new committee");
     if (!req.body.USER.admin  == 'false') {
@@ -394,13 +397,12 @@ app.put("/committees/:committeeId", (req, res) => {
     });
 });
 
+//Accessible by officers and committee heads only only
 app.post("/transactions", (req, res) => {
     console.log("adding new transactions");
     var assignAccess = false;
-    for (var position in req.body.USER.officerPositions) {
-        assignAccess = USER.officerPositions[position] == 'true' ? true: assignAccess == 'true';
-    }
-    if (!assignAccess) {
+    
+    if (getPositions(req.body.user, req.body.committees).length > 0) {
         res.sendStatus(403);
     }
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
