@@ -4,6 +4,7 @@ var USERS_BY_ID;
 var COMMITTEES;
 var COMMITTEES_BY_ID;
 var ALL_USER_IDS = [];
+var ALL_MEMBERS = [];
 var TRANSACTIONS = [];
 var DATE_ASSIGNED;
 var DATE_EARNED = new Date();
@@ -97,6 +98,9 @@ $(document).ready(function() {
         if (index >= 0) {
             groups.splice(index, 1);
             var members = COMMITTEES_BY_ID[groupId].members;
+            if (COMMITTEES_BY_ID[groupId].committee == "All Brothers") {
+                members = ALL_MEMBERS;
+            }
             for (var i = 0; i < members.length; i++) {
                 if (!isInOtherGroup(groups, members[i])) {
                     removeFromAllUserIds(members[i]);
@@ -167,6 +171,7 @@ $(document).ready(function() {
                 console.log("retrieved all user data");
             }).done(function() {
                 for (var i = 0; i < USERS.length; i++) {
+                    ALL_MEMBERS.push(USERS[i]._id);
                     assigningBrother.append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
                 }
                 USERS_BY_ID = createHashmapById(USERS);
@@ -184,6 +189,9 @@ $(document).ready(function() {
                 console.log(groups);
             }
             var members = COMMITTEES_BY_ID[currentGroup].members;
+            if (COMMITTEES_BY_ID[currentGroup].committee == "All Brothers") {
+                members = ALL_MEMBERS;
+            }
             console.log("MEMBERS");
             console.log(members);
             for (var i = 0; i < members.length; i++) {
@@ -254,7 +262,7 @@ function updateGroup() {
  * TODO: don't allow future dates
  */
 function updateDate() {
-    DATE_EARNED = $('#assignDate').val() + 'T00:00:00';
+    DATE_EARNED = new Date($('#assignDate').val() + 'T00:00:00');
 }
 
 function updateGroupTable() {
@@ -408,6 +416,7 @@ function validateTransaction(transaction, rowNumber) {
  * not be null/undefined
  */
 function validateForm() {
+    console.log('Validating Form');
     var alertMessage = '';
     var errorCaught = false;
     if (!REASON || REASON == '') {
@@ -426,5 +435,8 @@ function validateForm() {
 }
 
 function isValidDate(d) {
+    console.log('validating');
+    console.log(d);
+    console.log(d instanceof Date);
     return d instanceof Date && !isNaN(d);
   }

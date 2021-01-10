@@ -254,10 +254,23 @@ th {
 	text-align: center;
 }
 .requestContainer:hover {
-	background-color: lavender;
-	border: 1px solid black;
-	cursor: pointer;
-	text-decoration: underline solid rgb(0, 112, 60);
+	
+}
+.requestContainer:hover h1, .requestContainer:hover i {
+}
+#requestDate {
+	border: 1px solid gray;
+	margin-left: 2px;
+}
+#requestButton {
+	margin-bottom: 5px;
+	margin-left: 5%;
+	float: left;
+}
+#resolveButton {
+	margin-bottom: 5px;
+	margin-right: 5%;
+	float: right;
 }
 .fraternityContainer {
 	text-align: center;
@@ -287,6 +300,19 @@ th {
 	padding: 8px;
 }
 #userLogTable tr:hover {
+	background-color: wheat;
+}
+#userRequestsTable_wrapper {
+	max-height: 200px;
+	overflow-y: scroll;
+}
+#userRequestsTable td, #userRequestsTable th {
+	border: none;
+	border-top: 1px solid black;
+	text-align: left;
+	padding: 8px;
+}
+#userRequestsTable tr:hover {
 	background-color: wheat;
 }
 #statsTable {
@@ -405,6 +431,8 @@ th {
 	border-radius: 3px;
 	padding-left: 4px;
 	padding-right: 4px;
+	width: 80%;
+	text-align: center;
 }
 .admin h2 {
 	margin-bottom: 10px;

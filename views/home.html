@@ -7,6 +7,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 		<title>Phi Kappa Psi</title>
 		<link rel="stylesheet" href="/styles.css">
 		<script type="text/javascript" src="/controllers/utils.js"></script>
@@ -74,7 +76,23 @@
 				<div class="col-lg">
 					<div class="row homeRow">
 						<div class="homeContainer requestContainer">
-							<h1><i class="far fa-comment-dots pkpgreen"></i> Request Points</h1>
+							<h1><i class="far fa-comment-dots pkpgreen"></i> Requests</h1>
+							<button id=requestButton><i class="far fa-paper-plane"></i> Send Request</button>
+							<button id=deleteButton><i class="far fa-trash-alt"></i> Delete</button>
+							<button id=resolveButton><i class="far fa-check-square"></i> Resolve</button>
+							<table class="DataTable defaultRedTable" id="userRequestsTable">
+								<thead>
+									<tr>
+										<th>Date</th>
+										<th>Reason</th>
+										<th>Requester</th>
+										<th>Assigner</th>
+									</tr>
+								</thead>
+								<tbody>
+		
+								</tbody>
+							</table>
 						</div>
 					</div>
 					<div class="row homeRow">
@@ -105,20 +123,40 @@
 						</div>
 					</div>
 				</div>
-				<!-- <div id="requestDialog" title="Create new user" class="hidden">				   
-					<form>
-						<fieldset>
-							<label for="name">Reason</label>
-							<input type="text" name="name" id="requestReason" value="want NIPS" class="text ui-widget-content ui-corner-all">
-							<label for="email">Assigner</label>
-							<input type="text" name="email" id="requestAssigner" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
-							
-							<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-						</fieldset>
-					</form>
-				</div> -->
 			</div>
 		</div>
 		<footer></footer>
+		<div id="requestDialog" title="Request NIPS">				   
+			<form>
+				<label for="name">Reason</label>
+				<input type="text" name="name" id="requestReason" placeholder="want NIPS" class="text ui-widget-content ui-corner-all">
+				<label for="assigner">Assigner</label>
+				<select id="requestAssigner" placeholder="Assigner">
+					<option>Assigner</option>
+					<option>GP</option>
+					<option>VGP</option>
+					<option>P</option>
+					<option>NME</option>
+					<option>BG</option>
+					<option>SG</option>
+					<option>AG</option>
+					<option>Phu</option>
+					<option>Hi</option>
+					<option>Risk Manager</option>
+					<option>Rush Chair</option>
+					<option>Finance Head</option>
+					<option>APR Head</option>
+					<option>Technology Head</option>
+					<option>Social Head</option>
+					<option>Membership Head</option>
+					<option>Philanthropy Head</option>
+					<option>Scholarship Head</option>
+					<option>H&W Head</option>				
+				</select><br>
+				<label>Date</label>
+				<input type="date" name="date" placeholder="Date (mm/dd/yyyy)" id="requestDate">
+				<br><input id="requestSubmit" type="submit">
+			</form>
+		</div>
 	</body>
 </html>

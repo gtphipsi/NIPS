@@ -97,7 +97,6 @@ function getPositions(user, committees) {
         }
     }
     for (c in committees) {
-        console.log(committees[c].head);
         if (committees[c].head == user._id) {
             positions.push(committees[c].committee + ' Head');
         }
@@ -273,7 +272,6 @@ function isThisWeek(date) {
     } else {
         weekDay = weekDay - 1;
     }
-    console.log(weekDay);
     return (now - earned) / 86400000 <= weekDay;
 }
 function isThisMonth(date) {
@@ -413,4 +411,42 @@ function addFooter() {
     var label = "<button><a href='https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION' target='_blank'><h3>";
     label += "<i class='fas fa-exclamation-triangle'></i> Report an Issue</h3></a></button>";
     $('footer').append(label);
+}
+
+
+/**
+ * helper function to use user's officer positions to find all outstanding requests
+ * made with current user as the assigner
+ * @param {*} user current user
+ * @param {*} requests list of all requests
+ * @return list of request objects
+ */
+function getRequestsForUser(user, requests, committees) {
+    console.log('finding requests for user');
+    if (!user || !requests || requests.length == 0) {
+        return [];
+    }
+    outstandingRequests = [];
+    var userPositions = getPositions(user, committees);
+    console.log(userPositions);
+    for (var i = 0; i < requests.length; i++) {
+        if (userPositions.indexOf(requests[i].assigner) >= 0) {
+            outstandingRequests.push(requests[i]);
+        } else {
+            console.log(requests[i].assigner);
+        }
+    }
+    return outstandingRequests;
+}
+
+
+/**
+ * helper function to find all outstanding requests made with current user
+ * as requester
+ * @param {*} userId ObjectId of current user
+ * @param {*} requests list of requests
+ * @return list of request objects
+ */
+function getRequestsFromUser(userId, requests) {
+
 }

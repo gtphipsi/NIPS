@@ -510,6 +510,58 @@ app.post("/matrix", (req, res) => {
     });
 });
 
+app.get("/requests", (req, res) => {
+    console.log('getting all requests');
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Requests');
+            collection.find({}).toArray(function(err, result) {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                } else {
+                    res.send(result);
+                }
+            });
+            client.close();
+        }
+    });
+});
+
+app.post("/requests", (req, res) => {
+    console.log("adding new request");
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Requests');
+            if (!req.body) {
+                console.log("No message body");
+                res.sendStatus(200);
+            } else {
+                req.body.date = new Date(req.body.date);
+                collection.insertOne(req.body, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    } else {
+                        console.log('request added');
+                        console.log(req.body);
+                        res.sendStatus(200);
+                    }
+                });
+            }
+            client.close();
+        }
+    });
+});
+
 /**
  * Server Activation
  */

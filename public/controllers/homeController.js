@@ -1,7 +1,10 @@
 var USER;
 var USERS;
+var COMMITTEES;
 var USERS_BY_ID;
 var TRANSACTIONS;
+var REQUESTS;
+var OUTSTANDING_REQUESTS = [];
 var TIMEFRAME;
 
 
@@ -29,6 +32,12 @@ $(document).ready(function() {
     createNavBar('home');
 
     $('#userLogTable').DataTable({
+        searching: false,
+        paging: false,
+        info: false
+    });
+
+    $('#userRequestsTable').DataTable({
         searching: false,
         paging: false,
         info: false
@@ -67,31 +76,71 @@ $(document).ready(function() {
                     $('#userLogTable').DataTable().row.add(newRow);
                 }
                 $('#userLogTable').DataTable().draw();
-                $("#loadingIcon").hide();
+                $.get("/requests", function(data) {
+                    REQUESTS = data;
+                    console.log("retrieved requests data");
+                }).fail(function() {
+                    console.log("failed retrieving requests data--returning to login page");
+                    window.location = '/';
+                }).done(function() {
+                    $.get('/committees', function(data) {
+                        COMMITTEES = data;
+                        console.log("retrieved committee data");
+                    }).done(function() {
+                        OUTSTANDING_REQUESTS = getRequestsForUser(USER, REQUESTS, COMMITTEES);
+                        console.log(OUTSTANDING_REQUESTS);
+                        for (var r = 0; r < OUTSTANDING_REQUESTS.length; r++) {
+                            var request = OUTSTANDING_REQUESTS[r];
+                            var date = request.date.toString().substring(0, 10);
+                            var reason = request.reason;
+                            var requester = getName(USERS_BY_ID[request.requesterId]);
+                            var assigner = request.assigner;
+                            var newRow = [date, reason, requester, assigner];
+                            $('#userRequestsTable').DataTable().row.add(newRow);
+                        }
+                        $('#userRequestsTable').DataTable().draw();
+                        $("#loadingIcon").hide();
+                    });
+                });
             });
         });
     });
 
-    $('.requestContainer').off('click');
-    $('.requestContainer').click(function() {
-        alert('clicked');
+    var requestDialog = $("#requestDialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 200,
+        position: {
+            my: "center",
+            at: "center",
+            of: window
+        }
     });
 
-    $("#requestDialog").dialog('close'); 
-    $("requestDialog").dialog({
-        autoOpen: false,
-        height: 400,
-        width: 350,
-        modal: true,
-        buttons: {
-          "Create an account": addUser,
-          Cancel: function() {
-            dialog.dialog( "close" );
-          }
-        },
-        close: function() {
-          form[ 0 ].reset();
-          allFields.removeClass( "ui-state-error" );
+    $('#requestButton').off('click');
+    $('#requestButton').click(function() {
+        requestDialog.dialog('open');
+    });
+
+    $('#requestSubmit').off('click');
+    $('#requestSubmit').click(function() {
+        var reason = $('#requestReason').val();
+        var assigner = $('#requestAssigner').val();
+        var date = $('#requestDate').val();
+        if (confirm('Submit request to ' + assigner + ' for ' + reason + ' on ' + date + '?')) {
+            var newRequest = {
+                requesterId: USER._id,
+                assigner: assigner,
+                reason: reason,
+                date: new Date(date)
+            }
+            $.post("/requests", newRequest).done(function() {
+                console.log("Request successfully added");
+                console.log(newRequest);
+                alert('Request submitted');
+            });
+        } else {
+            alert('Request not submitted');
         }
     });
 });
@@ -110,7 +159,6 @@ function updateTimeframe() {
 
 function updateRank() {
     var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME);
-    console.log(leaderboard);
     var userRanking = getUserRanking(USER._id, leaderboard);
     var userPoints;
     if (userRanking == 0) {
@@ -140,6 +188,7 @@ function addRankIcon(ranking) {
     $('#rankIcon').html('');
     if (ranking < 1) {
         $('#rankIcon').append('<i class="fas fa-chess pkpgreen"></i>');
+        $('#pointsBehind').html('');
     } else if (ranking == 1) {
         $('#rankIcon').append('<i class="fas fa-chess-king pkpgreen"></i>');
     } else if (ranking <= 2) {
@@ -169,9 +218,11 @@ function getPointsBehindMessage(userRanking, leaderboard) {
             return "You are 1 point behind " + getName(userAhead);    
         }
         return "You are " + pointsBehind + " points behind " + getName(userAhead);
-    } else {
+    } else if (userRanking == 1) {
         var pointsBehind = Math.floor(Math.random() * 4200) + 690;
         return "You are " + pointsBehind + " points behind Wysong";
+    } else {
+        $('#pointsBehind').html('');
     }
 }
 

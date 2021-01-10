@@ -107,8 +107,16 @@ $(document).ready(function() {
             admin: JSON.parse(isAdmin),
             officerPositions: officerPositionsToBoolean(USER_OFFICER_POSITIONS)
         }
+<<<<<<< HEAD
         var postData = {'newUser':newUser, 'USER':USERS_BY_ID[userId]}
         $.post("/users", postData).done(function() {
+=======
+        var postData = {
+            currentUser: USER,
+            newUser: newUser
+        }
+        $.post("/users", newUser).done(function() {
+>>>>>>> master
             console.log("User successfully added");
             console.log(newUser);
             alert('New User Added to Database');
