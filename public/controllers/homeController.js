@@ -142,6 +142,8 @@ $(document).ready(function() {
             alert('Request not submitted');
         }
     });
+
+    
 });
 
 function updateTimeframe() {
@@ -157,7 +159,8 @@ function updateTimeframe() {
 }
 
 function updateRank() {
-    var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME);
+    console.log(TIMEFRAME);
+    var leaderboard = getLeaderboard(TRANSACTIONS, USERS_BY_ID, TIMEFRAME);
     var userRanking = getUserRanking(USER._id, leaderboard);
     var userPoints;
     if (userRanking == 0) {
@@ -181,6 +184,35 @@ function updateStatistics(leaderboard) {
     $('#statMedian').text(median);
     $('#statLow').text(low);
     $('#statHigh').text(high);
+
+    fraternityHistogram = document.getElementById('fraternityHistogram');
+    var x = [];
+    var i = 0;
+    for (var user in leaderboard){
+        x[i] = leaderboard[user].points;
+        i++;
+    }
+    var trace = {
+        x: x,
+        type: 'histogram',
+        marker: {
+            color: '#00703c',
+        }
+    };
+    var data = [trace];
+    console.log("x:");
+
+    console.log(x);
+    var layout = {
+        xaxis: {title: {text:"Points", standoff: 0}}, 
+        yaxis: {title: {text:"Brothers", standoff: 0}},
+        margin: { t: 10 , b: 40, r:40,l:40},
+        plot_bgcolor: '#eeb311',
+        paper_bgcolor: '#eeb311'
+
+    }
+    Plotly.newPlot(fraternityHistogram, data, layout);
+    
 }
 
 function addRankIcon(ranking) {

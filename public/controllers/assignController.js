@@ -343,7 +343,7 @@ function getTransactions() {
     for (var i = 0; i < data.length; i++) {
         var row = data[i];
         var receiverId = row[5];
-        var amount = row[1];
+        var amount = parseInt(row[1]).toString();
         var new_transaction = {
             reason: REASON,
             assigner: assignerId,
