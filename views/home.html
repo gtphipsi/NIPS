@@ -15,7 +15,6 @@
         <script type="text/javascript" src="/controllers/homeController.js"></script>
         <!-- Font Awesome Icons -->
         <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
-		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 	</head>
 	<body class="snowBackground">
         <nav class="navbar navbar-default navbar-fixed-top">
@@ -46,9 +45,9 @@
 					<div class="row homeRow">
 						<div class="homeContainer rankContainer">
 							<h3><select id="rankTimeframe" onchange="updateTimeframe()">
-								<option value="semesterly">Semesterly</option>	
-								<option value="monthly">Monthly</option>
 								<option value="weekly">Weekly</option>
+								<option value="monthly">Monthly</option>
+								<option value="semesterly">Semesterly</option>
 							</select></h3>
 							<h1 id="userRank"></h1>
 							<h1 id="rankIcon"></h1>
@@ -121,7 +120,6 @@
 									<td><h2 class="statNum" id="statLow">0</h2></td>
 								</tr>
 							</table>
-							<div id="fraternityHistogram"></div>
 						</div>
 					</div>
 				</div>

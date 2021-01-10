@@ -113,9 +113,9 @@ function getPositions(user, committees) {
  * @param {*} timeframe String (enum ?) representing the timeframe (weekly, monthly, semesterly)
  * @returns array containing all users sorted in descending order by points earned
  */
-function getLeaderboard(transactions, useres_by_id, timeframe) {
+function getLeaderboard(transactions, timeframe) {
     var leaderboard = [];
-    var pointValues = getPointValues(transactions, useres_by_id, timeframe);
+    var pointValues = getPointValues(transactions, timeframe);
     for (userId in pointValues) {
         var obj = {
             id: userId,
@@ -138,24 +138,18 @@ function getLeaderboard(transactions, useres_by_id, timeframe) {
  * @param {*} timeframe String (enum ?) representing the timeframe (weekly, monthly, semesterly)
  * @returns hashmap linking userId to points earned in given timeframe
  */
-function getPointValues(transactions, USERS_BY_ID, timeframe) {
+function getPointValues(transactions, timeframe) {
     var pointValues = {};
-    console.log(timeframe);
-    
-    for (var userId in USERS_BY_ID){
-        pointValues[userId] = 0;
-    }
     for (var i = 0; i < transactions.length; i++) {
-        console.log(isInTimeframe(transactions[i], timeframe));
         if (isInTimeframe(transactions[i], timeframe)) {
             var receiverId = transactions[i].receiver;
-            console.log("New value:");
-            console.log(pointValues[receiverId] + parseInt(transactions[i].amount));
-            pointValues[receiverId] = pointValues[receiverId] + parseInt(transactions[i].amount);
+            if (pointValues[receiverId]) {
+                pointValues[receiverId] = parseInt(pointValues[receiverId]) + parseInt(transactions[i].amount);
+            } else {
+                pointValues[receiverId] = parseInt(transactions[i].amount);
+            }
         }
     }
-    console.log("pointValues:");
-    console.log(pointValues);
     return pointValues;
 }
 
