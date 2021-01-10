@@ -148,6 +148,7 @@ $(document).ready(function() {
         });
         console.log(transactionIds);
         if (confirm('Are you sure you want to delete these requests?')) {
+            $('#loadingIcon').show();
             $.ajax({
                 url: "/requests",
                 type: 'DELETE',
@@ -155,6 +156,9 @@ $(document).ready(function() {
                 success: function(response) {
                     alert('Requests Successfully Deleted');
                     location.reload();
+                },
+                done: function() {
+                    $('#loadingIcon').hide();
                 }
             });
         }
@@ -183,6 +187,7 @@ $(document).ready(function() {
             transactionIds.push(requestId);
          });
          console.log(transactionIds);
+         $('#loadingIcon').show();
          $.post("/transactions", {transactions}).done(function() {
             $.ajax({
                 url: "/requests",
@@ -191,6 +196,9 @@ $(document).ready(function() {
                 success: function(response) {
                     alert('Requests Successfully Resolved');
                     location.reload();
+                },
+                done: function() {
+                    $('#loadingIcon').hide();
                 }
             });
         });
