@@ -91,7 +91,7 @@ $(document).ready(function() {
                     var newRow = [dateEarned, transaction.reason, transaction.amount];
                     $('#userLogTable').DataTable().row.add(newRow);
                 }
-                $('#userLogTable').DataTable().columns.adjust().draw();
+                $('#userLogTable').DataTable().draw();
                 $.get("/requests", function(data) {
                     REQUESTS = data;
                     console.log("retrieved requests data");
@@ -112,7 +112,7 @@ $(document).ready(function() {
                             var newRow = [request.requesterId, date, reason, requester, r, request._id];
                             $('#userRequestsTable').DataTable().row.add(newRow);
                         }
-                        $('#userRequestsTable').DataTable().columns.adjust().draw();
+                        $('#userRequestsTable').DataTable().draw();
                         $("#loadingIcon").hide();
                     });
                 });

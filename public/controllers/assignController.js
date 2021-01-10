@@ -262,6 +262,19 @@ function updateGroup() {
  */
 function updateDate() {
     DATE_EARNED = new Date($('#assignDate').val() + 'T00:00:00');
+    if (!isValidDate(DATE_EARNED)) {
+        console.log('invalid date earned');
+        if ($('#assignDate').val().length == 10) {
+            var month = $('#assignDate').val().substring(0, 2);
+            var day = $('#assignDate').val().substring(3, 5);
+            var year = $('#assignDate').val().substring(6, 10);
+            var dateString = year + '-' + month + '-' + day + 'T00:00:00';
+            DATE_EARNED = new Date(dateString);
+        } else {
+            alert('Invalid Date Object: please re-format to mm/dd/yyyy');
+        }
+    }
+    console.log(DATE_EARNED);
 }
 
 function updateGroupTable() {
