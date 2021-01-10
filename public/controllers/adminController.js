@@ -105,6 +105,10 @@ $(document).ready(function() {
             admin: JSON.parse(isAdmin),
             officerPositions: officerPositionsToBoolean(USER_OFFICER_POSITIONS)
         }
+        var postData = {
+            currentUser: USER,
+            newUser: newUser
+        }
         $.post("/users", newUser).done(function() {
             console.log("User successfully added");
             console.log(newUser);
