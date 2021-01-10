@@ -204,9 +204,9 @@ function updateStatistics(leaderboard) {
 
     console.log(x);
     var layout = {
-        xaxis: {title: "Points"}, 
-        yaxis: {title: "Brothers"},
-        margin: { t: 10 , b: 40},
+        xaxis: {title: {text:"Points", standoff: 0}}, 
+        yaxis: {title: {text:"Brothers", standoff: 0}},
+        margin: { t: 10 , b: 40, r:40,l:40},
         plot_bgcolor: '#eeb311',
         paper_bgcolor: '#eeb311'
 
