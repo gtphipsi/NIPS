@@ -35,20 +35,12 @@ $(document).ready(function() {
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
+    createNavBar('assign');
+
 
     var userURL = '/users/' + userId;
     var USER;
-    $.get(userURL, function(data) {
-        USER = data;
-        console.log("retrieved one user data");
-        console.log(data);
-    }).fail(function() {
-        alert("failed retrieving user data--returning to login page");
-        window.location = '/';
-    }).done(function() {
-        createNavBar('assign',USER);
-        checkAccess('assign',USER);
-    });
+    
 
     DATE_ASSIGNED = new Date();
     console.log("Today's Date", DATE_ASSIGNED);
@@ -224,7 +216,8 @@ $(document).ready(function() {
             var transactions = getTransactions();
             console.log(transactions);
             if (validForm && transactions.length > 0) {
-                $.post("/transactions", {transactions}).done(function() {
+                var postData = {'USER':USERS_BY_ID[userId], 'transactions':transactions}
+                $.post("/transactions", postData).done(function() {
                     alert('Transactions Submitted Successfully');
                     location.reload();
                 });

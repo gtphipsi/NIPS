@@ -93,6 +93,9 @@ app.get("/users", (req, res) => {
 
 app.post("/users", (req, res) => {
     console.log("adding new user");
+    if (!req.body.USER.admin) {
+        res.sendStatus(403);
+    }
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
@@ -104,13 +107,13 @@ app.post("/users", (req, res) => {
                 console.log("No message body");
                 res.sendStatus(200);
             } else {
-                var isAdmin = JSON.parse(req.body.admin);
-                var officerPositions = req.body.officerPositions;
+                var isAdmin = JSON.parse(req.body.newUser.admin);
+                var officerPositions = req.body.newUser.officerPositions;
                 for (var position in officerPositions) {
-                    officerPositions[position] = JSON.parse(req.body.officerPositions[position]);
+                    officerPositions[position] = JSON.parse(req.body.newUser.officerPositions[position]);
                 }
-                req.body.admin = isAdmin;
-                collection.insertOne(req.body, function(err, result) {
+                req.body.newUser.admin = isAdmin;
+                collection.insertOne(req.body.newUser, function(err, result) {
                     if (err) {
                         console.log(err);
                         throw err;
@@ -318,6 +321,9 @@ app.get("/committees/:committeeId", (req, res) => {
 
 app.post("/committees", (req, res) => {
     console.log("adding new committee");
+    if (!req.body.USER.admin) {
+        res.sendStatus(403);
+    }
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
@@ -329,7 +335,7 @@ app.post("/committees", (req, res) => {
                 console.log("No message body");
                 res.sendStatus(200);
             } else {
-                collection.insertOne(req.body, function(err, result) {
+                collection.insertOne(req.body.newCommittee, function(err, result) {
                     if (err) {
                         console.log(err);
                         throw err;
@@ -386,6 +392,13 @@ app.put("/committees/:committeeId", (req, res) => {
 
 app.post("/transactions", (req, res) => {
     console.log("adding new transactions");
+    var assignAccess = false;
+    for (var position in req.body.USER.officerPositions) {
+        assignAccess = USER.officerPositions[position] ? true: assignAccess;
+    }
+    if (!assignAccess) {
+        res.sendStatus(403);
+    }
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
@@ -482,7 +495,7 @@ app.post("/matrix", (req, res) => {
                         console.log(err);
                         throw err;
                     } else {
-                        console.log('user added');
+                        console.log('matrix addedse added');
                         console.log(req.body);
                         res.sendStatus(200);
                     }

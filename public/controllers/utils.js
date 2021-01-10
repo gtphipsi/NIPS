@@ -336,36 +336,6 @@ function getLow(leaderboard) {
 }
 /* *********************************************************************** */
 
-function checkAccess(page, user) {
-    var access = getPageAccess(user);
-    if (!access[page]) {
-        window.location = '/';
-    }
-}
-
-function getPageAccess(user) {
-    var user;
-    var userId = sessionStorage.getItem('userId');
-    var access = {};
-    checkLoggedIn(userId);
-    console.log('getting page access');
-    
-    
-    access['home'] = true;
-    access['matrix'] = true;
-    access['ledger'] = true;
-    access['committees'] = true;
-    access['signout'] = true;
-    access['admin'] = user.admin;
-    access['assign'] = false;
-    for (var position in user.officerPositions) {
-        access['assign'] = user.officerPositions[position] ? true : access['assign'];
-    }
-    console.log('pre access:');
-    console.log(access);
-
-    return access;
-}
 
 /**
  * function to create top navbar on each page
@@ -373,8 +343,7 @@ function getPageAccess(user) {
  * TO USE: call at beginning of $(document).ready function
  * ensure that there is a navbar div with id="navbar" in correct place in html file
  */
-function createNavBar(page, user) {
-    var access = getPageAccess(user)
+function createNavBar(page) {
     var home = '<a class=topNavLink id=homeNav href="/home"><i class="fas fa-home"></i> Home</a>';
     var assign = '<a class=topNavLink id=assignNav href="/assign"><i class="fas fa-plus"></i> Assign</a>';
     var ledger = '<a class=topNavLink id=ledgerNav href="/ledger"><i class="fas fa-book"></i> Ledger</a>';
@@ -382,17 +351,15 @@ function createNavBar(page, user) {
     var committees = '<a class=topNavLink id=committeesNav href = "/viewcommittees"><i class="fas fa-users"></i> Committees';
     var matrix = '<a class=topNavLink id=matrixNav href="/matrix"><i class="fas fa-th-list"></i> Matrix';
     var signout = '<button id=signoutButton><i class="fas fa-sign-out-alt"></i> Sign Out</button>';
-    var pages = {'home': home, 'assign': assign, 'ledger':ledger,  'matrix':matrix, 'committees':committees, 'admin':admin, 'signout':signout};
-    console.log('access:');
-    console.log(access);
-    console.log(pages);
-    for (var page_ in pages){
-        $('#navbar').append(access[page_] ? pages[page_] : '');
-        console.log(page_);
-        console.log(access[page_]);
-        console.log(pages[page_]);
-    }
-    console.log('added pages');
+    
+    $('#navbar').append(home);
+    $('#navbar').append(assign);
+    $('#navbar').append(ledger);
+    $('#navbar').append(committees);
+    $('#navbar').append(matrix);
+    $('#navbar').append(admin);
+    $('#navbar').append(signout);
+
     switch (page) {
         case 'home':
             $('#homeNav').addClass('currentPage');

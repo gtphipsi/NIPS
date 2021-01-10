@@ -26,6 +26,7 @@ $(document).ready(function() {
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
+    createNavBar('home');
 
     $('#userLogTable').DataTable({
         searching: false,
@@ -42,8 +43,6 @@ $(document).ready(function() {
         alert("failed retrieving user data--returning to login page");
         window.location = '/';
     }).done(function() {
-        createNavBar('home',USER);
-        checkAccess('home',USER);
         $('#welcomeMessage').text(`Welcome, Brother ${USER.lastName} `);
         $('#welcomeMessage').append(getRandomUserIcon());
         $.get("/users", function(data) {
