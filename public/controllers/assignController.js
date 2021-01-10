@@ -220,7 +220,9 @@ $(document).ready(function() {
                 $.post("/transactions", postData).done(function() {
                     alert('Transactions Submitted Successfully');
                     location.reload();
-                });
+                }).fail( function() {
+                    alert('Access Denied');
+                });;
             } else {
                 alert('Unable to submit points :(');
             }

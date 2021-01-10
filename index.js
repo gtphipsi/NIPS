@@ -93,9 +93,13 @@ app.get("/users", (req, res) => {
 
 app.post("/users", (req, res) => {
     console.log("adding new user");
-    if (!req.body.USER.admin) {
-        res.sendStatus(403);
+    console.log(req.body.USER.admin);
+    console.log(typeof req.body.USER.admin);
+    if (req.body.USER.admin == 'false') {
+        console.log("sending status");
+        res.end(403);
     }
+    console.log("is admin");
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
@@ -321,8 +325,8 @@ app.get("/committees/:committeeId", (req, res) => {
 
 app.post("/committees", (req, res) => {
     console.log("adding new committee");
-    if (!req.body.USER.admin) {
-        res.sendStatus(403);
+    if (!req.body.USER.admin  == 'false') {
+        res.end(403);
     }
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
@@ -394,7 +398,7 @@ app.post("/transactions", (req, res) => {
     console.log("adding new transactions");
     var assignAccess = false;
     for (var position in req.body.USER.officerPositions) {
-        assignAccess = USER.officerPositions[position] ? true: assignAccess;
+        assignAccess = USER.officerPositions[position] == 'true' ? true: assignAccess == 'true';
     }
     if (!assignAccess) {
         res.sendStatus(403);

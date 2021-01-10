@@ -113,6 +113,8 @@ $(document).ready(function() {
             console.log(newUser);
             alert('New User Added to Database');
             location.reload();
+        }).fail( function() {
+            alert('Access Denied');
         });
     });
 
@@ -199,7 +201,9 @@ $(document).ready(function() {
             console.log(newCommittee);
             alert('New Committee Added to Database');
             location.reload();
-        });
+        }).fail( function() {
+            alert('Access Denied');
+        });S;
     });
 
     $('#editCommittees').change(function() {
