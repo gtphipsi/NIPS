@@ -10,10 +10,11 @@ var MEMBER_SELECTED = ''; // variable to track current selection in adding membe
 $(document).ready(function() {
     console.log("Loading admin page...");
 
+    createNavBar('admin');
     
-
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
+        alert('clicked');
         sessionStorage.setItem('userId', '');
         location.href = '/login';
     });
@@ -29,7 +30,6 @@ $(document).ready(function() {
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
-    createNavBar('admin');
 
     $.get("/users", function(data) {
         USERS = data;

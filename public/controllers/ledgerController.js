@@ -38,7 +38,6 @@ $(document).ready(function() {
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
-    createNavBar('ledger');
 
     var ledgerTable = $('#ledgerTable').DataTable({
         searching: false,

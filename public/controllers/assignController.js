@@ -20,6 +20,8 @@ var log = [];
 $(document).ready(function() {
     console.log("Loading assign page...");
 
+    createNavBar('assign');
+
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
         sessionStorage.setItem('userId', '');
@@ -36,11 +38,9 @@ $(document).ready(function() {
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
-    createNavBar('assign');
 
 
     var userURL = '/users/' + userId;
-    var USER;
     
 
     DATE_ASSIGNED = new Date();
@@ -230,17 +230,13 @@ $(document).ready(function() {
             var transactions = getTransactions();
             console.log(transactions);
             if (validForm && transactions.length > 0) {
-                
-                $.get("/comitteess", function(data){
-                    COMMITTEES = data;
-                }).done(function() {
-                    var postData = {'user':USER, 'transactions':transactions, 'committees':COMMITTEES}
-                    $.post("/transactions", postData).done(function() {
-                        alert('Transactions Submitted Successfully');
-                        location.reload();
-                    }).fail( function() {
-                        alert('Access Denied');
-                    });
+                var userPositions = getPositions(USER, COMMITTEES);
+                var postData = {'transactions': transactions, 'positions': userPositions}
+                $.post("/transactions", postData).done(function() {
+                    alert('Transactions Submitted Successfully');
+                    location.reload();
+                }).fail(function() {
+                    alert('Access Denied');
                 });
             } else {
                 alert('Unable to submit points :(');
