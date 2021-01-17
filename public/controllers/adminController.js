@@ -203,7 +203,7 @@ $(document).ready(function() {
             location.reload();
         }).fail( function() {
             alert('Access Denied');
-        });S;
+        });;
     });
 
     $('#editCommittees').change(function() {

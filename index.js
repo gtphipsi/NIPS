@@ -94,10 +94,9 @@ app.get("/users", (req, res) => {
 //Accessible by admin only
 app.post("/users", (req, res) => {
     console.log("adding new user");
-    console.log(req.body.USER.admin);
-    console.log(typeof req.body.USER.admin);
     if (req.body.USER.admin == 'false') {
-        console.log("sending status");
+        console.log("access denied");
+        alert('Accessed Denied');
         res.end(403);
     }
     console.log("is admin");
@@ -168,6 +167,11 @@ app.get("/users/:userId", (req, res) => {
 //Accessible by admin only
 app.put("/users/:userId", (req, res) => {
     console.log('editing user by ID');
+    if (req.body.USER.admin == 'false') {
+        console.log("access denied");
+        alert('Accessed Denied');
+        res.end(403);
+    }
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
@@ -328,9 +332,14 @@ app.get("/committees/:committeeId", (req, res) => {
 //Accessible by admin only
 app.post("/committees", (req, res) => {
     console.log("adding new committee");
-    if (!req.body.USER.admin  == 'false') {
+    console.log(req.body.USER.admin);
+    console.log(req.body.USER.admin == 'false');
+    if (req.body.USER.admin  == 'false') {
+        console.log('access denied');
+        alert('Accessed Denied');
         res.end(403);
     }
+
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
@@ -360,6 +369,11 @@ app.post("/committees", (req, res) => {
 
 app.put("/committees/:committeeId", (req, res) => {
     console.log('editing committee by ID');
+    if (req.body.USER.admin == 'false') {
+        console.log("access denied");
+        alert('Accessed Denied');
+        res.end(403);
+    }
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
@@ -400,10 +414,11 @@ app.put("/committees/:committeeId", (req, res) => {
 //Accessible by officers and committee heads only only
 app.post("/transactions", (req, res) => {
     console.log("adding new transactions");
-    var assignAccess = false;
     
     if (getPositions(req.body.user, req.body.committees).length > 0) {
-        res.sendStatus(403);
+        console.log('access denied');
+        alert('Accessed Denied');
+        res.end(403);
     }
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
