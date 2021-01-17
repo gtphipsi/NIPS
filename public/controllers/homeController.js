@@ -275,7 +275,7 @@ function updateStatistics(leaderboard, transactions) {
     $('#statMedian').text(median);
     $('#statLow').text(low);
     $('#statHigh').text(high);
-
+    console.log('drawing graphs');
     fraternityHistogram = document.getElementById('fraternityHistogram');
     var x = [];
     var i = 0;
@@ -332,8 +332,6 @@ function updateStatistics(leaderboard, transactions) {
     }
 
     pointDates.sort(compare);
-    console.log("pointDates");
-    console.log(pointDates);
     runningTotal = [];
     dates = [];
     for (var i = 0; i < pointDates.length; i++) {
@@ -345,9 +343,6 @@ function updateStatistics(leaderboard, transactions) {
             dates[i] = pointDates[i].date;
         }
     }
-    console.log('dates');
-    console.log(dates);
-    console.log(runningTotal);
     var traceLine = {
         y: runningTotal,
         x: dates,
@@ -367,6 +362,7 @@ function updateStatistics(leaderboard, transactions) {
 
     fraternityLine = document.getElementById('fraternityLine');
     Plotly.newPlot(fraternityLine, [traceLine], layoutLine);
+    console.log('drawn graphs');
 }
 
 function addRankIcon(ranking) {
