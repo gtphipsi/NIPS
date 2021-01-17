@@ -91,13 +91,13 @@ app.get("/users", (req, res) => {
     });
 });
 
-//Accessible by admin only
+// Accessible by admin only
 app.post("/users", (req, res) => {
     console.log("adding new user");
     if (req.body.USER.admin == 'false') {
         console.log("access denied");
-        alert('Accessed Denied');
-        res.end(403);
+        res.status(403).send();
+        return;
     }
     console.log("is admin");
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
@@ -164,13 +164,13 @@ app.get("/users/:userId", (req, res) => {
     });
 });
 
-//Accessible by admin only
+// Accessible by admin only
 app.put("/users/:userId", (req, res) => {
     console.log('editing user by ID');
     if (req.body.USER.admin == 'false') {
         console.log("access denied");
-        alert('Accessed Denied');
-        res.end(403);
+        res.status(403).send();
+        return;
     }
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
@@ -307,7 +307,7 @@ app.get("/committees/:committeeId", (req, res) => {
         } else {
             try {
                 var committeeId = req.params.committeeId;
-                console.log("FINDING ONE USER");
+                console.log("FINDING ONE COMMITTEE");
                 var mongoId = ObjectId(committeeId);
                 var db = client.db('NIPS');
                 var collection = db.collection('Committees');
@@ -320,7 +320,7 @@ app.get("/committees/:committeeId", (req, res) => {
                     }
                 });
             } catch(e) {
-                console.log("ERROR FINDING USER");
+                console.log("ERROR FINDING COMMITTEE");
                 console.log(err);
                 res.sendStatus(404);
             }
@@ -329,15 +329,15 @@ app.get("/committees/:committeeId", (req, res) => {
     });
 });
 
-//Accessible by admin only
+// Accessible by admin only
 app.post("/committees", (req, res) => {
     console.log("adding new committee");
     console.log(req.body.USER.admin);
     console.log(req.body.USER.admin == 'false');
     if (req.body.USER.admin  == 'false') {
         console.log('access denied');
-        alert('Accessed Denied');
-        res.end(403);
+        res.status(403).send();
+        return;
     }
 
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
@@ -367,12 +367,13 @@ app.post("/committees", (req, res) => {
     });
 });
 
+// Accessible by admin only
 app.put("/committees/:committeeId", (req, res) => {
     console.log('editing committee by ID');
     if (req.body.USER.admin == 'false') {
         console.log("access denied");
-        alert('Accessed Denied');
-        res.end(403);
+        res.status(403).send();
+        return;
     }
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
@@ -411,15 +412,17 @@ app.put("/committees/:committeeId", (req, res) => {
     });
 });
 
-//Accessible by officers and committee heads only only
+// Accessible by officers and committee heads only only
 app.post("/transactions", (req, res) => {
     console.log("adding new transactions");
-    
-    if (getPositions(req.body.user, req.body.committees).length > 0) {
+    console.log(req.body);
+    console.log(req.body.positions);
+    if (!req.body.positions || req.body.positions.length <= 0) {
         console.log('access denied');
-        alert('Accessed Denied');
-        res.end(403);
+        res.status(403).send();
+        return;
     }
+    console.log('access permitted');
     MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
@@ -431,7 +434,6 @@ app.post("/transactions", (req, res) => {
                 console.log("No message body");
                 res.sendStatus(200);
             } else {
-                console.log(req.body);
                 var transactions = req.body.transactions;
                 for (var i = 0; i < transactions.length; i++) {
                     transactions[i].dateAssigned = new Date(transactions[i].dateAssigned);
@@ -443,7 +445,6 @@ app.post("/transactions", (req, res) => {
                         throw err;
                     } else {
                         console.log('transactions added');
-                        console.log(req.body);
                         res.sendStatus(200);
                     }
                 });
