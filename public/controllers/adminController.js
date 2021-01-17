@@ -10,7 +10,7 @@ var MEMBER_SELECTED = ''; // variable to track current selection in adding membe
 $(document).ready(function() {
     console.log("Loading admin page...");
 
-    createNavBar('admin');
+    
 
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
@@ -25,9 +25,11 @@ $(document).ready(function() {
 
     addFooter();
 
+    
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
+    createNavBar('admin');
 
     $.get("/users", function(data) {
         USERS = data;
@@ -114,11 +116,14 @@ $(document).ready(function() {
             admin: JSON.parse(isAdmin),
             officerPositions: officerPositionsToBoolean(USER_OFFICER_POSITIONS)
         }
-        $.post("/users", newUser).done(function() {
+        var postData = {'newUser':newUser, 'USER':USERS_BY_ID[userId]}
+        $.post("/users", postData).done(function() {
             console.log("User successfully added");
             console.log(newUser);
             alert('New User Added to Database');
             location.reload();
+        }).fail( function() {
+            alert('Access Denied');
         });
     });
 
@@ -199,12 +204,15 @@ $(document).ready(function() {
             meetings: $('#addCommitteeMeeting').val(),
             budget: $('#addCommitteeBudget').val()
         }
-        $.post("/committees", newCommittee).done(function() {
+        var postData = {'newCommittee':newCommittee, 'USER':USERS_BY_ID[userId]}
+        $.post("/committees", postData).done(function() {
             console.log("Committee successfully added");
             console.log(newCommittee);
             alert('New Committee Added to Database');
             location.reload();
-        });
+        }).fail( function() {
+            alert('Access Denied');
+        });;
     });
 
     $('#editCommittees').change(function() {

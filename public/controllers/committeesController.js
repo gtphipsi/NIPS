@@ -7,8 +7,6 @@ var COMMITTEES_BY_ID;
 $(document).ready(function() {
     console.log("Loading committees page...");
 
-    createNavBar('committees');
-
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
         sessionStorage.setItem('userId', '');
@@ -25,6 +23,7 @@ $(document).ready(function() {
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
+    createNavBar('committees');
 
     var userURL = '/users/' + userId;
     $.get(userURL, function(data) {

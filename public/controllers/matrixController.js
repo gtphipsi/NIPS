@@ -21,11 +21,10 @@ $(document).ready(function() {
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
-
-    hideFilters();
-
     createNavBar('matrix');
 
+    hideFilters();
+    
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
         sessionStorage.setItem('userId', '');

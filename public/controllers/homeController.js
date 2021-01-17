@@ -12,7 +12,7 @@ var TIMEFRAME;
 $(document).ready(function() {
     console.log("Loading home page...");
 
-    createNavBar('home');
+    
 
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
@@ -30,6 +30,7 @@ $(document).ready(function() {
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
+    createNavBar('home');
 
     $('#userLogTable').DataTable({
         searching: false,
@@ -246,7 +247,9 @@ function updateTimeframe() {
 }
 
 function updateRank() {
-    var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME);
+    
+    var leaderboard = getLeaderboard(TRANSACTIONS, USERS_BY_ID, TIMEFRAME);
+    var transactions = getTransactionsTF(TRANSACTIONS, TIMEFRAME);
     var userRanking = getUserRanking(USER._id, leaderboard);
     var userPoints;
     if (userRanking == 0) {
@@ -257,11 +260,13 @@ function updateRank() {
     $('#userRank').text('Rank: ' +  userRanking + ' | Points: ' + userPoints);
     addRankIcon(userRanking);
     $('#pointsBehind').text(getPointsBehindMessage(userRanking, leaderboard));
-    updateStatistics(leaderboard);
+    updateStatistics(leaderboard, transactions);
     updateProgressBar(userPoints);
 }
 
-function updateStatistics(leaderboard) {
+function updateStatistics(leaderboard, transactions) {
+    var userId = sessionStorage.getItem('userId');
+
     var mean = getMean(leaderboard);
     var median = getMedian(leaderboard);
     var low = getLow(leaderboard);
@@ -270,6 +275,94 @@ function updateStatistics(leaderboard) {
     $('#statMedian').text(median);
     $('#statLow').text(low);
     $('#statHigh').text(high);
+    console.log('drawing graphs');
+    fraternityHistogram = document.getElementById('fraternityHistogram');
+    var x = [];
+    var i = 0;
+    for (var user in leaderboard){
+        x[i] = leaderboard[user].points;
+        i++;
+    }
+    
+    var trace = {
+        x: x,
+        type: 'histogram',
+        marker: {
+            color: '#00703c',
+        },
+        nbinsx: 6
+    };
+    var data = [trace];
+    
+    var layout = {
+        xaxis: {title: {text:"Points", standoff: 0}}, 
+        yaxis: {title: {text:"Brothers", standoff: 0}},
+        margin: { t: 10 , b: 40, r:40,l:40},
+        plot_bgcolor: '#eeb311',
+        paper_bgcolor: '#eeb311',
+        showlegend: false
+    }
+    Plotly.newPlot(fraternityHistogram, data, layout);
+
+    
+
+    var rawDates = [];
+    var rawPoints = [];
+    
+    var j = 0;
+    for (var i = 0; i < transactions.length; i++) {
+        if (transactions[i]['receiver'] == userId) {
+            rawDates[j] = transactions[i]['dateEarned'].split('T')[0];
+            rawPoints[j] = parseInt(transactions[i]['amount']);
+            j++;
+        } 
+    }
+
+    var pointDateHash = {};
+    for (var i =0; i < rawDates.length; i++) {
+        pointDateHash[rawDates[i]] = (rawDates[i] in pointDateHash) ? pointDateHash[rawDates[i]] + rawPoints[i]: rawPoints[i];
+    }
+        
+
+    var pointDates = [];
+    var i = 0;
+    for (let dateHash in pointDateHash) {
+        pointDates[i] = new PointDate(pointDateHash[dateHash], dateHash);
+        i++;
+    }
+
+    pointDates.sort(compare);
+    runningTotal = [];
+    dates = [];
+    for (var i = 0; i < pointDates.length; i++) {
+        if (i == 0){
+            runningTotal[i] = pointDates[i].point;
+            dates[i] = pointDates[i].date;
+        } else {
+            runningTotal[i] = pointDates[i].point + runningTotal[i-1];
+            dates[i] = pointDates[i].date;
+        }
+    }
+    var traceLine = {
+        y: runningTotal,
+        x: dates,
+        type: 'scatter',
+        mode: "line+marker",
+        line: {color: '00703c'}
+    };
+
+    var layoutLine = {
+        xaxis: {title: {text:"Date", standoff: 0}}, 
+        yaxis: {title: {text:"Points", standoff: 0}},
+        margin: {t: 10 , b: 40, r:40, l:40},
+        plot_bgcolor: '#eeb311',
+        paper_bgcolor: '#eeb311',
+        showlegend: false
+    }
+
+    fraternityLine = document.getElementById('fraternityLine');
+    Plotly.newPlot(fraternityLine, [traceLine], layoutLine);
+    console.log('drawn graphs');
 }
 
 function addRankIcon(ranking) {
@@ -363,4 +456,18 @@ function setProgressIcon(progress) {
     } else {
         $('#progressIcon').append('<i class="fas fa-trophy"></i>');
     }
+}
+
+class PointDate {
+    constructor(point, date) {
+        this.point = point;
+        this.date = date;
+    } 
+}
+
+function compare(a,b) {
+    if (a.date < b.date) {
+        return -1;
+    }
+    return 1;
 }
