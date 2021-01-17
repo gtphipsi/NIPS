@@ -4,7 +4,8 @@ var COMMITTEES;
 var USERS_BY_ID;
 var TRANSACTIONS;
 var REQUESTS;
-var OUTSTANDING_REQUESTS = [];
+var REQUESTS_FOR_USER = [];
+var REQUESTS_FROM_USER = [];
 var TIMEFRAME;
 
 
@@ -39,7 +40,23 @@ $(document).ready(function() {
     $('#userRequestsTable').DataTable({
         searching: false,
         paging: false,
-        info: false
+        info: false,
+        'columnDefs': [
+            {
+                'targets': [0, -1],
+                'visible': false
+            },
+            {
+               'targets': 4,
+               'checkboxes': {
+                  'selectRow': true
+               }
+            }
+         ],
+         'select': {
+            'style': 'multi'
+         },
+         'order': [[1, 'asc']]
     });
 
     var userURL = '/users/' + userId;
@@ -86,15 +103,13 @@ $(document).ready(function() {
                         COMMITTEES = data;
                         console.log("retrieved committee data");
                     }).done(function() {
-                        OUTSTANDING_REQUESTS = getRequestsForUser(USER, REQUESTS, COMMITTEES);
-                        console.log(OUTSTANDING_REQUESTS);
-                        for (var r = 0; r < OUTSTANDING_REQUESTS.length; r++) {
-                            var request = OUTSTANDING_REQUESTS[r];
+                        REQUESTS_FOR_USER = getRequestsForUser(USER, REQUESTS, COMMITTEES);
+                        for (var r = 0; r < REQUESTS_FOR_USER.length; r++) {
+                            var request = REQUESTS_FOR_USER[r];
                             var date = request.date.toString().substring(0, 10);
                             var reason = request.reason;
                             var requester = getName(USERS_BY_ID[request.requesterId]);
-                            var assigner = request.assigner;
-                            var newRow = [date, reason, requester, assigner];
+                            var newRow = [request.requesterId, date, reason, requester, r, request._id];
                             $('#userRequestsTable').DataTable().row.add(newRow);
                         }
                         $('#userRequestsTable').DataTable().draw();
@@ -121,12 +136,86 @@ $(document).ready(function() {
         requestDialog.dialog('open');
     });
 
+    $('#deleteButton').off('click');
+    $('#deleteButton').click(function() {
+        var table = $('#userRequestsTable').DataTable();
+        var rows_selected = table.column(4).checkboxes.selected();
+        transactionIds = [];
+        $.each(rows_selected, function(index) {
+            var data = table.row(index).data();
+            var requestId = data[5];
+            transactionIds.push(requestId);
+        });
+        console.log(transactionIds);
+        if (confirm('Are you sure you want to delete these requests?')) {
+            $('#loadingIcon').show();
+            $.ajax({
+                url: "/requests",
+                type: 'DELETE',
+                data: {transactionIds},
+                success: function(response) {
+                    alert('Requests Successfully Deleted');
+                    location.reload();
+                },
+                done: function() {
+                    $('#loadingIcon').hide();
+                }
+            });
+        }
+    });
+
+    $('#resolveButton').off('click');
+    $('#resolveButton').click(function() {
+        var newAmount = window.prompt('Enter an amount for these transactions', 0);
+        var table = $('#userRequestsTable').DataTable();
+        var rows_selected = table.column(4).checkboxes.selected();
+        console.log(rows_selected);
+        transactions = [];
+        transactionIds = [];
+        $.each(rows_selected, function(index) {
+            var data = table.row(index).data();
+            newTransaction = {
+                assigner: USER._id,
+                receiver: data[0],
+                amount: newAmount,
+                dateAssigned: new Date(),
+                dateEarned: new Date(data[1]),
+                reason: data[2]
+            }
+            transactions.push(newTransaction);
+            var requestId = data[5];
+            transactionIds.push(requestId);
+         });
+         console.log(transactionIds);
+         $('#loadingIcon').show();
+         $.post("/transactions", {transactions}).done(function() {
+            $.ajax({
+                url: "/requests",
+                type: 'DELETE',
+                data: {transactionIds},
+                success: function(response) {
+                    alert('Requests Successfully Resolved');
+                    location.reload();
+                },
+                done: function() {
+                    $('#loadingIcon').hide();
+                }
+            });
+        });
+    });
+
     $('#requestSubmit').off('click');
     $('#requestSubmit').click(function() {
         var reason = $('#requestReason').val();
         var assigner = $('#requestAssigner').val();
+        var assignerLabel = assigner;
+        if (assigner == 'rushChair') {
+            assignerLabel = 'Rush Chair';
+        } else if (assigner == 'riskManager') {
+            assignerLabel = 'Risk Manager';
+        }
         var date = $('#requestDate').val();
-        if (confirm('Submit request to ' + assigner + ' for ' + reason + ' on ' + date + '?')) {
+        if (confirm('Submit request to ' + assignerLabel + ' for ' + reason + ' on ' + date + '?')) {
             var newRequest = {
                 requesterId: USER._id,
                 assigner: assigner,
@@ -142,8 +231,6 @@ $(document).ready(function() {
             alert('Request not submitted');
         }
     });
-
-    
 });
 
 function updateTimeframe() {
