@@ -475,6 +475,80 @@ app.get("/transactions", (req, res) => {
     });
 });
 
+app.put("/transactions/:transactionId", (req, res) => {
+    console.log('editing transaction by ID');
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            try {
+                var transactionId = req.params.transactionId;
+                console.log("UPDATING ONE TRANSACTION");
+                var mongoId = ObjectId(transactionId);
+                var db = client.db('NIPS');
+                var collection = db.collection('Transactions');
+                var query = {_id: mongoId};
+                req.body.dateEarned = new Date(req.body.dateEarned);
+                req.body.dateAssigned = new Date(req.body.dateAssigned);
+                var update = {$set: {
+                    reason: req.body.reason,
+                    amount: req.body.amount,
+                    dateEarned: req.body.dateEarned
+                }};
+                console.log(req.body);
+                collection.updateOne(query, update, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(404);
+                    } else {
+                        res.send(result);
+                    }
+                });
+            } catch(e) {
+                console.log("ERROR FINDING COMMITTEE");
+                console.log(err);
+                res.sendStatus(404);
+            }
+            client.close();
+        }
+    });
+});
+
+app.delete("/transactions", (req, res) => {
+    console.log("deleting transactions");
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Transactions');
+            if (!req.body) {
+                console.log("No message body");
+                res.sendStatus(200);
+            } else {
+                console.log('body');
+                console.log(req.body);
+                ids = [];
+                for (var i = 0; i < req.body.transactionIds.length; i++) {
+                    ids.push(new ObjectId(req.body.transactionIds[i]));
+                }
+                var query = {_id: {$in: ids}};
+                collection.deleteMany(query, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    } else {
+                        console.log('request deleted');
+                        res.sendStatus(200);
+                    }
+                });
+            }
+            client.close();
+        }
+    });
+});
 
 app.get("/matrixItems", (req, res) => {
     console.log('getting all matrix items');

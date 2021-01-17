@@ -563,6 +563,19 @@ th {
 #ledgerTable tr:hover {
 	background-color: wheat;
 }
+.selectedButton {
+	background-color: rgb(105, 192, 105) !important;
+}
+#editTransactionButton {
+	margin-bottom: 5px;
+	float: left;
+}
+#deleteTransactionButton {
+	margin-left: 10px;
+}
+#editTransactionsContainer {
+
+}
 
 
 /***** COMMITTEES PAGE *****/

@@ -2,17 +2,25 @@
 <html>
     <head>
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Bootstrap CSS -->
+		<!-- Bootstrap -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-		<title>Phi Kappa Psi</title>
+		<!-- jQuery Scripts -->
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+		<!-- DataTables Scripts -->
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+		<link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
+		<script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
+		<!-- Custom Styles and Controllers -->
 		<link rel="stylesheet" href="/styles.css">
 		<script type="text/javascript" src="/controllers/utils.js"></script>
-		<script type="text/javascript" src="/controllers/ledgerController.js"></script>
+        <script type="text/javascript" src="/controllers/ledgerController.js"></script>
         <!-- Font Awesome Icons -->
-        <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
+		<script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
+		<!-- Metadata -->
+		<title>Phi Kappa Psi</title>
 	</head>
 	<body class="homeBackground">
         <nav class="navbar navbar-default navbar-fixed-top">
@@ -32,13 +40,18 @@
 			<div id="ledgerFlters">
 				<button  class="filterButton" id="showAllButton">All</button>
 				<button class="filterButton" id="showAssignedButton">Assigned</button>
-				<button class="filterButton" id="showRecievedButton">Recieved</button>
+				<button class="filterButton" id="showReceivedButton">Received</button>
 				<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
+			</div>
+			<div id="editTransactionsContainer">
+				<button id=editTransactionButton><i class="far fa-edit"></i> Edit</button>
+				<button id=deleteTransactionButton><i class="far fa-trash-alt"></i> Delete</button>
 			</div>
 			<div class="ledgerContainer">
 				<table class="DataTable row-border" id="ledgerTable">
 					<thead>
 						<tr>
+							<th></th>
 							<th>Points <i class="fas fa-sort"></i></th>
 							<th>Reason <i class="fas fa-sort"></i></th>
 							<th>Receiver <i class="fas fa-sort"></i></th>
@@ -54,5 +67,16 @@
 			</div>
 		</div>
 		<footer></footer>
+		<div id="editDialog" title="Edit Transaction">				   
+			<form>
+				<label for="reason">Reason</label>
+				<input type="text" name="name" id="editReason" placeholder="reason" class="text ui-widget-content ui-corner-all">
+				<label for="amount">Amount</label>
+				<input type="number" name="name" id="editAmount" placeholder="0" class="text ui-widget-content ui-corner-all">
+				<label for="dateEarned">Date Earned</label>
+				<input type="date" name="date" placeholder="Date (mm/dd/yyyy)" id="editDateEarned">
+				<br><input id="editTransactionSubmit" type="submit">
+			</form>
+		</div>
 	</body>
 </html>

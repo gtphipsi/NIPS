@@ -60,6 +60,7 @@ $(document).ready(function() {
 
 function createCommitteeCard(committeeId) {
     var committee = COMMITTEES_BY_ID[committeeId];
+    console.log('creating committee card for ' + committee.committee);
     var newCard = 
     "<div class='row committeeRow'>" +
     "<div class='committeeCard boxShadow'>";
