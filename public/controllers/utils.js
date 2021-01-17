@@ -129,6 +129,18 @@ function getLeaderboard(transactions, timeframe) {
     return leaderboard;
 }
 
+function getTransactionsTF(transactions, timeframe) {
+    var transactionsTF = []
+    var i = 0
+    while (i< transactions.length) {
+        if (isInTimeframe(transactions[i], timeframe)) {
+            transactionsTF[transactionsTF.length] = transactions[i];
+        }
+        i++;
+    }
+    return transactionsTF
+}
+
 
 /**
  * create hashmap of { userId: pointValue }

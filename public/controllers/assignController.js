@@ -365,6 +365,7 @@ function getTransactions() {
     var logTable = $('#logTable').DataTable();
     var transactions = [];
     var data = logTable.rows().data();
+    console.log(DATE_ASSIGNED);
     for (var i = 0; i < data.length; i++) {
         var row = data[i];
         var receiverId = row[5];
@@ -374,8 +375,8 @@ function getTransactions() {
             assigner: assignerId,
             receiver: receiverId,
             amount: amount,
-            dateAssigned: new Date(DATE_ASSIGNED),
-            dateEarned: new Date(DATE_EARNED)
+            dateAssigned: DATE_ASSIGNED,
+            dateEarned: DATE_EARNED
         }
         if (validateTransaction(new_transaction, i + 1)) {
             transactions.push(new_transaction);
