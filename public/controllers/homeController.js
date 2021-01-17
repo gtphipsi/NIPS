@@ -139,15 +139,15 @@ $(document).ready(function() {
     $('#deleteButton').off('click');
     $('#deleteButton').click(function() {
         var table = $('#userRequestsTable').DataTable();
-        var rows_selected = table.column(4).checkboxes.selected();
+        var rowsSelected = table.column(4).checkboxes.selected();
         transactionIds = [];
-        $.each(rows_selected, function(index) {
-            var data = table.row(index).data();
+        $.each(rowsSelected, function(index) {
+            var tableIndex = rowsSelected[index];
+            var data = table.row(tableIndex).data();
             var requestId = data[5];
             transactionIds.push(requestId);
         });
-        console.log(transactionIds);
-        if (confirm('Are you sure you want to delete these requests?')) {
+        if (confirm('Are you sure you want to delete ' + rowsSelected.length + ' requests?')) {
             $('#loadingIcon').show();
             $.ajax({
                 url: "/requests",
@@ -168,11 +168,11 @@ $(document).ready(function() {
     $('#resolveButton').click(function() {
         var newAmount = window.prompt('Enter an amount for these transactions', 0);
         var table = $('#userRequestsTable').DataTable();
-        var rows_selected = table.column(4).checkboxes.selected();
-        console.log(rows_selected);
+        var rowsSelected = table.column(4).checkboxes.selected();
+        console.log(rowsSelected);
         transactions = [];
         transactionIds = [];
-        $.each(rows_selected, function(index) {
+        $.each(rowsSelected, function(index) {
             var data = table.row(index).data();
             newTransaction = {
                 assigner: USER._id,

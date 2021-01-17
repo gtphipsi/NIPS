@@ -5,6 +5,8 @@ var COMMITTEES;
 var COMMITTEES_BY_ID;
 var ALL_USER_IDS = [];
 var TRANSACTIONS;
+var TRANSACTIONS_BY_ID;
+var EDITING_TRANSACTION;
 var assigner = "";
 var reason = "";
 var amount = 0;
@@ -16,6 +18,8 @@ $(document).ready(function() {
     console.log("Loading assign page...");
 
     createNavBar('ledger');
+
+    $('#showAllButton').addClass('selectedButton');
 
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
@@ -34,18 +38,141 @@ $(document).ready(function() {
     console.log(userId);
     checkLoggedIn(userId);
 
+    var ledgerTable = $('#ledgerTable').DataTable({
+        searching: false,
+        paging: false,
+        info: false,
+        'columnDefs': [
+            {
+                'targets': -1,
+                'visible': false
+            },
+            {
+               'targets': 0,
+               'checkboxes': {
+                  'selectRow': true
+               }
+            }
+         ],
+         'select': {
+            'style': 'multi'
+         },
+         'order': [[1, 'asc']]
+    });
+
+    var editDialog = $("#editDialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 200,
+        position: {
+            my: "center",
+            at: "center",
+            of: window
+        }
+    });
+
+    $('#editTransactionButton').click(function() {
+        editDialog.dialog('open');
+    });
+
+    $('#editTransactionSubmit').off('click');
+    $('#editTransactionSubmit').click(function() {
+        var ledgerTable = $('#ledgerTable').DataTable();
+        var rowsSelected = ledgerTable.column(0).checkboxes.selected();
+        var transactionIds = [];
+        $.each(rowsSelected, function(index) {
+            var tableIndex = rowsSelected[index];
+            var data = ledgerTable.row(tableIndex).data();
+            console.log(data[7]);
+            transactionIds.push(data[7]);
+        });
+        if (transactionIds.length < 1) {
+            alert('no transactions selected');
+            return;
+        }
+        console.log(transactionIds);
+        var reason = $('#editReason').val();
+        var amount = $('#editAmount').val();
+        var dateEarned = $('#editDateEarned').val();
+        var changesMade = 0;
+        if (confirm('Edit ' + transactionIds.length + ' transactions?')) {
+            for (var i = 0; i < transactionIds.length; i++) {
+                var defaultInfo = TRANSACTIONS_BY_ID[transactionIds[i]];
+                if (defaultInfo.assigner != USER._id) {
+                    alert('You may only edit transactions that you have assigned');
+                } else {
+                    var newReason = reason ? reason : defaultInfo.reason;
+                    var newAmount = amount ? amount : defaultInfo.amount;
+                    var newDateEarned = dateEarned ? dateEarned : defaultInfo.dateEarned;
+                    var updateTransaction = {
+                        _id: transactionIds[i],
+                        reason: newReason,
+                        amount: newAmount,
+                        dateEarned: newDateEarned
+                    }
+                    var putURL = "/transactions/" + transactionIds[i];
+                    $('#loadingIcon').show();
+                    $.ajax({
+                        url: putURL,
+                        type: 'PUT',
+                        data: updateTransaction,
+                        done: function() {
+                            $('#loadingIcon').hide();
+                        }
+                    });
+                    changesMade++;
+                }
+            }
+            if (changesMade > 0) {
+                alert('Changes submitted');
+            }
+        } else {
+            alert('Changes not submitted');
+        }
+    });
+
+    $('#deleteTransactionButton').click(function() {
+        var rowsSelected = ledgerTable.column(0).checkboxes.selected();
+        var transactionIds = [];
+        $.each(rowsSelected, function(index) {
+            var tableIndex = rowsSelected[index];
+            var data = ledgerTable.row(tableIndex).data();
+            console.log(data);
+            console.log(data[7]);
+            if (data[7] == USER._id) {
+                transactionIds.push(data[7]);
+            } else {
+                alert('You may only delete transactions that you have assigned');
+            }
+        });
+        if (transactionIds.length < 1) {
+            return;
+        }
+        if (confirm('Delete ' + transactionIds.length + ' transactions?')) {
+            $('#loadingIcon').show();
+            $.ajax({
+                url: "/transactions",
+                type: 'DELETE',
+                data: {transactionIds},
+                success: function(response) {
+                    alert('Transactions Successfully Deleted');
+                    location.reload();
+                },
+                done: function() {
+                    $('#loadingIcon').hide();
+                }
+            });
+        }
+    });
+
     $.get("/users", function(data) {
         USERS = data;
         console.log("retrieved user data");
     }).done(function() {
         USERS_BY_ID = createHashmapById(USERS);
-        var ledgerTable = $('#ledgerTable').DataTable({
-            paging: false,
-            info: false,
-            searching: false});
     
         var userName = USERS_BY_ID[userId].firstName + ' '+  USERS_BY_ID[userId].lastName;
-    
+        USER = USERS_BY_ID[userId];
         var userURL = '/ledger/' + userId;
         $.get(userURL, function(data) {
             TRANSACTIONS = data;
@@ -57,6 +184,7 @@ $(document).ready(function() {
                 $('#ledgerTable').DataTable().clear().draw();
                 return;
             }
+            TRANSACTIONS_BY_ID = createHashmapById(TRANSACTIONS);
             console.log("updating ledger table");
             $('#ledgerTable').DataTable().clear().draw();
             for (var i = 0; i < TRANSACTIONS.length; i++) {
@@ -67,7 +195,7 @@ $(document).ready(function() {
                 var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
                 var dateAssigned = changeDateString(currentTransaction.dateAssigned);
                 var dateEarned = changeDateString(currentTransaction.dateEarned);
-                var newRow = [amount, reason, receiver, assigner, dateEarned, dateAssigned];
+                var newRow = [i, amount, reason, receiver, assigner, dateEarned, dateAssigned, currentTransaction._id];
                 $('#ledgerTable').DataTable().row.add(newRow);
             }
             $('#ledgerTable').DataTable().draw();
@@ -76,11 +204,14 @@ $(document).ready(function() {
 
         var showAllButton = $('#showAllButton');
         var showAssignedButton = $('#showAssignedButton');
-        var showRecievedButton = $('#showRecievedButton');
+        var showReceivedButton = $('#showReceivedButton');
 
         showAllButton.off('click');
         showAllButton.click(function() {
             $('#ledgerTable').DataTable().clear().draw();
+            $('#showAllButton').addClass('selectedButton');
+            $('#showAssignedButton').removeClass('selectedButton');
+            $('#showReceivedButton').removeClass('selectedButton');
             for (var i = 0; i < TRANSACTIONS.length; i++) {
                 var currentTransaction = TRANSACTIONS[i];
                 var amount = currentTransaction.amount;
@@ -89,7 +220,7 @@ $(document).ready(function() {
                 var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
                 var dateAssigned = changeDateString(currentTransaction.dateAssigned);
                 var dateEarned = changeDateString(currentTransaction.dateEarned);
-                var newRow = [amount, reason, receiver, assigner, dateEarned, dateAssigned];
+                var newRow = [i, amount, reason, receiver, assigner, dateEarned, dateAssigned, currentTransaction._id];
                 $('#ledgerTable').DataTable().row.add(newRow); 
             }
             $('#ledgerTable').DataTable().draw();
@@ -98,6 +229,10 @@ $(document).ready(function() {
         showAssignedButton.off('click');
         showAssignedButton.click(function() {
             $('#ledgerTable').DataTable().clear().draw();
+            $('#showAllButton').removeClass('selectedButton');
+            $('#showReceivedButton').removeClass('selectedButton');
+            $('#showAssignedButton').addClass('selectedButton');
+            var tableIndex = 0;
             for (var i = 0; i < TRANSACTIONS.length; i++) {
                 var currentTransaction = TRANSACTIONS[i];
                 var amount = currentTransaction.amount;
@@ -106,17 +241,22 @@ $(document).ready(function() {
                 var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
                 var dateAssigned = changeDateString(currentTransaction.dateAssigned);
                 var dateEarned = changeDateString(currentTransaction.dateEarned);
-                var newRow = [amount, reason, receiver, assigner, dateEarned, dateAssigned];
                 if (assigner == userName) {
-                    $('#ledgerTable').DataTable().row.add(newRow); 
+                    var newRow = [tableIndex, amount, reason, receiver, assigner, dateEarned, dateAssigned, currentTransaction._id];
+                    $('#ledgerTable').DataTable().row.add(newRow);
+                    tableIndex++;
                 }
             }
             $('#ledgerTable').DataTable().draw();
         });
 
-        showRecievedButton.off('click');
-        showRecievedButton.click(function() {
+        showReceivedButton.off('click');
+        showReceivedButton.click(function() {
+            $('#showAllButton').removeClass('selectedButton');
+            $('#showAssignedButton').removeClass('selectedButton');
+            $('#showReceivedButton').addClass('selectedButton');
             $('#ledgerTable').DataTable().clear().draw();
+            var tableIndex = 0;
             for (var i = 0; i < TRANSACTIONS.length; i++) {
                 var currentTransaction = TRANSACTIONS[i];
                 var amount = currentTransaction.amount;
@@ -125,9 +265,10 @@ $(document).ready(function() {
                 var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
                 var dateAssigned = changeDateString(currentTransaction.dateAssigned);
                 var dateEarned = changeDateString(currentTransaction.dateEarned);
-                var newRow = [amount, reason, receiver, assigner, dateEarned, dateAssigned];
                 if (receiver == userName) {
+                    var newRow = [tableIndex, amount, reason, receiver, assigner, dateEarned, dateAssigned, currentTransaction._id];
                     $('#ledgerTable').DataTable().row.add(newRow); 
+                    tableIndex++;
                 }
             }
             $('#ledgerTable').DataTable().draw();
