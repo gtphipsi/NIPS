@@ -164,7 +164,13 @@ $(document).ready(function() {
             COMMITTEES_BY_ID = createHashmapById(COMMITTEES);
             var positions = getPositions(USER, COMMITTEES);
             for (var i = 0; i < positions.length; i++) {
-                assigningAs.append(`<option value=${positions[i]}>${positions[i]}</option>`);
+                var positionLabel = positions[i];
+                if (positions[i] == 'rushChair') {
+                    positionLabel = 'Rush Chair';
+                } else if (positions[i] == 'riskManager') {
+                    positionLabel = 'Risk Manager';
+                }
+                assigningAs.append(`<option value=${positions[i]}>${positionLabel}</option>`);
             }
             $.get("/users", function(data) {
                 USERS = data;
@@ -268,6 +274,19 @@ function updateGroup() {
  */
 function updateDate() {
     DATE_EARNED = new Date($('#assignDate').val() + 'T00:00:00');
+    if (!isValidDate(DATE_EARNED)) {
+        console.log('invalid date earned');
+        if ($('#assignDate').val().length == 10) {
+            var month = $('#assignDate').val().substring(0, 2);
+            var day = $('#assignDate').val().substring(3, 5);
+            var year = $('#assignDate').val().substring(6, 10);
+            var dateString = year + '-' + month + '-' + day + 'T00:00:00';
+            DATE_EARNED = new Date(dateString);
+        } else {
+            alert('Invalid Date Object: please re-format to mm/dd/yyyy');
+        }
+    }
+    console.log(DATE_EARNED);
 }
 
 function updateGroupTable() {
@@ -313,11 +332,17 @@ function updateLogTable() {
             amt = CUSTOM_AMOUNTS[ALL_USER_IDS[i]];
         }
         var amountColumn = amt;
+        var assignerLabel = ASSIGNER;
+        if (ASSIGNER == 'rushChair') {
+            assignerLabel = 'Rush Chair';
+        } else if (ASSIGNER == 'riskManager') {
+            assignerLabel = 'Risk Manager';
+        }
         var newRow = [
             name,
             amountColumn,
             REASON,
-            ASSIGNER,
+            assignerLabel,
             DATE_ASSIGNED.toString().substring(0, 10),
             ALL_USER_IDS[i]
         ];
@@ -352,6 +377,7 @@ function getTransactions() {
     var logTable = $('#logTable').DataTable();
     var transactions = [];
     var data = logTable.rows().data();
+    console.log(DATE_ASSIGNED);
     for (var i = 0; i < data.length; i++) {
         var row = data[i];
         var receiverId = row[5];
@@ -361,8 +387,8 @@ function getTransactions() {
             assigner: assignerId,
             receiver: receiverId,
             amount: amount,
-            dateAssigned: new Date(DATE_ASSIGNED),
-            dateEarned: new Date(DATE_EARNED)
+            dateAssigned: DATE_ASSIGNED,
+            dateEarned: DATE_EARNED
         }
         if (validateTransaction(new_transaction, i + 1)) {
             transactions.push(new_transaction);

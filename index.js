@@ -579,6 +579,41 @@ app.post("/requests", (req, res) => {
     });
 });
 
+app.delete("/requests", (req, res) => {
+    console.log("deleting requests");
+    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+        if (err) {
+            console.log('ERROR CONNECTING TO MONGO');
+            res.sendStatus(404);
+        } else {
+            var db = client.db('NIPS');
+            var collection = db.collection('Requests');
+            if (!req.body) {
+                console.log("No message body");
+                res.sendStatus(200);
+            } else {
+                console.log('body');
+                console.log(req.body);
+                ids = [];
+                for (var i = 0; i < req.body.transactionIds.length; i++) {
+                    ids.push(new ObjectId(req.body.transactionIds[i]));
+                }
+                var query = {_id: {$in: ids}};
+                collection.deleteMany(query, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    } else {
+                        console.log('request deleted');
+                        res.sendStatus(200);
+                    }
+                });
+            }
+            client.close();
+        }
+    });
+});
+
 /**
  * Server Activation
  */

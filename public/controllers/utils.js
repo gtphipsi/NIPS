@@ -16,7 +16,7 @@ const fallSemester = {
 }
 
 const springSemester = {
-    STARTDATE: new Date(2021, 01, 01),
+    STARTDATE: new Date(2020, 11, 18),
     ENDDATE: new Date(2021, 07, 30)
 }
 
@@ -127,6 +127,18 @@ function getLeaderboard(transactions, timeframe) {
         return b.points - a.points;
     });
     return leaderboard;
+}
+
+function getTransactionsTF(transactions, timeframe) {
+    var transactionsTF = []
+    var i = 0
+    while (i< transactions.length) {
+        if (isInTimeframe(transactions[i], timeframe)) {
+            transactionsTF[transactionsTF.length] = transactions[i];
+        }
+        i++;
+    }
+    return transactionsTF
 }
 
 
@@ -448,5 +460,17 @@ function getRequestsForUser(user, requests, committees) {
  * @return list of request objects
  */
 function getRequestsFromUser(userId, requests) {
-
+    console.log('finding requests from user');
+    if (!userId || !requests || requests.length == 0) {
+        return [];
+    }
+    outstandingRequests = [];
+    for (var i = 0; i < requests.length; i++) {
+        if (requests[i].requesterId == userId) {
+            outstandingRequests.push(requests[i]);
+        } else {
+            console.log(requests[i].requesterId);
+        }
+    }
+    return outstandingRequests;
 }
