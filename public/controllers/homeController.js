@@ -247,7 +247,7 @@ function updateTimeframe() {
 }
 
 function updateRank() {
-    console.log(TIMEFRAME);
+    
     var leaderboard = getLeaderboard(TRANSACTIONS, USERS_BY_ID, TIMEFRAME);
     var transactions = getTransactionsTF(TRANSACTIONS, TIMEFRAME);
     var userRanking = getUserRanking(USER._id, leaderboard);
@@ -265,6 +265,8 @@ function updateRank() {
 }
 
 function updateStatistics(leaderboard, transactions) {
+    var userId = sessionStorage.getItem('userId');
+
     var mean = getMean(leaderboard);
     var median = getMedian(leaderboard);
     var low = getLow(leaderboard);
@@ -291,9 +293,7 @@ function updateStatistics(leaderboard, transactions) {
         nbinsx: 6
     };
     var data = [trace];
-    console.log("x:");
-
-    console.log(x);
+    
     var layout = {
         xaxis: {title: {text:"Points", standoff: 0}}, 
         yaxis: {title: {text:"Brothers", standoff: 0}},
@@ -308,10 +308,14 @@ function updateStatistics(leaderboard, transactions) {
 
     var rawDates = [];
     var rawPoints = [];
-    console.log(transactions)
-    for ( var j = 0; j< transactions.length;j++) {
-        rawDates[j] = transactions[j]['dateEarned'].split('T')[0];
-        rawPoints[j] = parseInt(transactions[j]['amount']);
+    
+    var j = 0;
+    for (var i = 0; i < transactions.length; i++) {
+        if (transactions[i]['receiver'] == userId) {
+            rawDates[j] = transactions[i]['dateEarned'].split('T')[0];
+            rawPoints[j] = parseInt(transactions[i]['amount']);
+            j++;
+        } 
     }
 
     var pointDateHash = {};
