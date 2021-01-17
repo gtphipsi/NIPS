@@ -12,7 +12,7 @@ var TIMEFRAME;
 $(document).ready(function() {
     console.log("Loading home page...");
 
-    createNavBar('home');
+    
 
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
@@ -30,6 +30,7 @@ $(document).ready(function() {
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
+    createNavBar('home');
 
     $('#userLogTable').DataTable({
         searching: false,

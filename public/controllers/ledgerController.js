@@ -15,8 +15,6 @@ var log = [];
 $(document).ready(function() {
     console.log("Loading assign page...");
 
-    createNavBar('ledger');
-
     $('#signoutButton').off('click');
     $('#signoutButton').click(function() {
         sessionStorage.setItem('userId', '');
@@ -30,9 +28,11 @@ $(document).ready(function() {
 
     addFooter();
 
+
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
+    createNavBar('ledger');
 
     $.get("/users", function(data) {
         USERS = data;

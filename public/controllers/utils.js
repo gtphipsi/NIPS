@@ -361,12 +361,13 @@ function createNavBar(page) {
     var committees = '<a class=topNavLink id=committeesNav href = "/viewcommittees"><i class="fas fa-users"></i> Committees';
     var matrix = '<a class=topNavLink id=matrixNav href="/matrix"><i class="fas fa-th-list"></i> Matrix';
     var signout = '<button id=signoutButton><i class="fas fa-sign-out-alt"></i> Sign Out</button>';
+    
     $('#navbar').append(home);
     $('#navbar').append(assign);
     $('#navbar').append(ledger);
-    $('#navbar').append(admin);
     $('#navbar').append(committees);
     $('#navbar').append(matrix);
+    $('#navbar').append(admin);
     $('#navbar').append(signout);
 
     switch (page) {
@@ -397,6 +398,7 @@ function createNavBar(page) {
         default:
             break;
     }
+    
 }
 
 
