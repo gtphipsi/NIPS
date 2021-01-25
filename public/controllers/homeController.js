@@ -249,6 +249,7 @@ function updateRank() {
     
     var leaderboard = getLeaderboard(TRANSACTIONS, USERS_BY_ID, TIMEFRAME);
     var transactions = getTransactionsTF(TRANSACTIONS, TIMEFRAME);
+    console.log(transactions);
     var userRanking = getUserRanking(USER._id, leaderboard);
     var userPoints;
     if (userRanking == 0) {
