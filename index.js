@@ -447,9 +447,9 @@ app.post("/transactions", (req, res) => {
                         console.log('transactions added');
                         res.sendStatus(200);
                     }
+                    client.close();
                 });
             }
-            client.close();
         }
     });
 });
@@ -461,6 +461,7 @@ app.get("/transactions", (req, res) => {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
         } else {
+            console.log("FINDING ALL TRANSACTIONS");
             var db = client.db('NIPS');
             var collection = db.collection('Transactions');
             collection.find({}).toArray(function(err, result) {
@@ -470,9 +471,9 @@ app.get("/transactions", (req, res) => {
                 } else {
                     res.send(result);
                 }
+                client.close();
             });
-            client.close();
-        }
+        }      
     });
 });
 
@@ -505,13 +506,13 @@ app.put("/transactions/:transactionId", (req, res) => {
                     } else {
                         res.send(result);
                     }
+                    client.close();
                 });
             } catch(e) {
                 console.log("ERROR FINDING COMMITTEE");
                 console.log(err);
                 res.sendStatus(404);
             }
-            client.close();
         }
     });
 });
@@ -544,9 +545,9 @@ app.delete("/transactions", (req, res) => {
                         console.log('request deleted');
                         res.sendStatus(200);
                     }
+                    client.close();
                 });
             }
-            client.close();
         }
     });
 });
@@ -567,8 +568,8 @@ app.get("/matrixItems", (req, res) => {
                 } else {
                     res.send(result);
                 }
+                client.close();
             });
-            client.close();
         }
     });
 });
@@ -595,9 +596,9 @@ app.post("/matrix", (req, res) => {
                         console.log(req.body);
                         res.sendStatus(200);
                     }
+                    client.close();
                 });
             }
-            client.close();
         }
     });
 });
@@ -618,6 +619,7 @@ app.get("/requests", (req, res) => {
                 } else {
                     res.send(result);
                 }
+                client.close();
             });
             client.close();
         }
@@ -647,9 +649,9 @@ app.post("/requests", (req, res) => {
                         console.log(req.body);
                         res.sendStatus(200);
                     }
+                    client.close();
                 });
             }
-            client.close();
         }
     });
 });
@@ -682,9 +684,9 @@ app.delete("/requests", (req, res) => {
                         console.log('request deleted');
                         res.sendStatus(200);
                     }
+                    client.close();
                 });
             }
-            client.close();
         }
     });
 });
