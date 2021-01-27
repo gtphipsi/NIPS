@@ -86,7 +86,6 @@ function createHashmapById(data) {
  * @returns array of officer and committee head positions held
  */
 function getPositions(user, committees) {
-    console.log('getting positions');
     var positions = [];
     if (!user || !user.officerPositions || !committees) {
         return [];
@@ -152,8 +151,11 @@ function getTransactionsTF(transactions, timeframe) {
  */
 function getPointValues(transactions, timeframe) {
     var pointValues = {};
+    console.log("trasn");
+    console.log(timeframe);
     for (var i = 0; i < transactions.length; i++) {
         if (isInTimeframe(transactions[i], timeframe)) {
+            console.log("in timeframe");
             var receiverId = transactions[i].receiver;
             if (pointValues[receiverId]) {
                 pointValues[receiverId] = parseInt(pointValues[receiverId]) + parseInt(transactions[i].amount);
@@ -256,6 +258,7 @@ function isInTimeframe(transaction, timeframe) {
             return false;
         }
     } else {
+        console.log("TIME FRAME ERROR");
         return false;
     }
 }
@@ -278,12 +281,6 @@ function isThisWeek(date) {
     var now = new Date();
     var earned = new Date(date);
     var weekDay = now.getDay();
-    // convert to week ending sunday and starting monday
-    if (weekDay == 0) {
-        weekDay = 6;
-    } else {
-        weekDay = weekDay - 1;
-    }
     return (now - earned) / 86400000 <= weekDay;
 }
 function isThisMonth(date) {
