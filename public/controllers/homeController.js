@@ -82,6 +82,7 @@ $(document).ready(function() {
                 console.log("failed retrieving transaction data--returning to login page");
                 window.location = '/';
             }).done(function() {
+                console.log("making user log table");
                 updateTimeframe();
                 var pointsReceived = getUserReceiverTransactions(userId, TRANSACTIONS);
                 $('#userLogTable').DataTable().clear().draw();
@@ -119,7 +120,6 @@ $(document).ready(function() {
             });
         });
     });
-
     var requestDialog = $("#requestDialog").dialog({
         autoOpen: false,
         modal: true,
@@ -188,6 +188,7 @@ $(document).ready(function() {
          });
          console.log(transactionIds);
          $('#loadingIcon').show();
+         console.log('RESOLVING TRANSACTION');
          $.post("/transactions", {transactions}).done(function() {
             $.ajax({
                 url: "/requests",
@@ -222,6 +223,7 @@ $(document).ready(function() {
                 reason: reason,
                 date: new Date(date)
             }
+            console.log('SUMBITTING REQUESTS')
             $.post("/requests", newRequest).done(function() {
                 console.log("Request successfully added");
                 console.log(newRequest);
@@ -247,9 +249,13 @@ function updateTimeframe() {
 
 function updateRank() {
     
-    var leaderboard = getLeaderboard(TRANSACTIONS, USERS_BY_ID, TIMEFRAME);
+    var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME);
     var transactions = getTransactionsTF(TRANSACTIONS, TIMEFRAME);
     var userRanking = getUserRanking(USER._id, leaderboard);
+    console.log("Transaction");
+    console.log(TRANSACTIONS);
+    console.log("Leaderboard");
+    console.log(leaderboard);
     var userPoints;
     if (userRanking == 0) {
         userPoints = 0;
@@ -259,13 +265,12 @@ function updateRank() {
     $('#userRank').text('Rank: ' +  userRanking + ' | Points: ' + userPoints);
     addRankIcon(userRanking);
     $('#pointsBehind').text(getPointsBehindMessage(userRanking, leaderboard));
-    updateStatistics(leaderboard, transactions);
+    updateStatistics(leaderboard);
+    makeGraphs(leaderboard, transactions);
     updateProgressBar(userPoints);
 }
 
-function updateStatistics(leaderboard, transactions) {
-    var userId = sessionStorage.getItem('userId');
-
+function updateStatistics(leaderboard) {
     var mean = getMean(leaderboard);
     var median = getMedian(leaderboard);
     var low = getLow(leaderboard);
@@ -274,7 +279,11 @@ function updateStatistics(leaderboard, transactions) {
     $('#statMedian').text(median);
     $('#statLow').text(low);
     $('#statHigh').text(high);
+}
+
+function makeGraphs(leaderboard, transactions){
     console.log('drawing graphs');
+    var userId = sessionStorage.getItem('userId');
     fraternityHistogram = document.getElementById('fraternityHistogram');
     var x = [];
     var i = 0;
