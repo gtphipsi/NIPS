@@ -85,8 +85,8 @@ app.get("/users", (req, res) => {
                 } else {
                     res.send(result);
                 }
+                client.close();
             });
-            client.close();
         }
     });
 });
@@ -126,9 +126,9 @@ app.post("/users", (req, res) => {
                         console.log(req.body);
                         res.sendStatus(200);
                     }
+                    client.close();
                 });
             }
-            client.close();
         }
     });
 });
@@ -153,13 +153,13 @@ app.get("/users/:userId", (req, res) => {
                     } else {
                         res.send(result);
                     }
+                    client.close();
                 });
             } catch(e) {
                 console.log("ERROR FINDING USER");
                 console.log(err);
                 res.sendStatus(404);
             }
-            client.close();
         }
     });
 });
@@ -204,13 +204,13 @@ app.put("/users/:userId", (req, res) => {
                     } else {
                         res.send(result);
                     }
+                    client.close();
                 });
             } catch(e) {
                 console.log("ERROR FINDING USER");
                 console.log(err);
                 res.sendStatus(404);
             }
-            client.close();
         }
     });
 });
@@ -233,8 +233,8 @@ app.get("/ledger/:userId", (req, res) => {
                 } else {
                     res.send(result);
                 }
+                client.close();
             });
-            client.close();
         }      
     });
 });
@@ -267,9 +267,9 @@ app.post("/login", (req, res) => {
                         console.log('No matching user found');
                         res.sendStatus(404);
                     }
+                    client.close();
                 });
             }
-            client.close();
         }
     });
 });
@@ -292,8 +292,8 @@ app.get("/committees", (req, res) => {
                 } else {
                     res.send(result);
                 }
+                client.close();
             });
-            client.close();
         }
     });
 });
@@ -318,13 +318,13 @@ app.get("/committees/:committeeId", (req, res) => {
                     } else {
                         res.send(result);
                     }
+                    client.close();
                 });
             } catch(e) {
                 console.log("ERROR FINDING COMMITTEE");
                 console.log(err);
                 res.sendStatus(404);
             }
-            client.close();
         }
     });
 });
@@ -360,9 +360,9 @@ app.post("/committees", (req, res) => {
                         console.log(req.body);
                         res.sendStatus(200);
                     }
+                    client.close();
                 });
             }
-            client.close();
         }
     });
 });
@@ -401,13 +401,13 @@ app.put("/committees/:committeeId", (req, res) => {
                     } else {
                         res.send(result);
                     }
+                    client.close();
                 });
             } catch(e) {
                 console.log("ERROR FINDING COMMITTEE");
                 console.log(err);
                 res.sendStatus(404);
             }
-            client.close();
         }
     });
 });
@@ -621,7 +621,6 @@ app.get("/requests", (req, res) => {
                 }
                 client.close();
             });
-            client.close();
         }
     });
 });
