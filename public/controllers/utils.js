@@ -290,7 +290,7 @@ function isThisMonth(date) {
     var now = new Date();
     var earned = new Date(date);
     var monthDay = now.getDate();
-    return (now - earned) / 86400000 <= monthDay;
+    return Math.floor((now - earned) / 86400000) <= monthDay;
 }
 
 /**

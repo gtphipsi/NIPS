@@ -471,7 +471,6 @@ app.get("/transactions", (req, res) => {
                     res.send(result);
                 }
             });
-            client.close();
         }
     });
 });
