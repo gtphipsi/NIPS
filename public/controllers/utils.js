@@ -45,6 +45,7 @@ const positions = {
     VGP: "VGP",
     P: "P",
     NME: "NME",
+    HOD: "Hod",
     BG: "BG",
     SG: "SG",
     AG: "AG",
