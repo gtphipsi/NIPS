@@ -141,11 +141,12 @@ $(document).ready(function() {
             officerPositions: officerPositionsToBoolean(EDIT_USER_OFFICER_POSITIONS)
         }
         var put_url = "/users/" + $('#editMembers').val();
+        var postData = {'updateUser':updateUser, 'USER':USERS_BY_ID[userId]}
         console.log('making PUT request at', put_url);
         $.ajax({
             url: put_url,
             type: 'PUT',
-            data: updateUser,
+            data: postData,
             success: function(response) {
             console.log("User successfully updated");
             console.log(updateUser);

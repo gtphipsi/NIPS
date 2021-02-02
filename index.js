@@ -184,17 +184,17 @@ app.put("/users/:userId", (req, res) => {
                 var db = client.db('NIPS');
                 var collection = db.collection('Users');
                 var query = {_id: mongoId};
-                var isAdmin = JSON.parse(req.body.admin);
-                var officerPositions = req.body.officerPositions;
+                var isAdmin = JSON.parse(req.body.updateUser.admin);
+                var officerPositions = req.body.updateUser.officerPositions;
                 for (var position in officerPositions) {
-                    officerPositions[position] = JSON.parse(req.body.officerPositions[position]);
+                    officerPositions[position] = JSON.parse(req.body.updateUser.officerPositions[position]);
                 }
-                req.body.admin = isAdmin;
+                req.body.updateUser.admin = isAdmin;
                 var update = {$set: {
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    admin: req.body.admin,
-                    officerPositions: req.body.officerPositions
+                    firstName: req.body.updateUser.firstName,
+                    lastName: req.body.updateUser.lastName,
+                    admin: req.body.updateUser.admin,
+                    officerPositions: req.body.updateUser.officerPositions
                 }};
                 console.log(req.body);
                 collection.updateOne(query, update, function(err, result) {
