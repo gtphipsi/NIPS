@@ -122,6 +122,16 @@ $(document).ready(function() {
             updateMatrix();
         });
 
+        $('#showHodButton').off('click');
+        $('#showHodButton').click(function() {
+            if (FILTERS.indexOf(positions.HOD) >= 0) {
+                return;
+            }
+            FILTERS.push(positions.HOD);
+            $('#hideHodButton').show();
+            updateMatrix();
+        });
+
         $('#showBGButton').off('click');
         $('#showBGButton').click(function() {
             if (FILTERS.indexOf(positions.BG) >= 0) {
@@ -243,6 +253,15 @@ $(document).ready(function() {
             }
         });
 
+        $('#hideHodButton').off('click');
+        $('#hideHodButton').click(function() {
+            if (FILTERS.indexOf(positions.HOD) >= 0) {
+                FILTERS.splice(FILTERS.indexOf(positions.HOD), 1);
+                $('#hideHodButton').hide();
+                updateMatrix();
+            }
+        });
+
         $('#hideBGButton').off('click');
         $('#hideBGButton').click(function() {
             if (FILTERS.indexOf(positions.BG) >= 0) {
@@ -353,6 +372,7 @@ function hideFilters() {
     $('#hideVGPButton').hide();
     $('#hidePButton').hide();
     $('#hideNMEButton').hide();
+    $('#hideHodButton').hide();
     $('#hideBGButton').hide();
     $('#hideSGButton').hide();
     $('#hideAGButton').hide();

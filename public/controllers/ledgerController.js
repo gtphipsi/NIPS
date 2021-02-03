@@ -138,11 +138,13 @@ $(document).ready(function() {
         $.each(rowsSelected, function(index) {
             var tableIndex = rowsSelected[index];
             var data = ledgerTable.row(tableIndex).data();
+            var transaction = TRANSACTIONS_BY_ID[data[7]];
             console.log(data);
-            console.log(data[7]);
-            if (data[7] == USER._id) {
+            console.log(transaction.assigner);
+            if (transaction.assigner == USER._id) {
                 transactionIds.push(data[7]);
             } else {
+                alert(transaction.assigner + '\n' + USER._id);
                 alert('You may only delete transactions that you have assigned');
             }
         });
