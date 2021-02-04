@@ -71,7 +71,7 @@ $(document).ready(function() {
                 for (var i = 0; i < MATRIX.length; i++) {
                     var currentMatrix = MATRIX[i];
                     console.log(currentMatrix);
-                    var newRow = [currentMatrix.title, currentMatrix.positivePoints, currentMatrix.negativePoints, currentMatrix.assigner, currentMatrix.tag];
+                    var newRow = [currentMatrix.title, currentMatrix.positivePoints, currentMatrix.negativePoints, currentMatrix.notes, currentMatrix.assigner, currentMatrix.tag];
                     $('#matrixTable').DataTable().row.add(newRow);
                 }
                 $('#matrixTable').DataTable().draw();
@@ -368,7 +368,7 @@ function updateMatrix() {
     for (var i = 0; i < MATRIX.length; i++) {
         var currentMatrix = MATRIX[i];
         var filterTag = currentMatrix.tag;
-        var newRow = [currentMatrix.title, currentMatrix.positivePoints, currentMatrix.negativePoints, currentMatrix.assigner, currentMatrix.tag];
+        var newRow = [currentMatrix.title, currentMatrix.positivePoints, currentMatrix.negativePoints, currentMatrix.notes, currentMatrix.assigner, currentMatrix.tag];
         if (FILTERS.length == 0 || FILTERS.indexOf(filterTag) >= 0) {
             $('#matrixTable').DataTable().row.add(newRow);
         }
