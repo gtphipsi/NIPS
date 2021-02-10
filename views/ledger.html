@@ -29,8 +29,8 @@
 				<!-- GENERATE VIA UTILS FUNCTION -->
 			</div>
 		</nav>
-		<div class="container">
-			<div class="row">
+		<div class="ledgerContainer">
+			<div class="row ledgerRow">
 				<div class="col-md center redTitle boxShadow">
                     <h1>Ledger</h1>
 				</div>
@@ -38,33 +38,76 @@
 			<div id="loadingIcon">
 				<i class="fas fa-spinner fa-pulse fa-3x"></i>
 			</div>
-			<div id="ledgerFlters">
-				<button  class="filterButton" id="showAllButton">All</button>
-				<button class="filterButton" id="showAssignedButton">Assigned</button>
-				<button class="filterButton" id="showReceivedButton">Received</button>
-				<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
+			<div id="ledgerFlters" class="row ledgerRow">
+				<div class='col ledgerCol'>
+					<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
+				</div>
+				<div class="col-2 ledgerCol">
+						<label for="sortValueMenu">Sort by:</label>
+						<select name="sortValueMenu" id="sortValueMenu" onchange="makeLedger()">
+						<option value="Date">Date</option>
+						<option value="Receiver">Receiver</option>
+						<option value="Assigner">Assigner</option>
+						<option value="Reason">Reason</option>
+						<option value="Amount">Amount</option>
+						</select>
+				</div>
+				<div class="col-0.1 ledgerCol">
+					<label for="filterValueMenu">Filter by:</label>
+				</div>
+					<div class="col ledgerCol">
+					<form>
+						<div class="multiselect">
+							  <div class="selectBox" onclick="showCheckboxes()">
+								<select>
+							  		<option>Filter Options</option>
+								</select>
+								<div class="overSelect"></div>
+						  		</div>
+						  		<div id="checkboxes">
+									<label for="Assigned">
+							  		<input type="checkbox" id="AssignedCheck" />Assigned</label>
+									<label for="Received">
+							  		<input type="checkbox" id="ReceivedCheck" />Received</label>
+									<label for="ThisWeek">
+									<input type="checkbox" id="ThisWeekCheck" />This Week</label>
+									<label for="ThisMonth">
+									<input type="checkbox" id="ThisMonthCheck" />This Month</label>
+									<label for="PastMonth">
+									<input type="checkbox" id="ThisSemesterCheck" />This Semester</label>
+						  	</div>
+						</div>
+					</form>
+				</div>
+				<div class="col-3 ledgerCol editTransactionsContainer">
+						<button id=editTransactionButton><i class="far fa-edit"></i> Edit</button>
+						<button id=deleteTransactionButton><i class="far fa-trash-alt"></i> Delete</button>
+						<button id=adminTransactionButton><i class="far fa-cogs"></i> Admin</button>
+				</div>
 			</div>
-			<div id="editTransactionsContainer">
-				<button id=editTransactionButton><i class="far fa-edit"></i> Edit</button>
-				<button id=deleteTransactionButton><i class="far fa-trash-alt"></i> Delete</button>
-			</div>
-			<div class="ledgerContainer">
-				<table class="DataTable row-border" id="ledgerTable">
-					<thead>
-						<tr>
-							<th></th>
-							<th>Points <i class="fas fa-sort"></i></th>
-							<th>Reason <i class="fas fa-sort"></i></th>
-							<th>Receiver <i class="fas fa-sort"></i></th>
-							<th>Assigner <i class="fas fa-sort"></i></th>
-							<th>Date Earned <i class="fas fa-sort"></i></th>
-							<th>Date Assigned <i class="fas fa-sort"></i></th>
-						</tr>
-					</thead>
-					<tbody id="ledgerTableBody">
+			
+			<div class="row ledgerRow" id="ledgerTableRow">
+				<div class="col ledgerCol">
+					<div id="ledgerContainer">
+						<table class="DataTable row-border" id="ledgerTable">
+							<thead>
+								<tr>
+									<th class="ledgerHead">Checkboxes</th>
+									<th class="ledgerHead">Amount</th>
+									<th class="ledgerHead">Reason</th>
+									<th class="ledgerHead">Receiver</th>
+									<th class="ledgerHead">Assigner</th>
+									<th class="ledgerHead">Date Earned</th>
+									<th class="ledgerHead">Date Assigned</th>
+									<th class="ledgerHead">ID</th>
+								</tr>
+							</thead>
+							<tbody id="ledgerTableBody">
 
-					</tbody>
-				</table>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 		<footer></footer>

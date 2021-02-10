@@ -6,14 +6,22 @@ var COMMITTEES_BY_ID;
 var ALL_USER_IDS = [];
 var TRANSACTIONS;
 var TRANSACTIONS_BY_ID;
+var USER_TRANSACTIONS;
+var USER_TRANSACTIONS_BY_ID;
+var ALL_TRANSACTIONS;
+var ALL_TRANSACTIONS_BY_ID;
 var EDITING_TRANSACTION;
+var SEARCH_TEXT = "";
 var assigner = "";
 var reason = "";
 var amount = 0;
+var adminPriveleges = false;
 var currentGroup;
 var currentBrother;
 var groups = [];
 var log = [];
+var expanded = false;
+
 $(document).ready(function() {
     console.log("Loading assign page...");
 
@@ -52,13 +60,16 @@ $(document).ready(function() {
                'targets': 0,
                'checkboxes': {
                   'selectRow': true
-               }
-            }
+               }, "width": "5%"
+            },
+            {
+                targets: "_all",
+                orderable: false
+             },
          ],
          'select': {
             'style': 'multi'
-         },
-         'order': [[1, 'asc']]
+         }
     });
 
     var editDialog = $("#editDialog").dialog({
@@ -80,13 +91,18 @@ $(document).ready(function() {
     $('#editTransactionSubmit').click(function() {
         var ledgerTable = $('#ledgerTable').DataTable();
         var rowsSelected = ledgerTable.column(0).checkboxes.selected();
+        console.log("rows selected");
+        console.log(rowsSelected);
         var transactionIds = [];
         $.each(rowsSelected, function(index) {
             var tableIndex = rowsSelected[index];
             var data = ledgerTable.row(tableIndex).data();
-            console.log(data[7]);
-            transactionIds.push(data[7]);
+            console.log("rows data");
+            console.log(data);
+            transactionIds.push(data[data.length-1]);
         });
+        console.log("transactinos ids");
+        console.log(transactionIds);
         if (transactionIds.length < 1) {
             alert('no transactions selected');
             return;
@@ -99,7 +115,7 @@ $(document).ready(function() {
         if (confirm('Edit ' + transactionIds.length + ' transactions?')) {
             for (var i = 0; i < transactionIds.length; i++) {
                 var defaultInfo = TRANSACTIONS_BY_ID[transactionIds[i]];
-                if (defaultInfo.assigner != USER._id) {
+                if (defaultInfo.assigner != USER._id && !adminPriveleges) {
                     alert('You may only edit transactions that you have assigned');
                 } else {
                     var newReason = reason ? reason : defaultInfo.reason;
@@ -140,8 +156,8 @@ $(document).ready(function() {
             var data = ledgerTable.row(tableIndex).data();
             console.log(data);
             console.log(data[7]);
-            if (data[7] == USER._id) {
-                transactionIds.push(data[7]);
+            if (data[7] == USER._id || (adminPriveleges&&USER.admin)) {
+                transactionIds.push(data[data.length - 1]);
             } else {
                 alert('You may only delete transactions that you have assigned');
             }
@@ -166,6 +182,20 @@ $(document).ready(function() {
         }
     });
 
+    $('#adminTransactionButton').click(function() {
+        if (USER.admin) {
+            TRANSACTIONS = USER_TRANSACTIONS == TRANSACTIONS ? ALL_TRANSACTIONS : USER_TRANSACTIONS;
+            TRANSACTIONS_BY_ID = USER_TRANSACTIONS_BY_ID == TRANSACTIONS_BY_ID ? ALL_TRANSACTIONS_BY_ID : USER_TRANSACTIONS_BY_ID;
+            makeLedger();
+            console.log(document.getElementById("adminTransactionButton").innerHTML);
+            document.getElementById("adminTransactionButton").innerHTML = adminPriveleges? '<i class="far fa-cogs" aria-hidden="true"></i> User' : '<i class="far fa-cogs" aria-hidden="true"></i> Admin';
+            adminPriveleges = !adminPriveleges;
+        } else {
+            alert("ACCESS DENIED\nUser does not have admin priviledges");
+        }
+        
+    });
+
     $.get("/users", function(data) {
         USERS = data;
         console.log("retrieved user data");
@@ -187,124 +217,158 @@ $(document).ready(function() {
             }
             TRANSACTIONS_BY_ID = createHashmapById(TRANSACTIONS);
             console.log("updating ledger table");
-            $('#ledgerTable').DataTable().clear().draw();
-            for (var i = 0; i < TRANSACTIONS.length; i++) {
-                var currentTransaction = TRANSACTIONS[i];
-                var amount = currentTransaction.amount;
-                var reason = currentTransaction.reason;
-                var receiver = USERS_BY_ID[currentTransaction.receiver].firstName + ' ' + USERS_BY_ID[currentTransaction.receiver].lastName;
-                var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
-                var dateAssigned = changeDateString(currentTransaction.dateAssigned);
-                var dateEarned = changeDateString(currentTransaction.dateEarned);
-                var newRow = [i, amount, reason, receiver, assigner, dateEarned, dateAssigned, currentTransaction._id];
-                $('#ledgerTable').DataTable().row.add(newRow);
-            }
-            $('#ledgerTable').DataTable().draw();
-            $("#loadingIcon").hide();
-        });
-
-        var showAllButton = $('#showAllButton');
-        var showAssignedButton = $('#showAssignedButton');
-        var showReceivedButton = $('#showReceivedButton');
-
-        showAllButton.off('click');
-        showAllButton.click(function() {
-            $('#ledgerTable').DataTable().clear().draw();
-            $('#showAllButton').addClass('selectedButton');
-            $('#showAssignedButton').removeClass('selectedButton');
-            $('#showReceivedButton').removeClass('selectedButton');
-            for (var i = 0; i < TRANSACTIONS.length; i++) {
-                var currentTransaction = TRANSACTIONS[i];
-                var amount = currentTransaction.amount;
-                var reason = currentTransaction.reason;
-                var receiver = USERS_BY_ID[currentTransaction.receiver].firstName + ' ' + USERS_BY_ID[currentTransaction.receiver].lastName;
-                var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
-                var dateAssigned = changeDateString(currentTransaction.dateAssigned);
-                var dateEarned = changeDateString(currentTransaction.dateEarned);
-                var newRow = [i, amount, reason, receiver, assigner, dateEarned, dateAssigned, currentTransaction._id];
-                $('#ledgerTable').DataTable().row.add(newRow); 
-            }
-            $('#ledgerTable').DataTable().draw();
-        });
-
-        showAssignedButton.off('click');
-        showAssignedButton.click(function() {
-            $('#ledgerTable').DataTable().clear().draw();
-            $('#showAllButton').removeClass('selectedButton');
-            $('#showReceivedButton').removeClass('selectedButton');
-            $('#showAssignedButton').addClass('selectedButton');
-            var tableIndex = 0;
-            for (var i = 0; i < TRANSACTIONS.length; i++) {
-                var currentTransaction = TRANSACTIONS[i];
-                var amount = currentTransaction.amount;
-                var reason = currentTransaction.reason;
-                var receiver = USERS_BY_ID[currentTransaction.receiver].firstName + ' ' + USERS_BY_ID[currentTransaction.receiver].lastName;
-                var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
-                var dateAssigned = changeDateString(currentTransaction.dateAssigned);
-                var dateEarned = changeDateString(currentTransaction.dateEarned);
-                if (assigner == userName) {
-                    var newRow = [tableIndex, amount, reason, receiver, assigner, dateEarned, dateAssigned, currentTransaction._id];
-                    $('#ledgerTable').DataTable().row.add(newRow);
-                    tableIndex++;
-                }
-            }
-            $('#ledgerTable').DataTable().draw();
-        });
-
-        showReceivedButton.off('click');
-        showReceivedButton.click(function() {
-            $('#showAllButton').removeClass('selectedButton');
-            $('#showAssignedButton').removeClass('selectedButton');
-            $('#showReceivedButton').addClass('selectedButton');
-            $('#ledgerTable').DataTable().clear().draw();
-            var tableIndex = 0;
-            for (var i = 0; i < TRANSACTIONS.length; i++) {
-                var currentTransaction = TRANSACTIONS[i];
-                var amount = currentTransaction.amount;
-                var reason = currentTransaction.reason;
-                var receiver = USERS_BY_ID[currentTransaction.receiver].firstName + ' ' + USERS_BY_ID[currentTransaction.receiver].lastName;
-                var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
-                var dateAssigned = changeDateString(currentTransaction.dateAssigned);
-                var dateEarned = changeDateString(currentTransaction.dateEarned);
-                if (receiver == userName) {
-                    var newRow = [tableIndex, amount, reason, receiver, assigner, dateEarned, dateAssigned, currentTransaction._id];
-                    $('#ledgerTable').DataTable().row.add(newRow); 
-                    tableIndex++;
-                }
-            }
-            $('#ledgerTable').DataTable().draw();
+            USER_TRANSACTIONS = TRANSACTIONS;
+            USER_TRANSACTIONS_BY_ID = TRANSACTIONS_BY_ID;
+            makeLedger();
         });
 
         var ledgerSearchInput = $('#ledgerSearchInput');
         ledgerSearchInput.keyup(function() {
-            console.log("Searching");
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("ledgerSearchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("ledgerTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 1; i < tr.length; i++) {
-                var contains = false
-                var cols = tr[i].getElementsByTagName("td").length;
-                for(j = 0; j < cols; j++){
-                    td = tr[i].getElementsByTagName("td")[j];
-                    if (td && !contains) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            contains = true;
-                        }
-                    }
-                }
-                if (contains) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }       
+            SEARCH_TEXT = document.getElementById("ledgerSearchInput").value.toUpperCase();
+            makeLedger();
+        });
+        $.get("/transactions", function(data) {
+            ALL_TRANSACTIONS = data;
+            console.log("retrieved transaction data");
+            console.log(data);
+        }).done(function() {
+            if (!ALL_TRANSACTIONS || ALL_TRANSACTIONS.length == 0) {
+                console.log("no transactinos");
+                return;
             }
+            ALL_TRANSACTIONS_BY_ID = createHashmapById(ALL_TRANSACTIONS);
         });
     });
 });
 
+function makeLedger() {
+    $('#loadingIcon').show();
+    drawLedger(reorderLedger(filterLedger(TRANSACTIONS)));
+    $('#loadingIcon').hide();
+}
+
+function drawLedger(ledger){
+    
+    var tableIndex = 0;
+    var table =  $('#ledgerTable').DataTable()
+    table.clear().draw();
+    var rows = []
+    for (var i = 0; i < ledger.length; i++) {
+        var currentTransaction = ledger[i];
+        var amount = currentTransaction.amount;
+        var reason = currentTransaction.reason;
+        var receiver = USERS_BY_ID[currentTransaction.receiver].firstName + ' ' + USERS_BY_ID[currentTransaction.receiver].lastName;
+        var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
+        var dateAssigned = changeDateString(currentTransaction.dateAssigned);
+        var dateEarned = changeDateString(currentTransaction.dateEarned);
+        var newRow = [tableIndex, amount,reason, receiver, assigner, dateEarned, dateAssigned,currentTransaction._id];
+        rows[i] = newRow;
+        tableIndex++;
+    }
+    table.rows.add(rows);
+    table.draw();
+}
+
+function filterLedger(transactions){
+    console.log(transactions);
+    var keptTransactions = []
+    var added = false;
+    var transaction;
+    for (var i = 0; i< transactions.length;i++) {
+        transaction = transactions[i];
+        if ($('#AssignedCheck').checked) {
+            if (transaction.assigner == userId) {
+                keptTransactions[keptTransactions.length] = transaction;
+                added = true;
+            }
+        }
+        if (!added && $('#ReceivedCheck').checked) {
+            if (transaction.receiver == userId) {
+                keptTransactions[keptTransactions.length] = transaction;
+                added = true;
+            }
+        }
+        if (!added && $('#ThisWeekCheck').checked) {
+            if (transaction.receiver == userId) {
+                keptTransactions[keptTransactions.length] = transaction;
+            }
+        }
+        if (!('#ThisWeekCheck').checked && !('#AssignedCheck').checked && !('#ReceivedCheck').checked) {
+            keptTransactions[keptTransactions.length] = transaction;
+        }
+        added = false;
+    }
+
+    console.log(keptTransactions);
+    return keptTransactions;
+}
+
+function reorderLedger(transactions) {
+    $('#ledgerTable').DataTable().clear().draw();
+    $('#loadingIcon').show();
+    var sorting = document.getElementById("sortValueMenu").value;
+    console.log("reordering by " + sorting);
+    var sortedTransactions = [];
+    for (var i = 0; i < transactions.length; i++) {
+        sortedTransactions[i] = transactions[i];
+    }
+    sortedTransactions.reverse();
+    sortedTransactions.sort(getCompare(sorting));
+    return sortedTransactions;
+}
+
+function getCompare(sorting) {  
+    if (sorting == 'Reason') {
+        return compareByReason;
+    }
+    if (sorting == "Receiver") {
+        return compareByReciever;
+    }
+    if (sorting == "Assigner") {
+        return compareByAssigner;
+    }
+    if (sorting == "Amount") {
+        return compareByAmount;
+    }
+    return compareByDate;
+}
+
+function compareByDate(x, y) {
+    return x.dateEarned == y.dateEarned ? 0 : x.dateEarned < y.dateEarned ? 1 : -1;
+}
+
+function compareByReciever(x, y) {
+    x = USERS_BY_ID[x.receiver].firstName + ' ' + USERS_BY_ID[x.receiver].lastName;
+    y = USERS_BY_ID[y.receiver].firstName + ' ' + USERS_BY_ID[y.receiver].lastName;
+    return x == y ? 0 : x > y ? 1 : -1;
+}
+
+function compareByAssigner(x, y) {
+    x = USERS_BY_ID[x.assigner].firstName + ' ' + USERS_BY_ID[x.assigner].lastName;
+    y = USERS_BY_ID[y.assigner].firstName + ' ' + USERS_BY_ID[y.assigner].lastName;
+    return x == y ? 0 : x > y ? 1 : -1;
+}
+
+function compareByAmount(x, y) {
+    return x.amount == y.amount ? 0 : x.amount < y.amount ? 1 : -1;
+}
+
+function compareByReason(x, y) {
+    return x.reason == y.reason ? 0 : x.reason > y.reason ? 1 : -1;
+}
+
+
 function changeDateString(rawDate) {
     return rawDate.slice(5,7)+'/'+rawDate.slice(8,10)+'/'+rawDate.slice(0,4)
 }
+
+function showCheckboxes() {
+    var checkboxes = document.getElementById("checkboxes");
+    if (!expanded) {
+      checkboxes.style.display = "block";
+      expanded = true;
+    } else {
+      checkboxes.style.display = "none";
+      expanded = false;
+    }
+  }
