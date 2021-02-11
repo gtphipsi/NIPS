@@ -521,6 +521,7 @@ th {
 #ledgerContainer {
 	width: 100%;
 	margin-bottom: 30px;
+	margin-top: 0px;
 }
 #ledgerTableBody tr:nth-child(odd) {
 	background-color: rgb(255, 255, 255, 0.2);
@@ -552,7 +553,10 @@ th {
 	width: 100%;
 	margin: 0px;
 }
-#ledgerFlters {
+#ledgerTableRow {
+	margin-top: 0px;
+}
+#ledgerFilters {
 	margin-top: 50px;
 	width: 80%;
 }
@@ -572,6 +576,42 @@ th {
 #deleteTransactionButton {
 	margin-left: 10px;
 }
+
+.multiselect {
+	width: 150px;
+	z-index: 9;
+  }
+  
+  .selectBox {
+	position: relative;
+  }
+  
+  .selectBox select {
+	width: 100%;
+	font-weight: bold;
+  }
+  
+  .overSelect {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+  }
+  
+  #checkboxes {
+	display: none;
+	border: 1px #dadada solid;
+	z-index: 1;
+  }
+  
+  #checkboxes label {
+	display: block;
+  }
+  
+  #checkboxes label:hover {
+	background-color: #1e90ff;
+  }
 
 
 /***** COMMITTEES PAGE *****/

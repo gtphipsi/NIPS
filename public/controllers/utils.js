@@ -250,14 +250,7 @@ function isInTimeframe(transaction, timeframe) {
     } else if (timeframe == timeframes.MONTHLY) {
         return isThisMonth(transaction.dateEarned);
     } else if (timeframe == timeframes.SEMESTERLY) {
-        var currentSemester = getCurrentSemester();
-        if (currentSemester == semester.FALL) {
-            return isInFallSemester(transaction.dateEarned);
-        } else if (currentSemester == semester.SPRING) {
-            return isInSpringSemester(transaction.dateEarned);
-        } else {
-            return false;
-        }
+        return isThisSemester(transaction.dateEarned);
     } else {
         console.log("TIME FRAME ERROR");
         return false;
@@ -278,6 +271,17 @@ function isInSpringSemester(date) {
     var now = new Date(date);
     return springSemester.STARTDATE <= now && now <= springSemester.ENDDATE;
 }
+function isThisSemester(date) {
+        var currentSemester = getCurrentSemester();
+        if (currentSemester == semester.FALL) {
+            return isInFallSemester(date);
+        } else if (currentSemester == semester.SPRING) {
+            return isInSpringSemester(date);
+        } else {
+            return false;
+        }
+    }
+
 function isThisWeek(date) {
     var now = new Date();
     var earned = new Date(date);

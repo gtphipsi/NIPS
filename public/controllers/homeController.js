@@ -34,7 +34,8 @@ $(document).ready(function() {
     $('#userLogTable').DataTable({
         searching: false,
         paging: false,
-        info: false
+        info: false,
+        'order': [[0, 'desc']]
     });
 
     $('#userRequestsTable').DataTable({
@@ -304,9 +305,10 @@ function makeGraphs(leaderboard, transactions){
     var data = [trace];
     
     var layout = {
+        title: {text:'Brothers\' Points'},
         xaxis: {title: {text:"Points", standoff: 0}}, 
         yaxis: {title: {text:"Brothers", standoff: 0}},
-        margin: { t: 10 , b: 40, r:40,l:40},
+        margin: {b: 40, r:40,l:40},
         plot_bgcolor: '#eeb311',
         paper_bgcolor: '#eeb311',
         showlegend: false
@@ -361,9 +363,10 @@ function makeGraphs(leaderboard, transactions){
     };
 
     var layoutLine = {
+        title: {text:'Your Points'},
         xaxis: {title: {text:"Date", standoff: 0}}, 
         yaxis: {title: {text:"Points", standoff: 0}},
-        margin: {t: 10 , b: 40, r:40, l:40},
+        margin: {b: 40, r:40, l:40},
         plot_bgcolor: '#eeb311',
         paper_bgcolor: '#eeb311',
         showlegend: false
