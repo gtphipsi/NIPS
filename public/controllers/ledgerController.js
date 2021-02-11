@@ -154,9 +154,7 @@ $(document).ready(function() {
         $.each(rowsSelected, function(index) {
             var tableIndex = rowsSelected[index];
             var data = ledgerTable.row(tableIndex).data();
-            console.log(data);
-            console.log(data[7]);
-            if (data[7] == USER._id || (adminPriveleges&&USER.admin)) {
+            if (data[4] == USER._id || (adminPriveleges&&USER.admin)) {
                 transactionIds.push(data[data.length - 1]);
             } else {
                 alert('You may only delete transactions that you have assigned');
@@ -184,16 +182,21 @@ $(document).ready(function() {
 
     $('#adminTransactionButton').click(function() {
         if (USER.admin) {
+            adminPriveleges = !adminPriveleges;
             TRANSACTIONS = USER_TRANSACTIONS == TRANSACTIONS ? ALL_TRANSACTIONS : USER_TRANSACTIONS;
             TRANSACTIONS_BY_ID = USER_TRANSACTIONS_BY_ID == TRANSACTIONS_BY_ID ? ALL_TRANSACTIONS_BY_ID : USER_TRANSACTIONS_BY_ID;
             makeLedger();
             console.log(document.getElementById("adminTransactionButton").innerHTML);
-            document.getElementById("adminTransactionButton").innerHTML = adminPriveleges? '<i class="far fa-cogs" aria-hidden="true"></i> User' : '<i class="far fa-cogs" aria-hidden="true"></i> Admin';
-            adminPriveleges = !adminPriveleges;
+            document.getElementById("adminTransactionButton").innerHTML = adminPriveleges ? '<i class="far fa-cogs" aria-hidden="true"></i> User' : '<i class="far fa-cogs" aria-hidden="true"></i> Admin';
+            
         } else {
             alert("ACCESS DENIED\nUser does not have admin priviledges");
         }
         
+    });
+
+    $('#ledgerSearchInput').keyup(function () {
+        makeLedger();
     });
 
     $.get("/users", function(data) {
@@ -270,36 +273,30 @@ function drawLedger(ledger){
 }
 
 function filterLedger(transactions){
-    console.log(transactions);
     var keptTransactions = []
-    var added = false;
+    var toAdd = true;
     var transaction;
+    console.log($('#ledgerSearchInput').value);
     for (var i = 0; i< transactions.length;i++) {
         transaction = transactions[i];
-        if ($('#AssignedCheck').checked) {
-            if (transaction.assigner == userId) {
-                keptTransactions[keptTransactions.length] = transaction;
-                added = true;
-            }
+        if (document.getElementById('AssignedCheck').checked) {
+            toAdd = toAdd && transaction.assigner == USER._id;
         }
-        if (!added && $('#ReceivedCheck').checked) {
-            if (transaction.receiver == userId) {
-                keptTransactions[keptTransactions.length] = transaction;
-                added = true;
-            }
+        if (document.getElementById('ReceivedCheck').checked) {
+            toAdd = toAdd && transaction.receiver == USER._id;
         }
-        if (!added && $('#ThisWeekCheck').checked) {
-            if (transaction.receiver == userId) {
-                keptTransactions[keptTransactions.length] = transaction;
-            }
+        if (document.getElementById('ThisWeekCheck').checked) {
+            toAdd = toAdd && isThisWeek(transaction.dateEarned)
         }
-        if (!('#ThisWeekCheck').checked && !('#AssignedCheck').checked && !('#ReceivedCheck').checked) {
+        if (document.getElementById('ThisMonthCheck').checked) {
+            toAdd = toAdd && isThisMonth(transaction.dateEarned)
+        }
+        
+        if (toAdd) {
             keptTransactions[keptTransactions.length] = transaction;
         }
-        added = false;
+        toAdd = true;
     }
-
-    console.log(keptTransactions);
     return keptTransactions;
 }
 

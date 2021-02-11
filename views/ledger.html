@@ -39,9 +39,12 @@
 				<i class="fas fa-spinner fa-pulse fa-3x"></i>
 			</div>
 			<div id="ledgerFlters" class="row ledgerRow">
-				<div class='col ledgerCol'>
-					<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
+				<div class="col-3 ledgerCol editTransactionsContainer">
+					<button id=editTransactionButton><i class="far fa-edit"></i> Edit</button>
+					<button id=deleteTransactionButton><i class="far fa-trash-alt"></i> Delete</button>
+					<button id=adminTransactionButton><i class="far fa-cogs"></i> Admin</button>
 				</div>
+				
 				<div class="col-2 ledgerCol">
 						<label for="sortValueMenu">Sort by:</label>
 						<select name="sortValueMenu" id="sortValueMenu" onchange="makeLedger()">
@@ -66,24 +69,21 @@
 						  		</div>
 						  		<div id="checkboxes">
 									<label for="Assigned">
-							  		<input type="checkbox" id="AssignedCheck" />Assigned</label>
+							  		<input type="checkbox" id="AssignedCheck" onclick="makeLedger()"/>Assigned</label>
 									<label for="Received">
-							  		<input type="checkbox" id="ReceivedCheck" />Received</label>
+							  		<input type="checkbox" id="ReceivedCheck" onclick="makeLedger()"/>Received</label>
 									<label for="ThisWeek">
-									<input type="checkbox" id="ThisWeekCheck" />This Week</label>
+									<input type="checkbox" id="ThisWeekCheck" onclick="makeLedger()"/>This Week</label>
 									<label for="ThisMonth">
-									<input type="checkbox" id="ThisMonthCheck" />This Month</label>
-									<label for="PastMonth">
-									<input type="checkbox" id="ThisSemesterCheck" />This Semester</label>
+									<input type="checkbox" id="ThisMonthCheck" onclick="makeLedger()"/>This Month</label>
 						  	</div>
 						</div>
 					</form>
 				</div>
-				<div class="col-3 ledgerCol editTransactionsContainer">
-						<button id=editTransactionButton><i class="far fa-edit"></i> Edit</button>
-						<button id=deleteTransactionButton><i class="far fa-trash-alt"></i> Delete</button>
-						<button id=adminTransactionButton><i class="far fa-cogs"></i> Admin</button>
+				<div class='col ledgerCol'>
+					<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
 				</div>
+				
 			</div>
 			
 			<div class="row ledgerRow" id="ledgerTableRow">
