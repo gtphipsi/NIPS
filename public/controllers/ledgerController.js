@@ -157,6 +157,7 @@ $(document).ready(function() {
             if (data[4] == USER._id || (adminPriveleges&&USER.admin)) {
                 transactionIds.push(data[data.length - 1]);
             } else {
+                alert(transaction.assigner + '\n' + USER._id);
                 alert('You may only delete transactions that you have assigned');
             }
         });
