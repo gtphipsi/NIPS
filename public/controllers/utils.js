@@ -1,4 +1,3 @@
-const { Int32 } = require("bson")
 
 /**
  * JavaScript Enum implementation for timeframes
@@ -371,7 +370,6 @@ function getWeeklyLeaderboards(transactions, userIds) {
     var weeklyTranscations = {}
     currentDate = new Date(currentDate-86400000*(6+weekDay));
     currentDate.setHours(0,0,0,0);
-    console.log(transactions);
     if (transactions.length != 0){
         while (isThisSemester(currentDate)) {
             weeklyTranscations = [];
@@ -384,7 +382,6 @@ function getWeeklyLeaderboards(transactions, userIds) {
             currentDate = new Date(currentDate-86400000*7);
         }
     }
-    console.log(leaderboards);
     return leaderboards;
 }
 
@@ -396,25 +393,31 @@ function getBiggestClimber(leaderboards) {
     
     //calcute rankings excluding previous week
     var semLeaderboard = {}
+    console.log(leaderboards[0]);
     for(var i = 1; i< leaderboards.length;i++){
         for(var j = 0; j< leaderboards[i].length;j++){
-            if (semLeaderboard[leaderboards[i][j].userId] > 0){
-                semLeaderboard[leaderboards[i][j].userId] += leaderboards[i][j].points
+            if (semLeaderboard[leaderboards[i][j].id] > 0){
+                semLeaderboard[leaderboards[i][j].id] += leaderboards[i][j].points
             } else {
-                semLeaderboard[leaderboards[i][j].userId] = leaderboards[i][j].points
+                semLeaderboard[leaderboards[i][j].id] = leaderboards[i][j].points
 
             }
         }
     }
+    console.log (semLeaderboard);
     // put into array to sort for rankings
     var semLeaderboardArr = []
-    for(var i = 1; i< semLeaderboard.length;i++){
-        semLeaderboardArr.push({'id':semLeaderboard[i].id,'points':semLeaderboard[i].points, 'rank':Infinity});
+    var key;
+    for (var key in semLeaderboard) { 
+        semLeaderboardArr.push({'id':key,'points':semLeaderboard[key], 'rank':-1});
     }
     semLeaderboardArr.sort((a,b)=>b.points-a.points);
-    for(var i = 1; i< semLeaderboard.length;i++){
+    console.log(semLeaderboardArr);
+    for(var i = 0; i< semLeaderboardArr.length;i++){
         semLeaderboardArr[i].rank = i;
     }
+    console.log(semLeaderboardArr);
+
     //repeat process with the most recent week added
     //add the newest week to each semester total
     var newSemLeaderboard = {}
@@ -428,9 +431,10 @@ function getBiggestClimber(leaderboards) {
     });
     //turn the map into an array, sort, and add rankings
     var newSemLeaderboardArr = [];
-    newSemLeaderboard.forEach(i => {
-        newSemLeaderboardArr.push({'id':i.id,'points':i.points, 'rank':Infinity});
-    });
+    
+    for (var key in newSemLeaderboard) { 
+        newSemLeaderboardArr.push({'id':key,'points':newSemLeaderboard[key], 'rank':-1});
+    }
     newSemLeaderboardArr.sort((a,b)=>b.points-a.points);
     newSemLeaderboardArr.forEach(i => {
         i.rank = newSemLeaderboardArr.indexOf(i);
@@ -442,15 +446,18 @@ function getBiggestClimber(leaderboards) {
     });
     //get deltas
     var deltas = [];
+    console.log(newSemLeaderboardArr);
     semLeaderboardArr.forEach(i => {
         deltas.push({'id':i.id, "delta":i.rank-newRanks[i.id]});
     });
     deltas.sort((a,b)=>b.delta-a.delta);
     deltas = deltas.filter(a => a.delta == deltas[0].delta);
+    console.log(deltas);
     var biggestClimbers=[];
     deltas.forEach(i => {
         biggestClimbers.push(i.id);
     });
+    console.log(biggestClimbers);
     return biggestClimbers;
     
 }
@@ -476,23 +483,18 @@ function getHottestStreak(leaderboards) {
                     currRank = k;
                 }
             }
-            console.log(currRank);
             streak = currRank >= nextRank;
         }
         i--;
         streaks.push({'userId':userId, "streak":i});
     }
-    console.log(streaks);
 
     streaks.sort((a,b)=>b.streak-a.streak);
-    console.log(streaks[0]);
     streaks = streaks.filter(a => a.streak==streaks[0].streak);
-    console.log(streaks);
     hottestUsers = []
     for(var i=0; i<streaks.length; i++){
         hottestUsers.push(streaks[i].userId);
     }
-    console.log(hottestUsers);
     return hottestUsers;
 }
 /**

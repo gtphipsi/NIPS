@@ -273,24 +273,24 @@ function updateRank() {
     updateProgressBar(userPoints);
 }
 
-// function updateMetrics(transactions) {
-//     var leaderboards = getWeeklyLeaderboards(transactions, Object.keys(USERS_BY_ID));
-//     var brothersOfTheWeek = getBrotherOfTheWeek(leaderboards);
-//     $('#brotherOfTheWeek').text(userIdsToJoinedString(brothersOfTheWeek));
-//     var hottestUsers = getHottestStreak(leaderboards);
-//     $("#hottestStreak").text(userIdsToJoinedString(hottestUsers));
-//     var biggestClimbers = getBiggestClimber(leaderboards);
-//     $("#biggestClimber").text(userIdsToJoinedString(biggestClimbers));
-// }
-// function userIdsToJoinedString(userIds) {
-//     var joinedString = '';
-//     for (var i =0; i< userIds.length; i++) {
-//         console.log(userIds[i]);
-//         joinedString += getName(USERS_BY_ID[userIds[i]])+', '
-//     }
-//     return joinedString.substring(0,joinedString.length-2)
+function updateMetrics(transactions) {
+    var leaderboards = getWeeklyLeaderboards(transactions, Object.keys(USERS_BY_ID));
+    var brothersOfTheWeek = getBrotherOfTheWeek(leaderboards);
+    $('#brotherOfTheWeek').text(userIdsToJoinedString(brothersOfTheWeek));
+    var hottestUsers = getHottestStreak(leaderboards);
+    $("#hottestStreak").text(userIdsToJoinedString(hottestUsers));
+    var biggestClimbers = getBiggestClimber(leaderboards);
+    $("#biggestClimber").text(userIdsToJoinedString(biggestClimbers));
+}
+function userIdsToJoinedString(userIds) {
+    var joinedString = '';
+    for (var i =0; i< userIds.length; i++) {
+        console.log(userIds[i]);
+        joinedString += getName(USERS_BY_ID[userIds[i]])+', '
+    }
+    return joinedString.substring(0,joinedString.length-2)
     
-// }
+}
 
 function updateStatistics(leaderboard) {
     var mean = getMean(leaderboard);

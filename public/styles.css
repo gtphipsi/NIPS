@@ -269,11 +269,8 @@ th {
 .requestContainer {
 	text-align: center;
 }
-.requestContainer:hover {
-	
-}
-.requestContainer:hover h1, .requestContainer:hover i {
-}
+
+
 #requestDate {
 	border: 1px solid gray;
 	margin-left: 2px;
