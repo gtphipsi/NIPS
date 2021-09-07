@@ -9,15 +9,16 @@ const timeframes = {
 
 /**
  * JavaScript Enum implementations for semester timeframes
+ * Months start at 0 (January)
  */
 const fallSemester = {
-    STARTDATE: new Date(2021, 08, 01),
-    ENDDATE: new Date(2021, 12, 31)
+    STARTDATE: new Date(2021, 07, 1),
+    ENDDATE: new Date(2021, 11, 18)
 }
 
 const springSemester = {
-    STARTDATE: new Date(2022, 12, 18),
-    ENDDATE: new Date(2022, 07, 30)
+    STARTDATE: new Date(2021, 11, 19),
+    ENDDATE: new Date(2022, 07, 31)
 }
 
 /**
@@ -302,8 +303,10 @@ function isThisMonth(date) {
 function getCurrentSemester() {
     var now = new Date();
     if (isInFallSemester(now)) {
+        console.log("FALL SEMESTER");
         return semester.FALL;
     } else if (isInSpringSemester(now)) {
+        console.log("SPRING SEMESTER");
         return semester.SPRING;
     } else {
         console.log("COULD NOT MATCH SEMESTER DATE");
