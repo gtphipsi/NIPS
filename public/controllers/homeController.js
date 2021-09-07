@@ -276,8 +276,8 @@ function updateMetrics(transactions) {
     var leaderboards = getWeeklyLeaderboards(transactions, Object.keys(USERS_BY_ID));
     var brothersOfTheWeek = getBrotherOfTheWeek(leaderboards);
     $('#brotherOfTheWeek').text(userIdsToJoinedString(brothersOfTheWeek));
-    var hottestUsers = getHottestStreak(leaderboards);
-    $("#hottestStreak").text(userIdsToJoinedString(hottestUsers));
+    //var hottestUsers = getHottestStreak(leaderboards);
+    //$("#hottestStreak").text(userIdsToJoinedString(hottestUsers));
     var biggestClimbers = getBiggestClimber(leaderboards);
     $("#biggestClimber").text(userIdsToJoinedString(biggestClimbers));
 }

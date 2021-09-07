@@ -339,7 +339,11 @@ function isInParticularWeek(date, weekStartDate){
     return (weekStartDate - earned) / 86400000 <= 7 && (weekStartDate - earned) / 86400000 > 0;
 }
 
-
+/**
+ * Gets the brother of the weeek
+ * @param {*} leaderboards 
+ * @returns 
+ */
 function getBrotherOfTheWeek(leaderboards) {
     if (leaderboards.length == 0) {
         return [];
@@ -347,7 +351,7 @@ function getBrotherOfTheWeek(leaderboards) {
     var brothers = [];
     
     leaderboards[0].sort((a,b)=>b.points-a.points);
-    console.log(leaderboards[0]);
+    console.log(leaderboards);
     var filteredLeaderboard = leaderboards[0].filter(a => a.points == leaderboards[0][0].points)
     console.log(filteredLeaderboard);
     for (var i = 0; i<filteredLeaderboard.length;i++) {
@@ -387,7 +391,7 @@ function getWeeklyLeaderboards(transactions, userIds) {
 
 function getBiggestClimber(leaderboards) {
     var deltas = [];
-    if (leaderboards.length < 2){
+    if (leaderboards.length < 2) {
         return [];
     }
     
