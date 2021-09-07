@@ -94,7 +94,7 @@ app.get("/users", (req, res) => {
 // Accessible by admin only
 app.post("/users", (req, res) => {
     console.log("adding new user");
-    if (req.body.USER.admin == 'false') {
+    if (req.body.USER.admin != 'true') {
         console.log("access denied");
         res.status(403).send();
         return;
