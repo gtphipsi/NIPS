@@ -341,7 +341,8 @@ function officerPositionsToBoolean(positions) {
         BG: false,
         Phu: false,
         riskManager: false,
-        rushChair: false
+        rushChair: false,
+        HousingManger:false
     }
     for (var i = 0; i < positions.length; i++) {
         var position = positions[i];
