@@ -13,8 +13,8 @@ const timeframes = {
  * Start date should be previous semesters enddate
  */
 const fallSemester = {
-    STARTDATE: new Date(2020, 08, 01),
-    ENDDATE: new Date(2020, 12, 31)
+    STARTDATE: new Date(2021, 08, 01),
+    ENDDATE: new Date(2021, 12, 31)
 }
 
 /**
@@ -22,8 +22,8 @@ const fallSemester = {
  * Start date should be previous semesters enddate
  */
 const springSemester = {
-    STARTDATE: new Date(2020, 11, 18),
-    ENDDATE: new Date(2021, 07, 30)
+    STARTDATE: new Date(2022, 12, 18),
+    ENDDATE: new Date(2022, 07, 30)
 }
 
 /**
