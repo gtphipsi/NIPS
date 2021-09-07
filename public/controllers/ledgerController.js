@@ -154,11 +154,11 @@ $(document).ready(function() {
         $.each(rowsSelected, function(index) {
             var tableIndex = rowsSelected[index];
             var data = ledgerTable.row(tableIndex).data();
-            if (data[4] == USER._id || (adminPriveleges&&USER.admin)) {
+            if (ALL_TRANSACTIONS_BY_ID[data[data.length - 1]].assigner == USER._id || (adminPriveleges&&USER.admin)) {
                 transactionIds.push(data[data.length - 1]);
             } else {
-                alert(transaction.assigner + '\n' + USER._id);
-                alert('You may only delete transactions that you have assigned');
+                //alert(transaction.assigner + '\n' + USER._id);
+                alert('You may only delete transactions that you have assigned or admin in admin mode');
             }
         });
         if (transactionIds.length < 1) {
