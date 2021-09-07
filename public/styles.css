@@ -238,6 +238,19 @@ th {
 .homeContainer h1 {
 	color: rgb(196, 18, 48);
 }
+.metricBrothers  {
+	font-size: 2.5rem;
+	color: black;
+}
+.metricTitle  {
+	font-size: 2.5rem;
+	color: rgb(196, 18, 48);
+}
+
+.homeContainer span  {
+	font-size: 2.5rem;
+}
+
 .homeContainer:hover {
 	background-color: rgb(238, 178, 17, 0.7);
 }
@@ -256,11 +269,8 @@ th {
 .requestContainer {
 	text-align: center;
 }
-.requestContainer:hover {
-	
-}
-.requestContainer:hover h1, .requestContainer:hover i {
-}
+
+
 #requestDate {
 	border: 1px solid gray;
 	margin-left: 2px;
