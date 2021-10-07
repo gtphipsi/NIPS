@@ -252,6 +252,20 @@ function updateTimeframe() {
 function updateRank() {
     
     var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME, Object.keys(USERS_BY_ID));
+    if (USER.admin == true) {
+        console.log('USER IS ADMIN');
+        firstNameLeaderboard = [];
+        for (var i = 0; i < leaderboard.length; i++) {
+            var userpoints = leaderboard[i];
+            var firstName = USERS_BY_ID[userpoints.id].firstName;
+            var namescore = {
+                user: firstName,
+                points: userpoints.points
+            }
+            firstNameLeaderboard.push(namescore);
+        }
+        console.log(firstNameLeaderboard);
+    }
     var transactions = getTransactionsTF(TRANSACTIONS, TIMEFRAME);
     var userRanking = getUserRanking(USER._id, leaderboard);
     console.log("Transaction");
