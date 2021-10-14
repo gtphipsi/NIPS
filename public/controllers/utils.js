@@ -308,10 +308,17 @@ function isThisSemester(date) {
  * @returns true if date is within range, false otherwise
  */
 function isThisWeek(date) {
-    var now = new Date();
-    var earned = new Date(date);
-    var weekDay = now.getDay();
-    return (now - earned) / 86400000 <= weekDay;
+    var currentDate = new Date();
+    var wed = null;
+    if (currentDate.getDay() < 3) {
+        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()+3-7)); //set to last wednesday
+    } else {
+        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()+3));
+    }
+    wed.setHours(0,0,0,0);
+    wed -=1;
+    return isInParticularWeek(date, wed);
+    
 }
 
 /**
@@ -334,15 +341,13 @@ function isThisMonth(date) {
  * @returns true if date is within range, false otherwise
  */
 function isInParticularWeek(date, weekStartDate){
-    weekStartDate = new Date(weekStartDate);
-    var earned = new Date(date);
-    return (weekStartDate - earned) / 86400000 <= 7 && (weekStartDate - earned) / 86400000 > 0;
+    return (weekStartDate <= date) && ((date - weekStartDate) / 86400000 <= 7);
 }
 
 /**
  * Gets the brother of the weeek
- * @param {*} leaderboards 
- * @returns 
+ * @param {*} leaderboards
+ * @returns the array containing all brothers of the week
  */
 function getBrotherOfTheWeek(leaderboards) {
     if (leaderboards.length == 0) {
@@ -370,15 +375,25 @@ function getBrotherOfTheWeek(leaderboards) {
 function getWeeklyLeaderboards(transactions, userIds) {
     var leaderboards = [];
     var currentDate = new Date();
-    var weekDay = currentDate.getDay();
     var weeklyTranscations = {}
-    currentDate = new Date(currentDate-86400000*(6+weekDay));
-    currentDate.setHours(0,0,0,0);
+    var currentDate = new Date();
+    var wed = null;
+    if (currentDate.getDay() < 3) {
+        // the wednesday is in the last week so we substract the days since monday then add 3-7 to get to last week 
+        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()+3-7)); //set to prev wednesday
+    } else {
+        // the wednesday is in the current week so we substract the days since monday then add 3 to get to last week
+        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()+3));
+    }
+    wed.setHours(0,0,0,0);
+    currentDate = new Date(wed-86400000*7);// set to last wednesday
+    console.log('Week starts on');
+    console.log(currentDate);
     if (transactions.length != 0){
         while (isThisSemester(currentDate)) {
             weeklyTranscations = [];
             for(var i=0; i<transactions.length; i++) {
-                if (isInParticularWeek(currentDate, new Date(transactions[i].dateEarned))) {
+                if (isInParticularWeek(new Date(transactions[i].dateEarned),currentDate)) {
                     weeklyTranscations.push(transactions[i]);
                 }
             }

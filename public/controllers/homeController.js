@@ -11,6 +11,9 @@ var TIMEFRAME;
 
 $(document).ready(function() {
     console.log("Loading home page...");
+    console.log('Todays week day is');
+    var date = new Date();
+    console.log(date.getDay());
 
     createNavBar('home');
 
