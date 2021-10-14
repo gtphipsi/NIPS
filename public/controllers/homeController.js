@@ -9,7 +9,7 @@ var REQUESTS_FROM_USER = [];
 var TIMEFRAME;
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     console.log("Loading home page...");
     console.log('Todays week day is');
     var date = new Date();
@@ -18,14 +18,14 @@ $(document).ready(function() {
     createNavBar('home');
 
     $('#signoutButton').off('click');
-    $('#signoutButton').click(function() {
+    $('#signoutButton').click(function () {
         sessionStorage.setItem('userId', '');
         location.href = '/login';
     });
 
     $('#reportIssueButton').off('click');
-    $('#reportIssueButton').click(function() {
-        location.href ="https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
+    $('#reportIssueButton').click(function () {
+        location.href = "https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
     });
 
     addFooter();
@@ -51,41 +51,41 @@ $(document).ready(function() {
                 'visible': false
             },
             {
-               'targets': 4,
-               'checkboxes': {
-                  'selectRow': true
-               }
+                'targets': 4,
+                'checkboxes': {
+                    'selectRow': true
+                }
             }
-         ],
-         'select': {
+        ],
+        'select': {
             'style': 'multi'
-         },
-         'order': [[1, 'asc']]
+        },
+        'order': [[1, 'asc']]
     });
 
     var userURL = '/users/' + userId;
-    $.get(userURL, function(data) {
+    $.get(userURL, function (data) {
         USER = data;
         console.log("retrieved one user data");
         console.log(data);
-    }).fail(function() {
+    }).fail(function () {
         alert("failed retrieving user data--returning to login page");
         window.location = '/';
-    }).done(function() {
+    }).done(function () {
         $('#welcomeMessage').text(`Welcome, Brother ${USER.lastName} `);
         $('#welcomeMessage').append(getRandomUserIcon());
-        $.get("/users", function(data) {
+        $.get("/users", function (data) {
             USERS = data;
             console.log("retrieved all user data");
-        }).done(function() {
+        }).done(function () {
             USERS_BY_ID = createHashmapById(USERS);
-            $.get("/transactions", function(data) {
+            $.get("/transactions", function (data) {
                 TRANSACTIONS = data;
                 console.log("retrieved transaction data");
-            }).fail(function() {
+            }).fail(function () {
                 console.log("failed retrieving transaction data--returning to login page");
                 window.location = '/';
-            }).done(function() {
+            }).done(function () {
                 console.log("making user log table");
                 updateTimeframe();
                 updateMetrics(TRANSACTIONS);
@@ -98,17 +98,17 @@ $(document).ready(function() {
                     $('#userLogTable').DataTable().row.add(newRow);
                 }
                 $('#userLogTable').DataTable().draw();
-                $.get("/requests", function(data) {
+                $.get("/requests", function (data) {
                     REQUESTS = data;
                     console.log("retrieved requests data");
-                }).fail(function() {
+                }).fail(function () {
                     console.log("failed retrieving requests data--returning to login page");
                     window.location = '/';
-                }).done(function() {
-                    $.get('/committees', function(data) {
+                }).done(function () {
+                    $.get('/committees', function (data) {
                         COMMITTEES = data;
                         console.log("retrieved committee data");
-                    }).done(function() {
+                    }).done(function () {
                         REQUESTS_FOR_USER = getRequestsForUser(USER, REQUESTS, COMMITTEES);
                         for (var r = 0; r < REQUESTS_FOR_USER.length; r++) {
                             var request = REQUESTS_FOR_USER[r];
@@ -137,16 +137,16 @@ $(document).ready(function() {
     });
 
     $('#requestButton').off('click');
-    $('#requestButton').click(function() {
+    $('#requestButton').click(function () {
         requestDialog.dialog('open');
     });
 
     $('#deleteButton').off('click');
-    $('#deleteButton').click(function() {
+    $('#deleteButton').click(function () {
         var table = $('#userRequestsTable').DataTable();
         var rowsSelected = table.column(4).checkboxes.selected();
         transactionIds = [];
-        $.each(rowsSelected, function(index) {
+        $.each(rowsSelected, function (index) {
             var tableIndex = rowsSelected[index];
             var data = table.row(tableIndex).data();
             var requestId = data[5];
@@ -157,12 +157,12 @@ $(document).ready(function() {
             $.ajax({
                 url: "/requests",
                 type: 'DELETE',
-                data: {transactionIds},
-                success: function(response) {
+                data: { transactionIds },
+                success: function (response) {
                     alert('Requests Successfully Deleted');
                     location.reload();
                 },
-                done: function() {
+                done: function () {
                     $('#loadingIcon').hide();
                 }
             });
@@ -170,14 +170,14 @@ $(document).ready(function() {
     });
 
     $('#resolveButton').off('click');
-    $('#resolveButton').click(function() {
+    $('#resolveButton').click(function () {
         var newAmount = window.prompt('Enter an amount for these transactions', 0);
         var table = $('#userRequestsTable').DataTable();
         var rowsSelected = table.column(4).checkboxes.selected();
         console.log(rowsSelected);
         transactions = [];
         transactionIds = [];
-        $.each(rowsSelected, function(index) {
+        $.each(rowsSelected, function (index) {
             var data = table.row(index).data();
             newTransaction = {
                 assigner: USER._id,
@@ -190,20 +190,20 @@ $(document).ready(function() {
             transactions.push(newTransaction);
             var requestId = data[5];
             transactionIds.push(requestId);
-         });
-         console.log(transactionIds);
-         $('#loadingIcon').show();
-         console.log('RESOLVING TRANSACTION');
-         $.post("/transactions", {transactions}).done(function() {
+        });
+        console.log(transactionIds);
+        $('#loadingIcon').show();
+        console.log('RESOLVING TRANSACTION');
+        $.post("/transactions", { transactions }).done(function () {
             $.ajax({
                 url: "/requests",
                 type: 'DELETE',
-                data: {transactionIds},
-                success: function(response) {
+                data: { transactionIds },
+                success: function (response) {
                     alert('Requests Successfully Resolved');
                     location.reload();
                 },
-                done: function() {
+                done: function () {
                     $('#loadingIcon').hide();
                 }
             });
@@ -211,7 +211,7 @@ $(document).ready(function() {
     });
 
     $('#requestSubmit').off('click');
-    $('#requestSubmit').click(function() {
+    $('#requestSubmit').click(function () {
         var reason = $('#requestReason').val();
         var assigner = $('#requestAssigner').val();
         var assignerLabel = assigner;
@@ -229,7 +229,7 @@ $(document).ready(function() {
                 date: new Date(date)
             }
             console.log('SUMBITTING REQUESTS')
-            $.post("/requests", newRequest).done(function() {
+            $.post("/requests", newRequest).done(function () {
                 console.log("Request successfully added");
                 console.log(newRequest);
                 alert('Request submitted');
@@ -253,7 +253,7 @@ function updateTimeframe() {
 }
 
 function updateRank() {
-    
+
     var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME, Object.keys(USERS_BY_ID));
     if (USER.admin == true) {
         console.log('USER IS ADMIN');
@@ -281,7 +281,7 @@ function updateRank() {
     } else {
         userPoints = leaderboard[userRanking - 1].points;
     }
-    $('#userRank').text('Rank: ' +  userRanking + ' | Points: ' + userPoints);
+    $('#userRank').text('Rank: ' + userRanking + ' | Points: ' + userPoints);
     addRankIcon(userRanking);
     $('#pointsBehind').text(getPointsBehindMessage(userRanking, leaderboard));
     updateStatistics(leaderboard);
@@ -300,12 +300,12 @@ function updateMetrics(transactions) {
 }
 function userIdsToJoinedString(userIds) {
     var joinedString = '';
-    for (var i =0; i< userIds.length; i++) {
+    for (var i = 0; i < userIds.length; i++) {
         console.log(userIds[i]);
-        joinedString += getName(USERS_BY_ID[userIds[i]])+', '
+        joinedString += getName(USERS_BY_ID[userIds[i]]) + ', '
     }
-    return joinedString.substring(0,joinedString.length-2)
-    
+    return joinedString.substring(0, joinedString.length - 2)
+
 }
 
 function updateStatistics(leaderboard) {
@@ -319,13 +319,13 @@ function updateStatistics(leaderboard) {
     $('#statHigh').text(high);
 }
 
-function makeGraphs(leaderboard, transactions){
+function makeGraphs(leaderboard, transactions) {
     console.log('drawing graphs');
     var userId = sessionStorage.getItem('userId');
     fraternityHistogram = document.getElementById('fraternityHistogram');
     var x = [];
     var i = 0;
-    for (var i=0;i< leaderboard.length;i++){
+    for (var i = 0; i < leaderboard.length; i++) {
         x[i] = leaderboard[i].points;
     }
     var trace = {
@@ -334,40 +334,40 @@ function makeGraphs(leaderboard, transactions){
         marker: {
             color: '#00703c',
         },
-        nbinsx:6
+        nbinsx: 6
     };
     var data = [trace];
-    
+
     var layout = {
-        title: {text:'Brothers\' Points'},
-        xaxis: {title: {text:"Points", standoff: 0}}, 
-        yaxis: {title: {text:"Brothers", standoff: 0}},
-        margin: {b: 40, r:40,l:40},
+        title: { text: 'Brothers\' Points' },
+        xaxis: { title: { text: "Points", standoff: 0 } },
+        yaxis: { title: { text: "Brothers", standoff: 0 } },
+        margin: { b: 40, r: 40, l: 40 },
         plot_bgcolor: '#eeb311',
         paper_bgcolor: '#eeb311',
         showlegend: false
     }
     Plotly.newPlot(fraternityHistogram, data, layout);
 
-    
+
 
     var rawDates = [];
     var rawPoints = [];
-    
+
     var j = 0;
     for (var i = 0; i < transactions.length; i++) {
         if (transactions[i]['receiver'] == userId) {
             rawDates[j] = transactions[i]['dateEarned'].split('T')[0];
             rawPoints[j] = parseInt(transactions[i]['amount']);
             j++;
-        } 
+        }
     }
 
     var pointDateHash = {};
-    for (var i =0; i < rawDates.length; i++) {
-        pointDateHash[rawDates[i]] = (rawDates[i] in pointDateHash) ? pointDateHash[rawDates[i]] + rawPoints[i]: rawPoints[i];
+    for (var i = 0; i < rawDates.length; i++) {
+        pointDateHash[rawDates[i]] = (rawDates[i] in pointDateHash) ? pointDateHash[rawDates[i]] + rawPoints[i] : rawPoints[i];
     }
-        
+
 
     var pointDates = [];
     var i = 0;
@@ -380,11 +380,11 @@ function makeGraphs(leaderboard, transactions){
     runningTotal = [];
     dates = [];
     for (var i = 0; i < pointDates.length; i++) {
-        if (i == 0){
+        if (i == 0) {
             runningTotal[i] = pointDates[i].point;
             dates[i] = pointDates[i].date;
         } else {
-            runningTotal[i] = pointDates[i].point + runningTotal[i-1];
+            runningTotal[i] = pointDates[i].point + runningTotal[i - 1];
             dates[i] = pointDates[i].date;
         }
     }
@@ -393,14 +393,14 @@ function makeGraphs(leaderboard, transactions){
         x: dates,
         type: 'scatter',
         mode: "line+marker",
-        line: {color: '00703c'}
+        line: { color: '00703c' }
     };
 
     var layoutLine = {
-        title: {text:'Your Points'},
-        xaxis: {title: {text:"Date", standoff: 0}}, 
-        yaxis: {title: {text:"Points", standoff: 0}},
-        margin: {b: 40, r:40, l:40},
+        title: { text: 'Your Points' },
+        xaxis: { title: { text: "Date", standoff: 0 } },
+        yaxis: { title: { text: "Points", standoff: 0 } },
+        margin: { b: 40, r: 40, l: 40 },
         plot_bgcolor: '#eeb311',
         paper_bgcolor: '#eeb311',
         showlegend: false
@@ -442,7 +442,7 @@ function getPointsBehindMessage(userRanking, leaderboard) {
         var pointsBehind = leaderboard[userRanking - 2].points - userPoints;
         userAhead = USERS_BY_ID[userAheadId];
         if (pointsBehind == 1) {
-            return "You are 1 point behind " + getName(userAhead);    
+            return "You are 1 point behind " + getName(userAhead);
         }
         return "You are " + pointsBehind + " points behind " + getName(userAhead);
     } else if (userRanking == 1) {
@@ -508,10 +508,10 @@ class PointDate {
     constructor(point, date) {
         this.point = point;
         this.date = date;
-    } 
+    }
 }
 
-function compare(a,b) {
+function compare(a, b) {
     if (a.date < b.date) {
         return -1;
     }

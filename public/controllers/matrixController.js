@@ -15,7 +15,7 @@ var currentBrother;
 var groups = [];
 var log = [];
 
-$(document).ready(function() {
+$(document).ready(function () {
     console.log("Loading assign page...");
 
     var userId = sessionStorage.getItem('userId');
@@ -24,16 +24,16 @@ $(document).ready(function() {
     createNavBar('matrix');
 
     hideFilters();
-    
+
     $('#signoutButton').off('click');
-    $('#signoutButton').click(function() {
+    $('#signoutButton').click(function () {
         sessionStorage.setItem('userId', '');
         location.href = '/login';
     });
 
     $('#reportIssueButton').off('click');
-    $('#reportIssueButton').click(function() {
-        location.href ="https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
+    $('#reportIssueButton').click(function () {
+        location.href = "https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
     });
 
     addFooter();
@@ -45,27 +45,27 @@ $(document).ready(function() {
         fixedColumns: true,
         autoWidth: false,
         "columnDefs": [
-        {
-            "targets": -1,
-            "visible": false
-        }]
+            {
+                "targets": -1,
+                "visible": false
+            }]
     });
 
-    $.get("/users", function(data) {
+    $.get("/users", function (data) {
         USERS = data;
         console.log("retrieved user data");
-    }).done(function() {
+    }).done(function () {
         USERS_BY_ID = createHashmapById(USERS);
-    
+
         var userURL = '/ledger/' + userId;
-        $.get(userURL, function(data) {
+        $.get(userURL, function (data) {
             TRANSACTIONS = data;
             console.log("retrieved transaction data");
-        }).done(function() {
-            $.get("/matrixItems", function(data) {
+        }).done(function () {
+            $.get("/matrixItems", function (data) {
                 MATRIX = data;
                 console.log("retrieved matrix data");
-            }).done(function() {
+            }).done(function () {
                 console.log("updating matrix table");
                 $('#matrixTable').DataTable().clear().draw();
                 for (var i = 0; i < MATRIX.length; i++) {
@@ -83,7 +83,7 @@ $(document).ready(function() {
         /* Show Buttons */
 
         $('#showGPButton').off('click');
-        $('#showGPButton').click(function() {
+        $('#showGPButton').click(function () {
             if (FILTERS.indexOf(positions.GP) >= 0) {
                 return;
             }
@@ -93,7 +93,7 @@ $(document).ready(function() {
         });
 
         $('#showVGPButton').off('click');
-        $('#showVGPButton').click(function() {
+        $('#showVGPButton').click(function () {
             if (FILTERS.indexOf(positions.VGP) >= 0) {
                 return;
             }
@@ -103,7 +103,7 @@ $(document).ready(function() {
         });
 
         $('#showPButton').off('click');
-        $('#showPButton').click(function() {
+        $('#showPButton').click(function () {
             if (FILTERS.indexOf(positions.P) >= 0) {
                 return;
             }
@@ -113,7 +113,7 @@ $(document).ready(function() {
         });
 
         $('#showNMEButton').off('click');
-        $('#showNMEButton').click(function() {
+        $('#showNMEButton').click(function () {
             if (FILTERS.indexOf(positions.NME) >= 0) {
                 return;
             }
@@ -123,7 +123,7 @@ $(document).ready(function() {
         });
 
         $('#showHodButton').off('click');
-        $('#showHodButton').click(function() {
+        $('#showHodButton').click(function () {
             if (FILTERS.indexOf(positions.HOD) >= 0) {
                 return;
             }
@@ -133,7 +133,7 @@ $(document).ready(function() {
         });
 
         $('#showBGButton').off('click');
-        $('#showBGButton').click(function() {
+        $('#showBGButton').click(function () {
             if (FILTERS.indexOf(positions.BG) >= 0) {
                 return;
             }
@@ -143,7 +143,7 @@ $(document).ready(function() {
         });
 
         $('#showSGButton').off('click');
-        $('#showSGButton').click(function() {
+        $('#showSGButton').click(function () {
             if (FILTERS.indexOf(positions.SG) >= 0) {
                 return;
             }
@@ -153,7 +153,7 @@ $(document).ready(function() {
         });
 
         $('#showAGButton').off('click');
-        $('#showAGButton').click(function() {
+        $('#showAGButton').click(function () {
             if (FILTERS.indexOf(positions.AG) >= 0) {
                 return;
             }
@@ -163,7 +163,7 @@ $(document).ready(function() {
         });
 
         $('#showPhuButton').off('click');
-        $('#showPhuButton').click(function() {
+        $('#showPhuButton').click(function () {
             if (FILTERS.indexOf(positions.PHU) >= 0) {
                 return;
             }
@@ -173,7 +173,7 @@ $(document).ready(function() {
         });
 
         $('#showHiButton').off('click');
-        $('#showHiButton').click(function() {
+        $('#showHiButton').click(function () {
             if (FILTERS.indexOf(positions.HI) >= 0) {
                 return;
             }
@@ -183,7 +183,7 @@ $(document).ready(function() {
         });
 
         $('#showCommitteeButton').off('click');
-        $('#showCommitteeButton').click(function() {
+        $('#showCommitteeButton').click(function () {
             if (FILTERS.indexOf(positions.COMMITTEE) >= 0) {
                 return;
             }
@@ -193,7 +193,7 @@ $(document).ready(function() {
         });
 
         $('#showRiskManagerButton').off('click');
-        $('#showRiskManagerButton').click(function() {
+        $('#showRiskManagerButton').click(function () {
             if (FILTERS.indexOf(positions.RISK_MANAGER) >= 0) {
                 return;
             }
@@ -203,7 +203,7 @@ $(document).ready(function() {
         });
 
         $('#showRushChairButton').off('click');
-        $('#showRushChairButton').click(function() {
+        $('#showRushChairButton').click(function () {
             if (FILTERS.indexOf(positions.RUSH_CHAIR) >= 0) {
                 return;
             }
@@ -215,7 +215,7 @@ $(document).ready(function() {
         /* Hide Buttons */
 
         $('#hideGPButton').off('click');
-        $('#hideGPButton').click(function() {
+        $('#hideGPButton').click(function () {
             console.log('CLICKED');
             if (FILTERS.indexOf(positions.GP) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.GP), 1);
@@ -225,7 +225,7 @@ $(document).ready(function() {
         });
 
         $('#hideVGPButton').off('click');
-        $('#hideVGPButton').click(function() {
+        $('#hideVGPButton').click(function () {
             if (FILTERS.indexOf(positions.VGP) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.VGP), 1);
                 $('#hideVGPButton').hide();
@@ -234,7 +234,7 @@ $(document).ready(function() {
         });
 
         $('#hidePButton').off('click');
-        $('#hidePButton').click(function() {
+        $('#hidePButton').click(function () {
             if (FILTERS.indexOf(positions.P) >= 0) {
                 console.log('removing');
                 FILTERS.splice(FILTERS.indexOf(positions.P), 1);
@@ -245,7 +245,7 @@ $(document).ready(function() {
         });
 
         $('#hideNMEButton').off('click');
-        $('#hideNMEButton').click(function() {
+        $('#hideNMEButton').click(function () {
             if (FILTERS.indexOf(positions.NME) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.NME), 1);
                 $('#hideNMEButton').hide();
@@ -254,7 +254,7 @@ $(document).ready(function() {
         });
 
         $('#hideHodButton').off('click');
-        $('#hideHodButton').click(function() {
+        $('#hideHodButton').click(function () {
             if (FILTERS.indexOf(positions.HOD) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.HOD), 1);
                 $('#hideHodButton').hide();
@@ -263,7 +263,7 @@ $(document).ready(function() {
         });
 
         $('#hideBGButton').off('click');
-        $('#hideBGButton').click(function() {
+        $('#hideBGButton').click(function () {
             if (FILTERS.indexOf(positions.BG) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.BG), 1);
                 $('#hideBGButton').hide();
@@ -272,7 +272,7 @@ $(document).ready(function() {
         });
 
         $('#hideSGButton').off('click');
-        $('#hideSGButton').click(function() {
+        $('#hideSGButton').click(function () {
             if (FILTERS.indexOf(positions.SG) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.SG), 1);
                 $('#hideSGButton').hide();
@@ -281,7 +281,7 @@ $(document).ready(function() {
         });
 
         $('#hideAGButton').off('click');
-        $('#hideAGButton').click(function() {
+        $('#hideAGButton').click(function () {
             if (FILTERS.indexOf(positions.AG) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.AG), 1);
                 $('#hideAGButton').hide();
@@ -290,7 +290,7 @@ $(document).ready(function() {
         });
 
         $('#hidePhuButton').off('click');
-        $('#hidePhuButton').click(function() {
+        $('#hidePhuButton').click(function () {
             if (FILTERS.indexOf(positions.PHU) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.PHU), 1);
                 $('#hidePhuButton').hide();
@@ -299,7 +299,7 @@ $(document).ready(function() {
         });
 
         $('#hideHiButton').off('click');
-        $('#hideHiButton').click(function() {
+        $('#hideHiButton').click(function () {
             if (FILTERS.indexOf(positions.HI) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.HI), 1);
                 $('#hideHiButton').hide();
@@ -308,7 +308,7 @@ $(document).ready(function() {
         });
 
         $('#hideCommitteeButton').off('click');
-        $('#hideCommitteeButton').click(function() {
+        $('#hideCommitteeButton').click(function () {
             if (FILTERS.indexOf(positions.COMMITTEE) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.COMMITTEE), 1);
                 $('#hideCommitteeButton').hide();
@@ -317,7 +317,7 @@ $(document).ready(function() {
         });
 
         $('#hideRiskManagerButton').off('click');
-        $('#hideRiskManagerButton').click(function() {
+        $('#hideRiskManagerButton').click(function () {
             if (FILTERS.indexOf(positions.RISK_MANAGER) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.RISK_MANAGER), 1);
                 $('#hideRiskManagerButton').hide();
@@ -326,7 +326,7 @@ $(document).ready(function() {
         });
 
         $('#hideRushChairButton').off('click');
-        $('#hideRushChairButton').click(function() {
+        $('#hideRushChairButton').click(function () {
             if (FILTERS.indexOf(positions.RUSH_CHAIR) >= 0) {
                 FILTERS.splice(FILTERS.indexOf(positions.RUSH_CHAIR), 1);
                 $('#hideRushChairButton').hide();
@@ -335,36 +335,36 @@ $(document).ready(function() {
         });
     });
     var matrixSearchInput = $('#matrixSearchInput');
-        matrixSearchInput.keyup(function() {
-            console.log("Searching");
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("matrixSearchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("matrixTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 1; i < tr.length; i++) {
-                var contains = false
-                var cols = tr[i].getElementsByTagName("td").length;
-                for(j = 0; j < cols; j++){
-                    td = tr[i].getElementsByTagName("td")[j];
-                    if (td && !contains) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            contains = true;
-                        }
+    matrixSearchInput.keyup(function () {
+        console.log("Searching");
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("matrixSearchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("matrixTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 1; i < tr.length; i++) {
+            var contains = false
+            var cols = tr[i].getElementsByTagName("td").length;
+            for (j = 0; j < cols; j++) {
+                td = tr[i].getElementsByTagName("td")[j];
+                if (td && !contains) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        contains = true;
                     }
                 }
-                if (contains) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }       
             }
-        });
+            if (contains) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    });
 });
 
 function changeDateString(rawDate) {
-    return rawDate.slice(5,7)+'/'+rawDate.slice(8,10)+'/'+rawDate.slice(0,4)
+    return rawDate.slice(5, 7) + '/' + rawDate.slice(8, 10) + '/' + rawDate.slice(0, 4)
 }
 
 function hideFilters() {

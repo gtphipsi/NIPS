@@ -1,129 +1,207 @@
 <!DOCTYPE html>
 <html>
-    <head>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Bootstrap -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<!-- jQuery Scripts -->
-		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-		<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-		<!-- DataTables Scripts -->
-		<script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-		<link rel="stylesheet" src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
-		<link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
-		<script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
-		<!-- Custom Styles and Controllers -->
-		<link rel="stylesheet" href="/styles.css">
-		<script type="text/javascript" src="/controllers/utils.js"></script>
-		<script type="text/javascript" src="/controllers/ledgerController.js"></script>
-		<link rel="shortcut icon" type="image/png" href="images/pkp_shield.png"/>
-        <!-- Font Awesome Icons -->
-		<script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
-		<!-- Metadata -->
-		<title>Phi Kappa Psi</title>
-	</head>
-	<body class="homeBackground">
-        <nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container-fluid topNav" id="navbar">
-				<!-- GENERATE VIA UTILS FUNCTION -->
-			</div>
-		</nav>
-		<div class="ledgerContainer">
-			<div class="row ledgerRow">
-				<div class="col-md center redTitle boxShadow">
-                    <h1>Ledger</h1>
-				</div>
-			</div>
-			<div id="loadingIcon">
-				<i class="fas fa-spinner fa-pulse fa-3x"></i>
-			</div>
-			<div id="ledgerFlters" class="row ledgerRow">
-				<div class="col-3 ledgerCol editTransactionsContainer">
-					<button id=editTransactionButton><i class="far fa-edit"></i> Edit</button>
-					<button id=deleteTransactionButton><i class="far fa-trash-alt"></i> Delete</button>
-					<button id=adminTransactionButton><i class="far fa-cogs"></i> Admin</button>
-				</div>
-				
-				<div class="col-2 ledgerCol">
-						<label for="sortValueMenu">Sort by:</label>
-						<select name="sortValueMenu" id="sortValueMenu" onchange="makeLedger()">
-						<option value="Date">Date</option>
-						<option value="Receiver">Receiver</option>
-						<option value="Assigner">Assigner</option>
-						<option value="Reason">Reason</option>
-						<option value="Amount">Amount</option>
-						</select>
-				</div>
-				<div class="col-0.1 ledgerCol">
-					<label for="filterValueMenu">Filter by:</label>
-				</div>
-					<div class="col ledgerCol">
-					<form>
-						<div class="multiselect">
-							  <div class="selectBox" onclick="showCheckboxes()">
-								<select>
-							  		<option>Filter Options</option>
-								</select>
-								<div class="overSelect"></div>
-						  		</div>
-						  		<div id="checkboxes">
-									<label for="Assigned">
-							  		<input type="checkbox" id="AssignedCheck" onclick="makeLedger()"/>Assigned</label>
-									<label for="Received">
-							  		<input type="checkbox" id="ReceivedCheck" onclick="makeLedger()"/>Received</label>
-									<label for="ThisWeek">
-									<input type="checkbox" id="ThisWeekCheck" onclick="makeLedger()"/>This Week</label>
-									<label for="ThisMonth">
-									<input type="checkbox" id="ThisMonthCheck" onclick="makeLedger()"/>This Month</label>
-						  	</div>
-						</div>
-					</form>
-				</div>
-				<div class='col ledgerCol'>
-					<input type="text" id="ledgerSearchInput" placeholder="Search for.." >
-				</div>
-				
-			</div>
-			
-			<div class="row ledgerRow" id="ledgerTableRow">
-				<div class="col ledgerCol">
-					<div id="ledgerContainer">
-						<table class="DataTable row-border" id="ledgerTable">
-							<thead>
-								<tr>
-									<th class="ledgerHead">Checkboxes</th>
-									<th class="ledgerHead">Amount</th>
-									<th class="ledgerHead">Reason</th>
-									<th class="ledgerHead">Receiver</th>
-									<th class="ledgerHead">Assigner</th>
-									<th class="ledgerHead">Date Earned</th>
-									<th class="ledgerHead">Date Assigned</th>
-									<th class="ledgerHead">ID</th>
-								</tr>
-							</thead>
-							<tbody id="ledgerTableBody">
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!-- jQuery Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <!-- DataTables Scripts -->
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"
+    />
+    <link
+      type="text/css"
+      href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css"
+      rel="stylesheet"
+    />
+    <script
+      type="text/javascript"
+      src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"
+    ></script>
+    <!-- Custom Styles and Controllers -->
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="text/javascript" src="/controllers/utils.js"></script>
+    <script
+      type="text/javascript"
+      src="/controllers/ledgerController.js"
+    ></script>
+    <link rel="shortcut icon" type="image/png" href="images/pkp_shield.png" />
+    <!-- Font Awesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/98b48e5f8f.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Metadata -->
+    <title>Phi Kappa Psi</title>
+  </head>
+  <body class="homeBackground">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid topNav" id="navbar">
+        <!-- GENERATE VIA UTILS FUNCTION -->
+      </div>
+    </nav>
+    <div class="ledgerContainer">
+      <div class="row ledgerRow">
+        <div class="col-md center redTitle boxShadow">
+          <h1>Ledger</h1>
+        </div>
+      </div>
+      <div id="loadingIcon">
+        <i class="fas fa-spinner fa-pulse fa-3x"></i>
+      </div>
+      <div id="ledgerFlters" class="row ledgerRow">
+        <div class="col-3 ledgerCol editTransactionsContainer">
+          <button id="editTransactionButton">
+            <i class="far fa-edit"></i> Edit
+          </button>
+          <button id="deleteTransactionButton">
+            <i class="far fa-trash-alt"></i> Delete
+          </button>
+          <button id="adminTransactionButton">
+            <i class="far fa-cogs"></i> Admin
+          </button>
+        </div>
 
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div>
-			<br>
-		</div>
-		<footer></footer>
-		<div id="editDialog" title="Edit Transaction">				   
-			<form>
-				<label for="reason">Reason</label>
-				<input type="text" name="name" id="editReason" placeholder="reason" class="text ui-widget-content ui-corner-all">
-				<label for="amount">Amount</label>
-				<input type="number" name="name" id="editAmount" placeholder="0" class="text ui-widget-content ui-corner-all">
-				<label for="dateEarned">Date Earned</label>
-				<input type="date" name="date" placeholder="Date (mm/dd/yyyy)" id="editDateEarned">
-				<br><input id="editTransactionSubmit" type="submit">
-			</form>
-		</div>
-	</body>
+        <div class="col-2 ledgerCol">
+          <label for="sortValueMenu">Sort by:</label>
+          <select
+            name="sortValueMenu"
+            id="sortValueMenu"
+            onchange="makeLedger()"
+          >
+            <option value="Date">Date</option>
+            <option value="Receiver">Receiver</option>
+            <option value="Assigner">Assigner</option>
+            <option value="Reason">Reason</option>
+            <option value="Amount">Amount</option>
+          </select>
+        </div>
+        <div class="col-0.1 ledgerCol">
+          <label for="filterValueMenu">Filter by:</label>
+        </div>
+        <div class="col ledgerCol">
+          <form>
+            <div class="multiselect">
+              <div class="selectBox" onclick="showCheckboxes()">
+                <select>
+                  <option>Filter Options</option>
+                </select>
+                <div class="overSelect"></div>
+              </div>
+              <div id="checkboxes">
+                <label for="Assigned">
+                  <input
+                    type="checkbox"
+                    id="AssignedCheck"
+                    onclick="makeLedger()"
+                  />Assigned</label
+                >
+                <label for="Received">
+                  <input
+                    type="checkbox"
+                    id="ReceivedCheck"
+                    onclick="makeLedger()"
+                  />Received</label
+                >
+                <label for="ThisWeek">
+                  <input
+                    type="checkbox"
+                    id="ThisWeekCheck"
+                    onclick="makeLedger()"
+                  />This Week</label
+                >
+                <label for="ThisMonth">
+                  <input
+                    type="checkbox"
+                    id="ThisMonthCheck"
+                    onclick="makeLedger()"
+                  />This Month</label
+                >
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col ledgerCol">
+          <input
+            type="text"
+            id="ledgerSearchInput"
+            placeholder="Search for.."
+          />
+        </div>
+      </div>
+
+      <div class="row ledgerRow" id="ledgerTableRow">
+        <div class="col ledgerCol">
+          <div id="ledgerContainer">
+            <table class="DataTable row-border" id="ledgerTable">
+              <thead>
+                <tr>
+                  <th class="ledgerHead">Checkboxes</th>
+                  <th class="ledgerHead">Amount</th>
+                  <th class="ledgerHead">Reason</th>
+                  <th class="ledgerHead">Receiver</th>
+                  <th class="ledgerHead">Assigner</th>
+                  <th class="ledgerHead">Date Earned</th>
+                  <th class="ledgerHead">Date Assigned</th>
+                  <th class="ledgerHead">ID</th>
+                </tr>
+              </thead>
+              <tbody id="ledgerTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <br />
+    </div>
+    <footer></footer>
+    <div id="editDialog" title="Edit Transaction">
+      <form>
+        <label for="reason">Reason</label>
+        <input
+          type="text"
+          name="name"
+          id="editReason"
+          placeholder="reason"
+          class="text ui-widget-content ui-corner-all"
+        />
+        <label for="amount">Amount</label>
+        <input
+          type="number"
+          name="name"
+          id="editAmount"
+          placeholder="0"
+          class="text ui-widget-content ui-corner-all"
+        />
+        <label for="dateEarned">Date Earned</label>
+        <input
+          type="date"
+          name="date"
+          placeholder="Date (mm/dd/yyyy)"
+          id="editDateEarned"
+        />
+        <br /><input id="editTransactionSubmit" type="submit" />
+      </form>
+    </div>
+  </body>
 </html>

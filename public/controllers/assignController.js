@@ -17,20 +17,20 @@ var currentBrother;
 var groups = [];
 var log = [];
 
-$(document).ready(function() {
+$(document).ready(function () {
     console.log("Loading assign page...");
 
     createNavBar('assign');
 
     $('#signoutButton').off('click');
-    $('#signoutButton').click(function() {
+    $('#signoutButton').click(function () {
         sessionStorage.setItem('userId', '');
         location.href = '/login';
     });
 
     $('#reportIssueButton').off('click');
-    $('#reportIssueButton').click(function() {
-        location.href ="https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
+    $('#reportIssueButton').click(function () {
+        location.href = "https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
     });
 
     addFooter();
@@ -41,7 +41,7 @@ $(document).ready(function() {
 
 
     var userURL = '/users/' + userId;
-    
+
 
     DATE_ASSIGNED = new Date();
     console.log("Today's Date", DATE_ASSIGNED);
@@ -60,7 +60,7 @@ $(document).ready(function() {
             "visible": false
         }]
     });
-    $('#logTable').on('click', 'tbody td.editable', function(e) {
+    $('#logTable').on('click', 'tbody td.editable', function (e) {
         var table = $('#logTable').DataTable();
         var row = table.row($(this).parents('tr'));
         var data = row.data();
@@ -90,7 +90,7 @@ $(document).ready(function() {
             "visible": false
         }]
     });
-    $('#groupsTable tbody').on('click', 'button', function() {
+    $('#groupsTable tbody').on('click', 'button', function () {
         var row = groupsTable.row($(this).parents('tr'));
         var groupId = row.data()[2];
         var index = groups.indexOf(groupId);
@@ -128,7 +128,7 @@ $(document).ready(function() {
             "visible": false
         }]
     });
-    $('#brothersTable tbody').on('click', 'button', function() {
+    $('#brothersTable tbody').on('click', 'button', function () {
         var row = brothersTable.row($(this).parents('tr'));
         var brotherId = row.data()[2];
         var index = ALL_USER_IDS.indexOf(brotherId);
@@ -150,14 +150,14 @@ $(document).ready(function() {
     var submitPointsButton = $('#submitPointsButton');
 
     var userURL = '/users/' + userId;
-    $.get(userURL, function(data) {
+    $.get(userURL, function (data) {
         USER = data;
         console.log("retrieved user data");
-    }).done(function() {
-        $.get('/committees', function(data) {
+    }).done(function () {
+        $.get('/committees', function (data) {
             COMMITTEES = data;
             console.log("retrieved committee data");
-        }).done(function() {
+        }).done(function () {
             for (var i = 0; i < COMMITTEES.length; i++) {
                 assigningGroup.append(`<option value=${COMMITTEES[i]._id}>${COMMITTEES[i].committee}</option>`);
             }
@@ -172,10 +172,10 @@ $(document).ready(function() {
                 }
                 assigningAs.append(`<option value=${positions[i]}>${positionLabel}</option>`);
             }
-            $.get("/users", function(data) {
+            $.get("/users", function (data) {
                 USERS = data;
                 console.log("retrieved all user data");
-            }).done(function() {
+            }).done(function () {
                 for (var i = 0; i < USERS.length; i++) {
                     ALL_MEMBERS.push(USERS[i]._id);
                     assigningBrother.append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
@@ -187,7 +187,7 @@ $(document).ready(function() {
     });
 
     addGroupButton.off('click');
-    addGroupButton.click(function() {
+    addGroupButton.click(function () {
         if (currentGroup != 'None') {
             if (groups.indexOf(currentGroup) < 0) {
                 groups.push(currentGroup);
@@ -210,7 +210,7 @@ $(document).ready(function() {
     });
 
     addBrotherButton.off('click');
-    addBrotherButton.click(function() {
+    addBrotherButton.click(function () {
         if (currentBrother != 'None') {
             if (ALL_USER_IDS.indexOf(currentBrother) < 0) {
                 ALL_USER_IDS.push(currentBrother);
@@ -224,18 +224,18 @@ $(document).ready(function() {
     });
 
     submitPointsButton.off('click');
-    submitPointsButton.click(function() {
+    submitPointsButton.click(function () {
         if (confirm('Are you sure you want to submit these points?')) {
             var validForm = validateForm();
             var transactions = getTransactions();
             console.log(transactions);
             if (validForm && transactions.length > 0) {
                 var userPositions = getPositions(USER, COMMITTEES);
-                var postData = {'transactions': transactions, 'positions': userPositions}
-                $.post("/transactions", postData).done(function() {
+                var postData = { 'transactions': transactions, 'positions': userPositions }
+                $.post("/transactions", postData).done(function () {
                     alert('Transactions Submitted Successfully');
                     location.reload();
-                }).fail(function() {
+                }).fail(function () {
                     alert('Access Denied');
                 });
             } else {
@@ -466,4 +466,4 @@ function isValidDate(d) {
     console.log(d);
     console.log(d instanceof Date);
     return d instanceof Date && !isNaN(d);
-  }
+}

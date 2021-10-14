@@ -71,14 +71,14 @@ app.get("/matrix", (req, res) => {
 
 app.get("/users", (req, res) => {
     console.log('getting all users');
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
         } else {
             var db = client.db('NIPS');
             var collection = db.collection('Users');
-            collection.find({}).toArray(function(err, result) {
+            collection.find({}).toArray(function (err, result) {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -100,7 +100,7 @@ app.post("/users", (req, res) => {
         return;
     }
     console.log("is admin");
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -117,7 +117,7 @@ app.post("/users", (req, res) => {
                     officerPositions[position] = JSON.parse(req.body.newUser.officerPositions[position]);
                 }
                 req.body.newUser.admin = isAdmin;
-                collection.insertOne(req.body.newUser, function(err, result) {
+                collection.insertOne(req.body.newUser, function (err, result) {
                     if (err) {
                         console.log(err);
                         throw err;
@@ -135,7 +135,7 @@ app.post("/users", (req, res) => {
 
 app.get("/users/:userId", (req, res) => {
     console.log('getting user by ID');
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -146,7 +146,7 @@ app.get("/users/:userId", (req, res) => {
                 var mongoId = ObjectId(userId);
                 var db = client.db('NIPS');
                 var collection = db.collection('Users');
-                collection.findOne({_id: mongoId}, function(err, result) {
+                collection.findOne({ _id: mongoId }, function (err, result) {
                     if (err) {
                         console.log(err);
                         res.sendStatus(404);
@@ -155,7 +155,7 @@ app.get("/users/:userId", (req, res) => {
                     }
                     client.close();
                 });
-            } catch(e) {
+            } catch (e) {
                 console.log("ERROR FINDING USER");
                 console.log(err);
                 res.sendStatus(404);
@@ -172,7 +172,7 @@ app.put("/users/:userId", (req, res) => {
         res.status(403).send();
         return;
     }
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -183,21 +183,23 @@ app.put("/users/:userId", (req, res) => {
                 var mongoId = ObjectId(userId);
                 var db = client.db('NIPS');
                 var collection = db.collection('Users');
-                var query = {_id: mongoId};
+                var query = { _id: mongoId };
                 var isAdmin = JSON.parse(req.body.updateUser.admin);
                 var officerPositions = req.body.updateUser.officerPositions;
                 for (var position in officerPositions) {
                     officerPositions[position] = JSON.parse(req.body.updateUser.officerPositions[position]);
                 }
                 req.body.updateUser.admin = isAdmin;
-                var update = {$set: {
-                    firstName: req.body.updateUser.firstName,
-                    lastName: req.body.updateUser.lastName,
-                    admin: req.body.updateUser.admin,
-                    officerPositions: req.body.updateUser.officerPositions
-                }};
+                var update = {
+                    $set: {
+                        firstName: req.body.updateUser.firstName,
+                        lastName: req.body.updateUser.lastName,
+                        admin: req.body.updateUser.admin,
+                        officerPositions: req.body.updateUser.officerPositions
+                    }
+                };
                 console.log(req.body);
-                collection.updateOne(query, update, function(err, result) {
+                collection.updateOne(query, update, function (err, result) {
                     if (err) {
                         console.log(err);
                         res.sendStatus(404);
@@ -206,7 +208,7 @@ app.put("/users/:userId", (req, res) => {
                     }
                     client.close();
                 });
-            } catch(e) {
+            } catch (e) {
                 console.log("ERROR FINDING USER");
                 console.log(err);
                 res.sendStatus(404);
@@ -217,7 +219,7 @@ app.put("/users/:userId", (req, res) => {
 
 app.get("/ledger/:userId", (req, res) => {
     console.log('getting user ledger by ID');
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -226,7 +228,7 @@ app.get("/ledger/:userId", (req, res) => {
             console.log("FINDING ONE USER'S LEDGER");
             var db = client.db('NIPS');
             var collection = db.collection('Transactions');
-            collection.find({$or: [{receiver: userId}, {assigner: userId}]}).toArray(function(err, result) {
+            collection.find({ $or: [{ receiver: userId }, { assigner: userId }] }).toArray(function (err, result) {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -235,7 +237,7 @@ app.get("/ledger/:userId", (req, res) => {
                 }
                 client.close();
             });
-        }      
+        }
     });
 });
 
@@ -243,7 +245,7 @@ app.post("/login", (req, res) => {
     console.log("POST LOGIN");
     console.log("body:");
     console.log(req.body);
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -256,7 +258,7 @@ app.post("/login", (req, res) => {
             } else {
                 var lastName = req.body.lastName;
                 var badgeNumber = req.body.badgeNumber;
-                collection.findOne({lastName: lastName, badgeNumber: badgeNumber}, function(err, result) {
+                collection.findOne({ lastName: lastName, badgeNumber: badgeNumber }, function (err, result) {
                     if (err) {
                         console.log(err);
                         throw err;
@@ -278,14 +280,14 @@ app.post("/login", (req, res) => {
 
 app.get("/committees", (req, res) => {
     console.log('getting all committees');
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
         } else {
             var db = client.db('NIPS');
             var collection = db.collection('Committees');
-            collection.find({}).toArray(function(err, result) {
+            collection.find({}).toArray(function (err, result) {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -300,7 +302,7 @@ app.get("/committees", (req, res) => {
 
 app.get("/committees/:committeeId", (req, res) => {
     console.log('getting committee by ID');
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -311,7 +313,7 @@ app.get("/committees/:committeeId", (req, res) => {
                 var mongoId = ObjectId(committeeId);
                 var db = client.db('NIPS');
                 var collection = db.collection('Committees');
-                collection.findOne({_id: mongoId}, function(err, result) {
+                collection.findOne({ _id: mongoId }, function (err, result) {
                     if (err) {
                         console.log(err);
                         res.sendStatus(404);
@@ -320,7 +322,7 @@ app.get("/committees/:committeeId", (req, res) => {
                     }
                     client.close();
                 });
-            } catch(e) {
+            } catch (e) {
                 console.log("ERROR FINDING COMMITTEE");
                 console.log(err);
                 res.sendStatus(404);
@@ -334,13 +336,13 @@ app.post("/committees", (req, res) => {
     console.log("adding new committee");
     console.log(req.body.USER.admin);
     console.log(req.body.USER.admin == 'false');
-    if (req.body.USER.admin  == 'false') {
+    if (req.body.USER.admin == 'false') {
         console.log('access denied');
         res.status(403).send();
         return;
     }
 
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -351,7 +353,7 @@ app.post("/committees", (req, res) => {
                 console.log("No message body");
                 res.sendStatus(200);
             } else {
-                collection.insertOne(req.body.newCommittee, function(err, result) {
+                collection.insertOne(req.body.newCommittee, function (err, result) {
                     if (err) {
                         console.log(err);
                         throw err;
@@ -375,7 +377,7 @@ app.put("/committees/:committeeId", (req, res) => {
         res.status(403).send();
         return;
     }
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -386,15 +388,17 @@ app.put("/committees/:committeeId", (req, res) => {
                 var mongoId = ObjectId(committeeId);
                 var db = client.db('NIPS');
                 var collection = db.collection('Committees');
-                var query = {_id: mongoId};
-                var update = {$set: {
-                    members: req.body.members,
-                    meetings: req.body.meetings,
-                    head: req.body.head,
-                    budget: req.body.budget
-                }};
+                var query = { _id: mongoId };
+                var update = {
+                    $set: {
+                        members: req.body.members,
+                        meetings: req.body.meetings,
+                        head: req.body.head,
+                        budget: req.body.budget
+                    }
+                };
                 console.log(req.body);
-                collection.updateOne(query, update, function(err, result) {
+                collection.updateOne(query, update, function (err, result) {
                     if (err) {
                         console.log(err);
                         res.sendStatus(404);
@@ -403,7 +407,7 @@ app.put("/committees/:committeeId", (req, res) => {
                     }
                     client.close();
                 });
-            } catch(e) {
+            } catch (e) {
                 console.log("ERROR FINDING COMMITTEE");
                 console.log(err);
                 res.sendStatus(404);
@@ -423,7 +427,7 @@ app.post("/transactions", (req, res) => {
         return;
     }
     console.log('access permitted');
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -439,7 +443,7 @@ app.post("/transactions", (req, res) => {
                     transactions[i].dateAssigned = new Date(transactions[i].dateAssigned);
                     transactions[i].dateEarned = new Date(transactions[i].dateEarned);
                 }
-                collection.insertMany(req.body.transactions, function(err, result) {
+                collection.insertMany(req.body.transactions, function (err, result) {
                     if (err) {
                         console.log(err);
                         throw err;
@@ -456,7 +460,7 @@ app.post("/transactions", (req, res) => {
 
 app.get("/transactions", (req, res) => {
     console.log('getting all transactions');
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -464,7 +468,7 @@ app.get("/transactions", (req, res) => {
             console.log("FINDING ALL TRANSACTIONS");
             var db = client.db('NIPS');
             var collection = db.collection('Transactions');
-            collection.find({}).toArray(function(err, result) {
+            collection.find({}).toArray(function (err, result) {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -473,13 +477,13 @@ app.get("/transactions", (req, res) => {
                 }
                 client.close();
             });
-        }      
+        }
     });
 });
 
 app.put("/transactions/:transactionId", (req, res) => {
     console.log('editing transaction by ID');
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -490,16 +494,18 @@ app.put("/transactions/:transactionId", (req, res) => {
                 var mongoId = ObjectId(transactionId);
                 var db = client.db('NIPS');
                 var collection = db.collection('Transactions');
-                var query = {_id: mongoId};
+                var query = { _id: mongoId };
                 req.body.dateEarned = new Date(req.body.dateEarned);
                 req.body.dateAssigned = new Date(req.body.dateAssigned);
-                var update = {$set: {
-                    reason: req.body.reason,
-                    amount: req.body.amount,
-                    dateEarned: req.body.dateEarned
-                }};
+                var update = {
+                    $set: {
+                        reason: req.body.reason,
+                        amount: req.body.amount,
+                        dateEarned: req.body.dateEarned
+                    }
+                };
                 console.log(req.body);
-                collection.updateOne(query, update, function(err, result) {
+                collection.updateOne(query, update, function (err, result) {
                     if (err) {
                         console.log(err);
                         res.sendStatus(404);
@@ -508,7 +514,7 @@ app.put("/transactions/:transactionId", (req, res) => {
                     }
                     client.close();
                 });
-            } catch(e) {
+            } catch (e) {
                 console.log("ERROR FINDING COMMITTEE");
                 console.log(err);
                 res.sendStatus(404);
@@ -519,7 +525,7 @@ app.put("/transactions/:transactionId", (req, res) => {
 
 app.delete("/transactions", (req, res) => {
     console.log("deleting transactions");
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -536,8 +542,8 @@ app.delete("/transactions", (req, res) => {
                 for (var i = 0; i < req.body.transactionIds.length; i++) {
                     ids.push(new ObjectId(req.body.transactionIds[i]));
                 }
-                var query = {_id: {$in: ids}};
-                collection.deleteMany(query, function(err, result) {
+                var query = { _id: { $in: ids } };
+                collection.deleteMany(query, function (err, result) {
                     if (err) {
                         console.log(err);
                         throw err;
@@ -554,14 +560,14 @@ app.delete("/transactions", (req, res) => {
 
 app.get("/matrixItems", (req, res) => {
     console.log('getting all matrix items');
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
         } else {
             var db = client.db('NIPS');
             var collection = db.collection('Matrix');
-            collection.find({}).toArray(function(err, result) {
+            collection.find({}).toArray(function (err, result) {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -576,7 +582,7 @@ app.get("/matrixItems", (req, res) => {
 
 app.post("/matrix", (req, res) => {
     console.log("adding new matrix item");
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -587,7 +593,7 @@ app.post("/matrix", (req, res) => {
                 console.log("No message body");
                 res.sendStatus(200);
             } else {
-                collection.insertOne(req.body, function(err, result) {
+                collection.insertOne(req.body, function (err, result) {
                     if (err) {
                         console.log(err);
                         throw err;
@@ -605,14 +611,14 @@ app.post("/matrix", (req, res) => {
 
 app.get("/requests", (req, res) => {
     console.log('getting all requests');
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
         } else {
             var db = client.db('NIPS');
             var collection = db.collection('Requests');
-            collection.find({}).toArray(function(err, result) {
+            collection.find({}).toArray(function (err, result) {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -627,7 +633,7 @@ app.get("/requests", (req, res) => {
 
 app.post("/requests", (req, res) => {
     console.log("adding new request");
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -639,7 +645,7 @@ app.post("/requests", (req, res) => {
                 res.sendStatus(200);
             } else {
                 req.body.date = new Date(req.body.date);
-                collection.insertOne(req.body, function(err, result) {
+                collection.insertOne(req.body, function (err, result) {
                     if (err) {
                         console.log(err);
                         throw err;
@@ -657,7 +663,7 @@ app.post("/requests", (req, res) => {
 
 app.delete("/requests", (req, res) => {
     console.log("deleting requests");
-    MongoClient.connect(uri, { useNewUrlParser: true }, {useUnifiedTopology: true }, function(err, client) {
+    MongoClient.connect(uri, { useNewUrlParser: true }, { useUnifiedTopology: true }, function (err, client) {
         if (err) {
             console.log('ERROR CONNECTING TO MONGO');
             res.sendStatus(404);
@@ -674,8 +680,8 @@ app.delete("/requests", (req, res) => {
                 for (var i = 0; i < req.body.transactionIds.length; i++) {
                     ids.push(new ObjectId(req.body.transactionIds[i]));
                 }
-                var query = {_id: {$in: ids}};
-                collection.deleteMany(query, function(err, result) {
+                var query = { _id: { $in: ids } };
+                collection.deleteMany(query, function (err, result) {
                     if (err) {
                         console.log(err);
                         throw err;

@@ -4,20 +4,20 @@ var USERS_BY_ID;
 var COMMITTEES;
 var COMMITTEES_BY_ID;
 
-$(document).ready(function() {
+$(document).ready(function () {
     console.log("Loading committees page...");
 
     createNavBar('committees');
 
     $('#signoutButton').off('click');
-    $('#signoutButton').click(function() {
+    $('#signoutButton').click(function () {
         sessionStorage.setItem('userId', '');
         location.href = '/login';
     });
 
     $('#reportIssueButton').off('click');
-    $('#reportIssueButton').click(function() {
-        location.href ="https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
+    $('#reportIssueButton').click(function () {
+        location.href = "https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
     });
 
     addFooter();
@@ -27,24 +27,24 @@ $(document).ready(function() {
     checkLoggedIn(userId);
 
     var userURL = '/users/' + userId;
-    $.get(userURL, function(data) {
+    $.get(userURL, function (data) {
         USER = data;
         console.log("retrieved one user data");
         console.log(data);
-    }).fail(function() {
+    }).fail(function () {
         alert("failed retrieving user data--returning to login page");
         window.location = '/';
-    }).done(function() {
-        $.get("/users", function(data) {
+    }).done(function () {
+        $.get("/users", function (data) {
             USERS = data;
             console.log("retrieved all user data");
-        }).done(function() {
+        }).done(function () {
             USERS_BY_ID = createHashmapById(USERS);
-            $.get("/committees", function(data) {
+            $.get("/committees", function (data) {
                 COMMITTEES = data;
                 COMMITTEES_BY_ID = createHashmapById(data);
                 console.log("retrieved committee data");
-            }).done(function() {
+            }).done(function () {
                 $('#committeesContainer').html('');
                 for (let committeeId in COMMITTEES_BY_ID) {
                     var committee = COMMITTEES_BY_ID[committeeId];
@@ -62,9 +62,9 @@ $(document).ready(function() {
 function createCommitteeCard(committeeId) {
     var committee = COMMITTEES_BY_ID[committeeId];
     console.log('creating committee card for ' + committee.committee);
-    var newCard = 
-    "<div class='row committeeRow'>" +
-    "<div class='committeeCard boxShadow'>";
+    var newCard =
+        "<div class='row committeeRow'>" +
+        "<div class='committeeCard boxShadow'>";
     var icon = getCommitteeIcon(committeeId);
     var name = `<h2 class="committeeName">${icon} ${committee.committee}</h2>`;
     var headUser = USERS_BY_ID[committee.head];
@@ -85,7 +85,7 @@ function createCommitteeCard(committeeId) {
 function getCommitteeIcon(committeeId) {
     var committee = COMMITTEES_BY_ID[committeeId];
     var icon = '<i class="fas fa-briefcase"></i>';
-    switch(committee.committee) {
+    switch (committee.committee) {
         case "Technology":
             icon = '<i class="fas fa-laptop-code"></i>';
             break;

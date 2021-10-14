@@ -123,7 +123,7 @@ function getLeaderboard(transactions, timeframe, userIds) {
     var leaderboard = [];
     var pointValues = getPointValues(transactions, timeframe);
     for (userId in pointValues) {
-        if (userIds.includes(userId)){
+        if (userIds.includes(userId)) {
             var obj = {
                 id: userId,
                 points: pointValues[userId]
@@ -140,7 +140,7 @@ function getLeaderboard(transactions, timeframe, userIds) {
 function getTransactionsTF(transactions, timeframe) {
     var transactionsTF = []
     var i = 0
-    while (i< transactions.length) {
+    while (i < transactions.length) {
         if (isInTimeframe(transactions[i], timeframe)) {
             transactionsTF[transactionsTF.length] = transactions[i];
         }
@@ -255,7 +255,7 @@ function isInTimeframe(transaction, timeframe) {
     } else if (timeframe == timeframes.MONTHLY) {
         return isThisMonth(transaction.dateEarned);
     } else if (timeframe == timeframes.SEMESTERLY) {
-                return isThisSemester(transaction.dateEarned);
+        return isThisSemester(transaction.dateEarned);
     } else {
         console.log("TIME FRAME ERROR");
         return false;
@@ -291,34 +291,34 @@ function isInSpringSemester(date) {
  * @returns true if date is within range, false otherwise
  */
 function isThisSemester(date) {
-        var currentSemester = getCurrentSemester();
-        if (currentSemester == semester.FALL) {
-            return isInFallSemester(date);
-        } else if (currentSemester == semester.SPRING) {
-            return isInSpringSemester(date);
-        } else {
-            return false;
-        }
+    var currentSemester = getCurrentSemester();
+    if (currentSemester == semester.FALL) {
+        return isInFallSemester(date);
+    } else if (currentSemester == semester.SPRING) {
+        return isInSpringSemester(date);
+    } else {
+        return false;
     }
+}
 
-    /**
- * Below are functions performing calculations to determine if
- * a given date is within a certain range
- * @param {*} date the date to check
- * @returns true if date is within range, false otherwise
- */
+/**
+* Below are functions performing calculations to determine if
+* a given date is within a certain range
+* @param {*} date the date to check
+* @returns true if date is within range, false otherwise
+*/
 function isThisWeek(date) {
     var currentDate = new Date();
     var wed = null;
     if (currentDate.getDay() < 3) {
-        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()+3-7)); //set to last wednesday
+        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 3 - 7)); //set to last wednesday
     } else {
-        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()+3));
+        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 3));
     }
-    wed.setHours(0,0,0,0);
-    wed -=1;
+    wed.setHours(0, 0, 0, 0);
+    wed -= 1;
     return isInParticularWeek(date, wed);
-    
+
 }
 
 /**
@@ -340,7 +340,7 @@ function isThisMonth(date) {
  * @param {*} date the date to check
  * @returns true if date is within range, false otherwise
  */
-function isInParticularWeek(date, weekStartDate){
+function isInParticularWeek(date, weekStartDate) {
     return (weekStartDate <= date) && ((date - weekStartDate) / 86400000 <= 7);
 }
 
@@ -354,12 +354,12 @@ function getBrotherOfTheWeek(leaderboards) {
         return [];
     }
     var brothers = [];
-    
-    leaderboards[0].sort((a,b)=>b.points-a.points);
+
+    leaderboards[0].sort((a, b) => b.points - a.points);
     console.log(leaderboards);
     var filteredLeaderboard = leaderboards[0].filter(a => a.points == leaderboards[0][0].points)
     console.log(filteredLeaderboard);
-    for (var i = 0; i<filteredLeaderboard.length;i++) {
+    for (var i = 0; i < filteredLeaderboard.length; i++) {
         brothers.push(filteredLeaderboard[i].id);
     }
     return brothers;
@@ -380,25 +380,25 @@ function getWeeklyLeaderboards(transactions, userIds) {
     var wed = null;
     if (currentDate.getDay() < 3) {
         // the wednesday is in the last week so we substract the days since monday then add 3-7 to get to last week 
-        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()+3-7)); //set to prev wednesday
+        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 3 - 7)); //set to prev wednesday
     } else {
         // the wednesday is in the current week so we substract the days since monday then add 3 to get to last week
-        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()+3));
+        wed = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 3));
     }
-    wed.setHours(0,0,0,0);
-    currentDate = new Date(wed-86400000*7);// set to last wednesday
+    wed.setHours(0, 0, 0, 0);
+    currentDate = new Date(wed - 86400000 * 7);// set to last wednesday
     console.log('Week starts on');
     console.log(currentDate);
-    if (transactions.length != 0){
+    if (transactions.length != 0) {
         while (isThisSemester(currentDate)) {
             weeklyTranscations = [];
-            for(var i=0; i<transactions.length; i++) {
-                if (isInParticularWeek(new Date(transactions[i].dateEarned),currentDate)) {
+            for (var i = 0; i < transactions.length; i++) {
+                if (isInParticularWeek(new Date(transactions[i].dateEarned), currentDate)) {
                     weeklyTranscations.push(transactions[i]);
                 }
             }
-            leaderboards.push(getLeaderboard(weeklyTranscations,"semesterly",userIds));
-            currentDate = new Date(currentDate-86400000*7);
+            leaderboards.push(getLeaderboard(weeklyTranscations, "semesterly", userIds));
+            currentDate = new Date(currentDate - 86400000 * 7);
         }
     }
     return leaderboards;
@@ -409,13 +409,13 @@ function getBiggestClimber(leaderboards) {
     if (leaderboards.length < 2) {
         return [];
     }
-    
+
     //calcute rankings excluding previous week
     var semLeaderboard = {}
     console.log(leaderboards[0]);
-    for(var i = 1; i< leaderboards.length;i++){
-        for(var j = 0; j< leaderboards[i].length;j++){
-            if (semLeaderboard[leaderboards[i][j].id] > 0){
+    for (var i = 1; i < leaderboards.length; i++) {
+        for (var j = 0; j < leaderboards[i].length; j++) {
+            if (semLeaderboard[leaderboards[i][j].id] > 0) {
                 semLeaderboard[leaderboards[i][j].id] += leaderboards[i][j].points
             } else {
                 semLeaderboard[leaderboards[i][j].id] = leaderboards[i][j].points
@@ -423,16 +423,16 @@ function getBiggestClimber(leaderboards) {
             }
         }
     }
-    console.log (semLeaderboard);
+    console.log(semLeaderboard);
     // put into array to sort for rankings
     var semLeaderboardArr = []
     var key;
-    for (var key in semLeaderboard) { 
-        semLeaderboardArr.push({'id':key,'points':semLeaderboard[key], 'rank':-1});
+    for (var key in semLeaderboard) {
+        semLeaderboardArr.push({ 'id': key, 'points': semLeaderboard[key], 'rank': -1 });
     }
-    semLeaderboardArr.sort((a,b)=>b.points-a.points);
+    semLeaderboardArr.sort((a, b) => b.points - a.points);
     console.log(semLeaderboardArr);
-    for(var i = 0; i< semLeaderboardArr.length;i++){
+    for (var i = 0; i < semLeaderboardArr.length; i++) {
         semLeaderboardArr[i].rank = i;
     }
     console.log(semLeaderboardArr);
@@ -443,18 +443,18 @@ function getBiggestClimber(leaderboards) {
     semLeaderboardArr.forEach(i => {
         newSemLeaderboard[i.id] = i.points
         leaderboards[0].forEach(j => {
-            if(i.id==j.id){
+            if (i.id == j.id) {
                 newSemLeaderboard[i.id] += j.points
             }
         });
     });
     //turn the map into an array, sort, and add rankings
     var newSemLeaderboardArr = [];
-    
-    for (var key in newSemLeaderboard) { 
-        newSemLeaderboardArr.push({'id':key,'points':newSemLeaderboard[key], 'rank':-1});
+
+    for (var key in newSemLeaderboard) {
+        newSemLeaderboardArr.push({ 'id': key, 'points': newSemLeaderboard[key], 'rank': -1 });
     }
-    newSemLeaderboardArr.sort((a,b)=>b.points-a.points);
+    newSemLeaderboardArr.sort((a, b) => b.points - a.points);
     newSemLeaderboardArr.forEach(i => {
         i.rank = newSemLeaderboardArr.indexOf(i);
     });
@@ -467,22 +467,22 @@ function getBiggestClimber(leaderboards) {
     var deltas = [];
     console.log(newSemLeaderboardArr);
     semLeaderboardArr.forEach(i => {
-        deltas.push({'id':i.id, "delta":i.rank-newRanks[i.id]});
+        deltas.push({ 'id': i.id, "delta": i.rank - newRanks[i.id] });
     });
-    deltas.sort((a,b)=>b.delta-a.delta);
+    deltas.sort((a, b) => b.delta - a.delta);
     deltas = deltas.filter(a => a.delta == deltas[0].delta);
     console.log(deltas);
-    var biggestClimbers=[];
+    var biggestClimbers = [];
     deltas.forEach(i => {
         biggestClimbers.push(i.id);
     });
     console.log(biggestClimbers);
     return biggestClimbers;
-    
+
 }
 
 function getHottestStreak(leaderboards) {
-    if (leaderboards.length == 0 || leaderboards[0].length==0){
+    if (leaderboards.length == 0 || leaderboards[0].length == 0) {
         return [];
     }
     var streaks = [];
@@ -490,14 +490,14 @@ function getHottestStreak(leaderboards) {
     var nextRank;
     var currRank;
     var userId;
-    leaderboards[0].sort((a,b)=>b.points-a.points);
-    for(var j=0; j<leaderboards[0].length; j++) {
+    leaderboards[0].sort((a, b) => b.points - a.points);
+    for (var j = 0; j < leaderboards[0].length; j++) {
         userId = leaderboards[0][j].id;
         nextRank = j;
         streak = true;
-        for(var i = 1; streak && i < leaderboards.length; i++) {
-            leaderboards[i].sort((a,b)=>b.points-a.points);
-            for(var k =0; k<leaderboards[i].length;k++){
+        for (var i = 1; streak && i < leaderboards.length; i++) {
+            leaderboards[i].sort((a, b) => b.points - a.points);
+            for (var k = 0; k < leaderboards[i].length; k++) {
                 if (leaderboards[i][k].id == userId) {
                     currRank = k;
                 }
@@ -505,13 +505,13 @@ function getHottestStreak(leaderboards) {
             streak = currRank >= nextRank;
         }
         i--;
-        streaks.push({'userId':userId, "streak":i});
+        streaks.push({ 'userId': userId, "streak": i });
     }
 
-    streaks.sort((a,b)=>b.streak-a.streak);
-    streaks = streaks.filter(a => a.streak==streaks[0].streak);
+    streaks.sort((a, b) => b.streak - a.streak);
+    streaks = streaks.filter(a => a.streak == streaks[0].streak);
     hottestUsers = []
-    for(var i=0; i<streaks.length; i++){
+    for (var i = 0; i < streaks.length; i++) {
         hottestUsers.push(streaks[i].userId);
     }
     return hottestUsers;
@@ -586,7 +586,7 @@ function createNavBar(page) {
     var committees = '<a class=topNavLink id=committeesNav href = "/viewcommittees"><i class="fas fa-users"></i> Committees';
     var matrix = '<a class=topNavLink id=matrixNav href="/matrix"><i class="fas fa-th-list"></i> Matrix';
     var signout = '<button id=signoutButton><i class="fas fa-sign-out-alt"></i> Sign Out</button>';
-    
+
     $('#navbar').append(home);
     $('#navbar').append(assign);
     $('#navbar').append(ledger);
@@ -623,7 +623,7 @@ function createNavBar(page) {
         default:
             break;
     }
-    
+
 }
 
 

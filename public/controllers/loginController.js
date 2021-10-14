@@ -1,9 +1,9 @@
 
-$(document).ready(function() {
+$(document).ready(function () {
     console.log("Loading login page...");
 
     $("#loginButton").off('click');
-    $("#loginButton").click(function() {
+    $("#loginButton").click(function () {
         let lastName = document.getElementById('lastName').value;
         let badgeNumber = document.getElementById('badgeNumber').value;
         var userInfo = {
@@ -14,7 +14,7 @@ $(document).ready(function() {
             alert('Please fill out both fields');
         } else {
             console.log("POST request TBD");
-            $.post("/login", userInfo).done(function(data) {
+            $.post("/login", userInfo).done(function (data) {
                 console.log("Received data:");
                 console.log(data);
                 sessionStorage.setItem('userId', data._id);

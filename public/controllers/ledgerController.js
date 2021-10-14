@@ -22,7 +22,7 @@ var groups = [];
 var log = [];
 var expanded = false;
 
-$(document).ready(function() {
+$(document).ready(function () {
     console.log("Loading assign page...");
 
     createNavBar('ledger');
@@ -30,14 +30,14 @@ $(document).ready(function() {
     $('#showAllButton').addClass('selectedButton');
 
     $('#signoutButton').off('click');
-    $('#signoutButton').click(function() {
+    $('#signoutButton').click(function () {
         sessionStorage.setItem('userId', '');
         location.href = '/login';
     });
 
     $('#reportIssueButton').off('click');
-    $('#reportIssueButton').click(function() {
-        location.href ="https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
+    $('#reportIssueButton').click(function () {
+        location.href = "https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
     });
 
     addFooter();
@@ -57,19 +57,19 @@ $(document).ready(function() {
                 'visible': false
             },
             {
-               'targets': 0,
-               'checkboxes': {
-                  'selectRow': true
-               }, "width": "5%"
+                'targets': 0,
+                'checkboxes': {
+                    'selectRow': true
+                }, "width": "5%"
             },
             {
                 targets: "_all",
                 orderable: false
-             },
-         ],
-         'select': {
+            },
+        ],
+        'select': {
             'style': 'multi'
-         }
+        }
     });
 
     var editDialog = $("#editDialog").dialog({
@@ -83,23 +83,23 @@ $(document).ready(function() {
         }
     });
 
-    $('#editTransactionButton').click(function() {
+    $('#editTransactionButton').click(function () {
         editDialog.dialog('open');
     });
 
     $('#editTransactionSubmit').off('click');
-    $('#editTransactionSubmit').click(function() {
+    $('#editTransactionSubmit').click(function () {
         var ledgerTable = $('#ledgerTable').DataTable();
         var rowsSelected = ledgerTable.column(0).checkboxes.selected();
         console.log("rows selected");
         console.log(rowsSelected);
         var transactionIds = [];
-        $.each(rowsSelected, function(index) {
+        $.each(rowsSelected, function (index) {
             var tableIndex = rowsSelected[index];
             var data = ledgerTable.row(tableIndex).data();
             console.log("rows data");
             console.log(data);
-            transactionIds.push(data[data.length-1]);
+            transactionIds.push(data[data.length - 1]);
         });
         console.log("transactinos ids");
         console.log(transactionIds);
@@ -133,7 +133,7 @@ $(document).ready(function() {
                         url: putURL,
                         type: 'PUT',
                         data: updateTransaction,
-                        done: function() {
+                        done: function () {
                             $('#loadingIcon').hide();
                         }
                     });
@@ -148,13 +148,13 @@ $(document).ready(function() {
         }
     });
 
-    $('#deleteTransactionButton').click(function() {
+    $('#deleteTransactionButton').click(function () {
         var rowsSelected = ledgerTable.column(0).checkboxes.selected();
         var transactionIds = [];
-        $.each(rowsSelected, function(index) {
+        $.each(rowsSelected, function (index) {
             var tableIndex = rowsSelected[index];
             var data = ledgerTable.row(tableIndex).data();
-            if (ALL_TRANSACTIONS_BY_ID[data[data.length - 1]].assigner == USER._id || (adminPriveleges&&USER.admin)) {
+            if (ALL_TRANSACTIONS_BY_ID[data[data.length - 1]].assigner == USER._id || (adminPriveleges && USER.admin)) {
                 transactionIds.push(data[data.length - 1]);
             } else {
                 //alert(transaction.assigner + '\n' + USER._id);
@@ -169,19 +169,19 @@ $(document).ready(function() {
             $.ajax({
                 url: "/transactions",
                 type: 'DELETE',
-                data: {transactionIds},
-                success: function(response) {
+                data: { transactionIds },
+                success: function (response) {
                     alert('Transactions Successfully Deleted');
                     location.reload();
                 },
-                done: function() {
+                done: function () {
                     $('#loadingIcon').hide();
                 }
             });
         }
     });
 
-    $('#adminTransactionButton').click(function() {
+    $('#adminTransactionButton').click(function () {
         if (USER.admin) {
             adminPriveleges = !adminPriveleges;
             TRANSACTIONS = USER_TRANSACTIONS == TRANSACTIONS ? ALL_TRANSACTIONS : USER_TRANSACTIONS;
@@ -189,31 +189,31 @@ $(document).ready(function() {
             makeLedger();
             console.log(document.getElementById("adminTransactionButton").innerHTML);
             document.getElementById("adminTransactionButton").innerHTML = adminPriveleges ? '<i class="far fa-cogs" aria-hidden="true"></i> User' : '<i class="far fa-cogs" aria-hidden="true"></i> Admin';
-            
+
         } else {
             alert("ACCESS DENIED\nUser does not have admin priviledges");
         }
-        
+
     });
 
     $('#ledgerSearchInput').keyup(function () {
         makeLedger();
     });
 
-    $.get("/users", function(data) {
+    $.get("/users", function (data) {
         USERS = data;
         console.log("retrieved user data");
-    }).done(function() {
+    }).done(function () {
         USERS_BY_ID = createHashmapById(USERS);
-    
-        var userName = USERS_BY_ID[userId].firstName + ' '+  USERS_BY_ID[userId].lastName;
+
+        var userName = USERS_BY_ID[userId].firstName + ' ' + USERS_BY_ID[userId].lastName;
         USER = USERS_BY_ID[userId];
         var userURL = '/ledger/' + userId;
-        $.get(userURL, function(data) {
+        $.get(userURL, function (data) {
             TRANSACTIONS = data;
             console.log("retrieved transaction data");
             console.log(data);
-        }).done(function() {
+        }).done(function () {
             if (!TRANSACTIONS || TRANSACTIONS.length == 0) {
                 console.log("no transactinos");
                 $('#ledgerTable').DataTable().clear().draw();
@@ -227,15 +227,15 @@ $(document).ready(function() {
         });
 
         var ledgerSearchInput = $('#ledgerSearchInput');
-        ledgerSearchInput.keyup(function() {
+        ledgerSearchInput.keyup(function () {
             SEARCH_TEXT = document.getElementById("ledgerSearchInput").value.toUpperCase();
             makeLedger();
         });
-        $.get("/transactions", function(data) {
+        $.get("/transactions", function (data) {
             ALL_TRANSACTIONS = data;
             console.log("retrieved transaction data");
             console.log(data);
-        }).done(function() {
+        }).done(function () {
             if (!ALL_TRANSACTIONS || ALL_TRANSACTIONS.length == 0) {
                 console.log("no transactinos");
                 return;
@@ -251,10 +251,10 @@ function makeLedger() {
     $('#loadingIcon').hide();
 }
 
-function drawLedger(ledger){
-    
+function drawLedger(ledger) {
+
     var tableIndex = 0;
-    var table =  $('#ledgerTable').DataTable()
+    var table = $('#ledgerTable').DataTable()
     table.clear().draw();
     var rows = []
     for (var i = 0; i < ledger.length; i++) {
@@ -265,7 +265,7 @@ function drawLedger(ledger){
         var assigner = USERS_BY_ID[currentTransaction.assigner].firstName + ' ' + USERS_BY_ID[currentTransaction.assigner].lastName;
         var dateAssigned = changeDateString(currentTransaction.dateAssigned);
         var dateEarned = changeDateString(currentTransaction.dateEarned);
-        var newRow = [tableIndex, amount,reason, receiver, assigner, dateEarned, dateAssigned,currentTransaction._id];
+        var newRow = [tableIndex, amount, reason, receiver, assigner, dateEarned, dateAssigned, currentTransaction._id];
         rows[i] = newRow;
         tableIndex++;
     }
@@ -273,12 +273,12 @@ function drawLedger(ledger){
     table.draw();
 }
 
-function filterLedger(transactions){
+function filterLedger(transactions) {
     var keptTransactions = []
     var toAdd = true;
     var transaction;
     console.log($('#ledgerSearchInput').value);
-    for (var i = 0; i< transactions.length;i++) {
+    for (var i = 0; i < transactions.length; i++) {
         transaction = transactions[i];
         if (document.getElementById('AssignedCheck').checked) {
             toAdd = toAdd && transaction.assigner == USER._id;
@@ -292,7 +292,7 @@ function filterLedger(transactions){
         if (document.getElementById('ThisMonthCheck').checked) {
             toAdd = toAdd && isThisMonth(transaction.dateEarned)
         }
-        
+
         if (toAdd) {
             keptTransactions[keptTransactions.length] = transaction;
         }
@@ -315,7 +315,7 @@ function reorderLedger(transactions) {
     return sortedTransactions;
 }
 
-function getCompare(sorting) {  
+function getCompare(sorting) {
     if (sorting == 'Reason') {
         return compareByReason;
     }
@@ -357,16 +357,16 @@ function compareByReason(x, y) {
 
 
 function changeDateString(rawDate) {
-    return rawDate.slice(5,7)+'/'+rawDate.slice(8,10)+'/'+rawDate.slice(0,4)
+    return rawDate.slice(5, 7) + '/' + rawDate.slice(8, 10) + '/' + rawDate.slice(0, 4)
 }
 
 function showCheckboxes() {
     var checkboxes = document.getElementById("checkboxes");
     if (!expanded) {
-      checkboxes.style.display = "block";
-      expanded = true;
+        checkboxes.style.display = "block";
+        expanded = true;
     } else {
-      checkboxes.style.display = "none";
-      expanded = false;
+        checkboxes.style.display = "none";
+        expanded = false;
     }
-  }
+}

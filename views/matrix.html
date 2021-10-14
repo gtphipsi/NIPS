@@ -1,90 +1,155 @@
 <!DOCTYPE html>
 <html>
-    <head>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-		<title>Phi Kappa Psi</title>
-		<link rel="stylesheet" href="/styles.css">
-		<script type="text/javascript" src="/controllers/utils.js"></script>
-		<script type="text/javascript" src="/controllers/matrixController.js"></script>
-		<link rel="shortcut icon" type="image/png" href="images/pkp_shield.png"/>
-        <!-- Font Awesome Icons -->
-        <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
-	</head>
-	<body class="homeBackground">
-        <nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container-fluid topNav" id="navbar">
-				<!-- GENERATE VIA UTILS FUNCTION -->
-			</div>
-		</nav>
-		<div class="matrixContainer">
-			<div class="row">
-				<div class="col-md center redTitle boxShadow">
-                    <h1>Matrix</h1>
-				</div>
-            </div>
-            <div id="loadingIcon">
-				<i class="fas fa-spinner fa-pulse fa-3x"></i>
-			</div>
-            <div class="row matrixRow">
-                <div class="col-2 filtersCol">
-                    <ul>
-                        <li><button class="filterButton" id="showGPButton">GP</button></li>
-                        <li><button class="filterButton" id="showVGPButton">VGP</button></li>
-                        <li><button class="filterButton" id="showPButton">P</button></li>
-                        <li><button class="filterButton" id="showNMEButton">NME</button></li>
-                        <li><button class="filterButton" id="showHodButton">Hod</button></li>
-                        <li><button class="filterButton" id="showBGButton">BG</button></li>
-                        <li><button class="filterButton" id="showSGButton">SG</button></li>
-                        <li><button class="filterButton" id="showAGButton">AG</button></li>
-                        <li><button class="filterButton" id="showPhuButton">Phu</button></li>
-                        <li><button class="filterButton" id="showHiButton">Hi</button></li>
-                        <li><button class="filterButton" id="showCommitteeButton">Committee</button></li>
-                        <li><button class="filterButton" id="showRiskManagerButton">Risk Manager</button></li>
-                        <li><button class="filterButton" id="showRushChairButton">Rush Chair</button></li>
-                    </ul>
-                </div>
-                <div class="col-lg dataCol">
-                    <div id="matrixFilters">
-                        <input type="text" id="matrixSearchInput" placeholder="Search for.." >
-                        <button class="filterHideButton" id="hideGPButton"><i class="fas fa-backspace"></i> GP</button>
-                        <button class="filterHideButton" id="hideVGPButton"><i class="fas fa-backspace"></i> VGP</button>
-                        <button class="filterHideButton" id="hidePButton"><i class="fas fa-backspace"></i> P</button>
-                        <button class="filterHideButton" id="hideNMEButton"><i class="fas fa-backspace"></i> NME</button>
-                        <button class="filterHideButton" id="hideHodButton"><i class="fas fa-backspace"></i> Hod</button>
-                        <button class="filterHideButton" id="hideBGButton"><i class="fas fa-backspace"></i> BG</button>
-                        <button class="filterHideButton" id="hideSGButton"><i class="fas fa-backspace"></i> SG</button>
-                        <button class="filterHideButton" id="hideAGButton"><i class="fas fa-backspace"></i> AG</button>
-                        <button class="filterHideButton" id="hidePhuButton"><i class="fas fa-backspace"></i> Phu</button>
-                        <button class="filterHideButton" id="hideHiButton"><i class="fas fa-backspace"></i> Hi</button>
-                        <button class="filterHideButton" id="hideCommitteeButton"><i class="fas fa-backspace"></i> Committee</button>
-                        <button class="filterHideButton" id="hideRiskManagerButton"><i class="fas fa-backspace"></i> Risk Manager</button>
-                        <button class="filterHideButton" id="hideRushChairButton"><i class="fas fa-backspace"></i> Rush Chair</button>
-                    </div>
-                    <div class="matrixContainer">
-                        <table class="DataTable" id="matrixTable">
-                            <thead>
-                                <tr>
-                                    <th>Title <i class="fas fa-sort"></i></th>
-                                    <th>Positive Points <i class="fas fa-sort"></i></th>
-                                    <th>Negative Points <i class="fas fa-sort"></i></th>
-                                    <th>Notes<i class="fas fa-sort"></i></th>
-                                    <th>Assigner <i class="fas fa-sort"></i></th>
-                                    <th>Tag</th>                                   
-                                </tr>
-                            </thead>
-                            <tbody id="matrixTableBody">
-        
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"
+    ></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <title>Phi Kappa Psi</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="text/javascript" src="/controllers/utils.js"></script>
+    <script
+      type="text/javascript"
+      src="/controllers/matrixController.js"
+    ></script>
+    <link rel="shortcut icon" type="image/png" href="images/pkp_shield.png" />
+    <!-- Font Awesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/98b48e5f8f.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="homeBackground">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid topNav" id="navbar">
+        <!-- GENERATE VIA UTILS FUNCTION -->
+      </div>
+    </nav>
+    <div class="matrixContainer">
+      <div class="row">
+        <div class="col-md center redTitle boxShadow">
+          <h1>Matrix</h1>
         </div>
-        <footer></footer>
-	</body>
+      </div>
+      <div id="loadingIcon">
+        <i class="fas fa-spinner fa-pulse fa-3x"></i>
+      </div>
+      <div class="row matrixRow">
+        <div class="col-2 filtersCol">
+          <ul>
+            <li><button class="filterButton" id="showGPButton">GP</button></li>
+            <li>
+              <button class="filterButton" id="showVGPButton">VGP</button>
+            </li>
+            <li><button class="filterButton" id="showPButton">P</button></li>
+            <li>
+              <button class="filterButton" id="showNMEButton">NME</button>
+            </li>
+            <li>
+              <button class="filterButton" id="showHodButton">Hod</button>
+            </li>
+            <li><button class="filterButton" id="showBGButton">BG</button></li>
+            <li><button class="filterButton" id="showSGButton">SG</button></li>
+            <li><button class="filterButton" id="showAGButton">AG</button></li>
+            <li>
+              <button class="filterButton" id="showPhuButton">Phu</button>
+            </li>
+            <li><button class="filterButton" id="showHiButton">Hi</button></li>
+            <li>
+              <button class="filterButton" id="showCommitteeButton">
+                Committee
+              </button>
+            </li>
+            <li>
+              <button class="filterButton" id="showRiskManagerButton">
+                Risk Manager
+              </button>
+            </li>
+            <li>
+              <button class="filterButton" id="showRushChairButton">
+                Rush Chair
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg dataCol">
+          <div id="matrixFilters">
+            <input
+              type="text"
+              id="matrixSearchInput"
+              placeholder="Search for.."
+            />
+            <button class="filterHideButton" id="hideGPButton">
+              <i class="fas fa-backspace"></i> GP
+            </button>
+            <button class="filterHideButton" id="hideVGPButton">
+              <i class="fas fa-backspace"></i> VGP
+            </button>
+            <button class="filterHideButton" id="hidePButton">
+              <i class="fas fa-backspace"></i> P
+            </button>
+            <button class="filterHideButton" id="hideNMEButton">
+              <i class="fas fa-backspace"></i> NME
+            </button>
+            <button class="filterHideButton" id="hideHodButton">
+              <i class="fas fa-backspace"></i> Hod
+            </button>
+            <button class="filterHideButton" id="hideBGButton">
+              <i class="fas fa-backspace"></i> BG
+            </button>
+            <button class="filterHideButton" id="hideSGButton">
+              <i class="fas fa-backspace"></i> SG
+            </button>
+            <button class="filterHideButton" id="hideAGButton">
+              <i class="fas fa-backspace"></i> AG
+            </button>
+            <button class="filterHideButton" id="hidePhuButton">
+              <i class="fas fa-backspace"></i> Phu
+            </button>
+            <button class="filterHideButton" id="hideHiButton">
+              <i class="fas fa-backspace"></i> Hi
+            </button>
+            <button class="filterHideButton" id="hideCommitteeButton">
+              <i class="fas fa-backspace"></i> Committee
+            </button>
+            <button class="filterHideButton" id="hideRiskManagerButton">
+              <i class="fas fa-backspace"></i> Risk Manager
+            </button>
+            <button class="filterHideButton" id="hideRushChairButton">
+              <i class="fas fa-backspace"></i> Rush Chair
+            </button>
+          </div>
+          <div class="matrixContainer">
+            <table class="DataTable" id="matrixTable">
+              <thead>
+                <tr>
+                  <th>Title <i class="fas fa-sort"></i></th>
+                  <th>Positive Points <i class="fas fa-sort"></i></th>
+                  <th>Negative Points <i class="fas fa-sort"></i></th>
+                  <th>Notes<i class="fas fa-sort"></i></th>
+                  <th>Assigner <i class="fas fa-sort"></i></th>
+                  <th>Tag</th>
+                </tr>
+              </thead>
+              <tbody id="matrixTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer></footer>
+  </body>
 </html>

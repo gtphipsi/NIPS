@@ -7,34 +7,34 @@ var COMMITTEES; // all committee documents via GET request
 var EDIT_COMMITTEE_MEMBERS = []; // list of members in edited committee
 var MEMBER_SELECTED = ''; // variable to track current selection in adding members box
 
-$(document).ready(function() {
+$(document).ready(function () {
     console.log("Loading admin page...");
 
     createNavBar('admin');
-    
+
     $('#signoutButton').off('click');
-    $('#signoutButton').click(function() {
+    $('#signoutButton').click(function () {
         alert('clicked');
         sessionStorage.setItem('userId', '');
         location.href = '/login';
     });
 
     $('#reportIssueButton').off('click');
-    $('#reportIssueButton').click(function() {
-        location.href ="https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
+    $('#reportIssueButton').click(function () {
+        location.href = "https://github.com/gtphipsi/NIPS/issues/new?title=YOUR%20ISSUE&body=DESCRIPTION";
     });
 
     addFooter();
 
-    
+
     var userId = sessionStorage.getItem('userId');
     console.log(userId);
     checkLoggedIn(userId);
 
-    $.get("/users", function(data) {
+    $.get("/users", function (data) {
         USERS = data;
         console.log("retrieved user data");
-    }).done(function() {
+    }).done(function () {
         for (var i = 0; i < USERS.length; i++) {
             $('#committeeMembers').append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
             $('#editMembers').append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
@@ -43,10 +43,10 @@ $(document).ready(function() {
             $('#editCommitteeMembers').append(`<option value=${USERS[i]._id}>${USERS[i].firstName} ${USERS[i].lastName}</option>`);
         }
         USERS_BY_ID = createHashmapById(USERS);
-        $.get('/committees', function(data) {
+        $.get('/committees', function (data) {
             COMMITTEES = data;
             console.log("retrieved committee data");
-        }).done(function() {
+        }).done(function () {
             for (var i = 0; i < COMMITTEES.length; i++) {
                 if (COMMITTEES[i].committee != 'All Brothers' && COMMITTEES[i].committee != 'New Members') {
                     $('#editCommittees').append(`<option value=${COMMITTEES[i]._id}>${COMMITTEES[i].committee}</option>`);
@@ -65,14 +65,14 @@ $(document).ready(function() {
     var submitEditUserButton = $('#submitEditUserButton');
 
     addOfficerPositionButton.off('click');
-    addOfficerPositionButton.click(function() {
+    addOfficerPositionButton.click(function () {
         var position = officerPositions.val();
         console.log(position);
         var index = USER_OFFICER_POSITIONS.indexOf(position);
         if (index < 0) {
             USER_OFFICER_POSITIONS.push(position);
             officerPositionsAdded.append(`<li id=${position}><i class="fas fa-caret-right"></i> ${officerPositions.val()} <button class='deleteButton' ` +
-            `type='button' onclick='deleteOfficerPosition(${position})'><i class='far fa-window-close fontgrey'></i></button></li>`);
+                `type='button' onclick='deleteOfficerPosition(${position})'><i class='far fa-window-close fontgrey'></i></button></li>`);
         } else {
             console.log("Position already added");
         }
@@ -83,7 +83,7 @@ $(document).ready(function() {
     var editOfficerPositionsAdded = $('#editOfficerPositionsAdded');
 
     editOfficerPositionButton.off('click');
-    editOfficerPositionButton.click(function() {
+    editOfficerPositionButton.click(function () {
         var position = editOfficerPositions.val();
         var positionLabel = position;
         if (position == 'rushChair') {
@@ -97,14 +97,14 @@ $(document).ready(function() {
         if (index < 0) {
             EDIT_USER_OFFICER_POSITIONS.push(position);
             editOfficerPositionsAdded.append(`<li id=edit${position}><i class="fas fa-caret-right"></i> ${positionLabel} <button class='deleteButton' ` +
-            `type='button' onclick='deleteEditOfficerPosition(edit${position})'><i class='far fa-window-close fontgrey'></i></button></li>`);
+                `type='button' onclick='deleteEditOfficerPosition(edit${position})'><i class='far fa-window-close fontgrey'></i></button></li>`);
         } else {
             console.log("Position already added");
         }
     });
 
     submitUserButton.off('click');
-    submitUserButton.click(function() {
+    submitUserButton.click(function () {
         var firstName = $('#addUserFirstName').val();
         var lastName = $('#addUserLastName').val();
         var badgeNumber = $('#addUserBadgeNumber').val();
@@ -116,19 +116,19 @@ $(document).ready(function() {
             admin: JSON.parse(isAdmin),
             officerPositions: officerPositionsToBoolean(USER_OFFICER_POSITIONS)
         }
-        var postData = {'newUser':newUser, 'USER':USERS_BY_ID[userId]}
-        $.post("/users", postData).done(function() {
+        var postData = { 'newUser': newUser, 'USER': USERS_BY_ID[userId] }
+        $.post("/users", postData).done(function () {
             console.log("User successfully added");
             console.log(newUser);
             alert('New User Added to Database');
             location.reload();
-        }).fail( function() {
+        }).fail(function () {
             alert('Access Denied');
         });
     });
 
     submitEditUserButton.off('click');
-    submitEditUserButton.click(function() {
+    submitEditUserButton.click(function () {
         var firstName = $('#editUserFirstName').val();
         var lastName = $('#editUserLastName').val();
         var badgeNumber = $('#editUserBadgeNumber').val();
@@ -143,17 +143,17 @@ $(document).ready(function() {
         var put_url = "/users/" + $('#editMembers').val();
         console.log('USER')
         console.log(USERS_BY_ID[userId]);
-        var postData = {'updateUser':updateUser, 'USER':USERS_BY_ID[userId]}
+        var postData = { 'updateUser': updateUser, 'USER': USERS_BY_ID[userId] }
         console.log('making PUT request at', put_url);
         $.ajax({
             url: put_url,
             type: 'PUT',
             data: postData,
-            success: function(response) {
-            console.log("User successfully updated");
-            console.log(updateUser);
-            alert('User Updated in Database');
-            location.reload();
+            success: function (response) {
+                console.log("User successfully updated");
+                console.log(updateUser);
+                alert('User Updated in Database');
+                location.reload();
             }
         });
     });
@@ -164,12 +164,12 @@ $(document).ready(function() {
     var committeeMembersAdded = $('#committeeMembersAdded');
     var editCommitteeMembersAdded = $('#editCommitteeMembersAdded');
 
-    committeeMembers.change(function() {
+    committeeMembers.change(function () {
         MEMBER_SELECTED = $(this).val();
     });
 
     addCommitteeMemberButton.off('click');
-    addCommitteeMemberButton.click(function() {
+    addCommitteeMemberButton.click(function () {
         var member = USERS_BY_ID[MEMBER_SELECTED];
         var name = `${member.firstName} ${member.lastName}`;
         var id = `member${MEMBER_SELECTED}`;
@@ -177,14 +177,14 @@ $(document).ready(function() {
         if (index < 0) {
             COMMITTEE_MEMBERS.push(MEMBER_SELECTED);
             committeeMembersAdded.append(`<li id=${id}><i class="fas fa-caret-right"></i> ${name} <button class='deleteButton' ` +
-            `type='button' onclick='deleteCommitteeMember(${id})'><i class='far fa-window-close fontgrey'></i></button></li>`);
+                `type='button' onclick='deleteCommitteeMember(${id})'><i class='far fa-window-close fontgrey'></i></button></li>`);
         } else {
             console.log("Member already added");
         }
     });
 
     editCommitteeMemberButton.off('click');
-    editCommitteeMemberButton.click(function() {
+    editCommitteeMemberButton.click(function () {
         var id = $('#editCommitteeMembers').val();
         var member = USERS_BY_ID[id];
         var name = `${member.firstName} ${member.lastName}`;
@@ -192,14 +192,14 @@ $(document).ready(function() {
         if (index < 0) {
             EDIT_COMMITTEE_MEMBERS.push(id);
             editCommitteeMembersAdded.append(`<li id=edit${id}><i class="fas fa-caret-right"></i> ${name} <button class='deleteButton' ` +
-            `type='button' onclick='deleteEditCommitteeMember(edit${id})'><i class='far fa-window-close fontgrey'></i></button></li>`);
+                `type='button' onclick='deleteEditCommitteeMember(edit${id})'><i class='far fa-window-close fontgrey'></i></button></li>`);
         } else {
             console.log("Member already added");
         }
     });
 
     $('#submitCommitteeButton').off('click');
-    $('#submitCommitteeButton').click(function() {
+    $('#submitCommitteeButton').click(function () {
         var newCommittee = {
             committee: $('#addCommitteeName').val(),
             members: COMMITTEE_MEMBERS,
@@ -207,18 +207,18 @@ $(document).ready(function() {
             meetings: $('#addCommitteeMeeting').val(),
             budget: $('#addCommitteeBudget').val()
         }
-        var postData = {'newCommittee':newCommittee, 'USER':USERS_BY_ID[userId]}
-        $.post("/committees", postData).done(function() {
+        var postData = { 'newCommittee': newCommittee, 'USER': USERS_BY_ID[userId] }
+        $.post("/committees", postData).done(function () {
             console.log("Committee successfully added");
             console.log(newCommittee);
             alert('New Committee Added to Database');
             location.reload();
-        }).fail( function() {
+        }).fail(function () {
             alert('Access Denied');
         });;
     });
 
-    $('#editCommittees').change(function() {
+    $('#editCommittees').change(function () {
         // clear form
         $('#editCommitteeMeeting').val('');
         $('#editCommitteeBudget').val('');
@@ -231,7 +231,7 @@ $(document).ready(function() {
         if ($('#editCommittees').val() == 'None') {
             return;
         }
-    
+
         // populate form
         var id = $('#editCommittees').val();
         var committee = COMMITTEES_BY_ID[id];
@@ -246,12 +246,12 @@ $(document).ready(function() {
             EDIT_COMMITTEE_MEMBERS.push(id);
             var name = `${user.firstName} ${user.lastName}`;
             $('#editCommitteeMembersAdded').append(`<li id=edit${id}><i class="fas fa-caret-right"></i> ${name} <button class='deleteButton' ` +
-            `type='button' onclick='deleteEditCommitteeMember(edit${id})'><i class='far fa-window-close fontgrey'></i></button></li>`);
+                `type='button' onclick='deleteEditCommitteeMember(edit${id})'><i class='far fa-window-close fontgrey'></i></button></li>`);
         }
     });
 
     $('#submitEditCommitteeButton').off('click');
-    $('#submitEditCommitteeButton').click(function() {
+    $('#submitEditCommitteeButton').click(function () {
         var updateCommittee = {
             members: EDIT_COMMITTEE_MEMBERS,
             head: $('#editCommitteeHead').val(),
@@ -265,11 +265,11 @@ $(document).ready(function() {
             url: put_url,
             type: 'PUT',
             data: updateCommittee,
-            success: function(response) {
-            console.log("Committee successfully updated");
-            console.log(updateCommittee);
-            alert('Committee Updated in Database');
-            location.reload();
+            success: function (response) {
+                console.log("Committee successfully updated");
+                console.log(updateCommittee);
+                alert('Committee Updated in Database');
+                location.reload();
             }
         });
     });
@@ -345,7 +345,7 @@ function officerPositionsToBoolean(positions) {
         Phu: false,
         riskManager: false,
         rushChair: false,
-        HousingManger:false
+        HousingManger: false
     }
     for (var i = 0; i < positions.length; i++) {
         var position = positions[i];
@@ -396,7 +396,7 @@ function updateEditUser() {
             console.log(position);
             console.log(positionLabel);
             $('#editOfficerPositionsAdded').append(`<li id=edit${position}><i class="fas fa-caret-right"></i> ${positionLabel} <button class='deleteButton' ` +
-            `type='button' onclick='deleteEditOfficerPosition(edit${position})'><i class='far fa-window-close fontgrey'></i></button></li>`);
+                `type='button' onclick='deleteEditOfficerPosition(edit${position})'><i class='far fa-window-close fontgrey'></i></button></li>`);
         }
     }
 }

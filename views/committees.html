@@ -1,38 +1,54 @@
 <!DOCTYPE html>
 <html>
-    <head>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-		<title>Phi Kappa Psi</title>
-		<link rel="stylesheet" href="/styles.css">
-		<script type="text/javascript" src="/controllers/utils.js"></script>
-        <script type="text/javascript" src="/controllers/committeesController.js"></script>
-		<link rel="shortcut icon" type="image/png" href="images/pkp_shield.png"/>
-        <!-- Font Awesome Icons -->
-        <script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
-	</head>
-	<body class="snowBackground">
-        <nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container-fluid topNav" id="navbar">
-				<!-- GENERATED VIA UTILS FUNCTION -->
-			</div>
-		</nav>
-		<div class="container">
-			<div class="row">
-				<div class="col-md center redTitle boxShadow">
-                    <h1>Committees</h1>
-				</div>
-			</div>
-			<div id="loadingIcon">
-				<i class="fas fa-spinner fa-pulse fa-3x"></i>
-			</div>
-            <div class="col-lg" id="committeesContainer">
-            </div>
-		</div>
-		<footer></footer>
-	</body>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"
+    ></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <title>Phi Kappa Psi</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="text/javascript" src="/controllers/utils.js"></script>
+    <script
+      type="text/javascript"
+      src="/controllers/committeesController.js"
+    ></script>
+    <link rel="shortcut icon" type="image/png" href="images/pkp_shield.png" />
+    <!-- Font Awesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/98b48e5f8f.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="snowBackground">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid topNav" id="navbar">
+        <!-- GENERATED VIA UTILS FUNCTION -->
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-md center redTitle boxShadow">
+          <h1>Committees</h1>
+        </div>
+      </div>
+      <div id="loadingIcon">
+        <i class="fas fa-spinner fa-pulse fa-3x"></i>
+      </div>
+      <div class="col-lg" id="committeesContainer"></div>
+    </div>
+    <footer></footer>
+  </body>
 </html>
