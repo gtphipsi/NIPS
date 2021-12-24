@@ -141,6 +141,8 @@ $(document).ready(function() {
             officerPositions: officerPositionsToBoolean(EDIT_USER_OFFICER_POSITIONS)
         }
         var put_url = "/users/" + $('#editMembers').val();
+        console.log('USER')
+        console.log(USERS_BY_ID[userId]);
         var postData = {'updateUser':updateUser, 'USER':USERS_BY_ID[userId]}
         console.log('making PUT request at', put_url);
         $.ajax({
@@ -254,7 +256,8 @@ $(document).ready(function() {
             members: EDIT_COMMITTEE_MEMBERS,
             head: $('#editCommitteeHead').val(),
             meetings: $('#editCommitteeMeeting').val(),
-            budget: $('#editCommitteeBudget').val()
+            budget: $('#editCommitteeBudget').val(),
+            USER: USERS_BY_ID[userId]
         }
         var put_url = '/committees/' + $('#editCommittees').val();
         console.log('editing committee at', put_url);
@@ -341,7 +344,8 @@ function officerPositionsToBoolean(positions) {
         BG: false,
         Phu: false,
         riskManager: false,
-        rushChair: false
+        rushChair: false,
+        HousingManger:false
     }
     for (var i = 0; i < positions.length; i++) {
         var position = positions[i];

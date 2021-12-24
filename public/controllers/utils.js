@@ -1,3 +1,4 @@
+
 /**
  * JavaScript Enum implementation for timeframes
  */
@@ -16,6 +17,10 @@ const fallSemester = {
     ENDDATE: new Date(2021, 11, 18)
 }
 
+/**
+ * JavaScript Enum implementations for semester timeframes
+ * Start date should be previous semesters enddate
+ */
 const springSemester = {
     STARTDATE: new Date(2021, 11, 19),
     ENDDATE: new Date(2022, 07, 31)
@@ -114,16 +119,18 @@ function getPositions(user, committees) {
  * @param {*} timeframe String (enum ?) representing the timeframe (weekly, monthly, semesterly)
  * @returns array containing all users sorted in descending order by points earned
  */
-function getLeaderboard(transactions, timeframe) {
+function getLeaderboard(transactions, timeframe, userIds) {
     var leaderboard = [];
     var pointValues = getPointValues(transactions, timeframe);
     console.log(transactions);
     for (userId in pointValues) {
-        var obj = {
-            id: userId,
-            points: pointValues[userId]
+        if (userIds.includes(userId)){
+            var obj = {
+                id: userId,
+                points: pointValues[userId]
+            }
+            leaderboard.push(obj);
         }
-        leaderboard.push(obj);
     }
     leaderboard.sort((a, b) => {
         return b.points - a.points;
@@ -154,11 +161,8 @@ function getTransactionsTF(transactions, timeframe) {
  */
 function getPointValues(transactions, timeframe) {
     var pointValues = {};
-    console.log("trasn");
-    console.log(timeframe);
     for (var i = 0; i < transactions.length; i++) {
         if (isInTimeframe(transactions[i], timeframe)) {
-            console.log("in timeframe");
             var receiverId = transactions[i].receiver;
             if (pointValues[receiverId]) {
                 pointValues[receiverId] = parseInt(pointValues[receiverId]) + parseInt(transactions[i].amount);
@@ -252,7 +256,7 @@ function isInTimeframe(transaction, timeframe) {
     } else if (timeframe == timeframes.MONTHLY) {
         return isThisMonth(transaction.dateEarned);
     } else if (timeframe == timeframes.SEMESTERLY) {
-        return isThisSemester(transaction.dateEarned);
+                return isThisSemester(transaction.dateEarned);
     } else {
         console.log("TIME FRAME ERROR");
         return false;
@@ -269,10 +273,24 @@ function isInFallSemester(date) {
     var now = new Date(date);
     return fallSemester.STARTDATE <= now && now <= fallSemester.ENDDATE;
 }
+
+/**
+ * Below are functions performing calculations to determine if
+ * a given date is within a certain range
+ * @param {*} date the date to check
+ * @returns true if date is within range, false otherwise
+ */
 function isInSpringSemester(date) {
     var now = new Date(date);
     return springSemester.STARTDATE <= now && now <= springSemester.ENDDATE;
 }
+
+/**
+ * Below are functions performing calculations to determine if
+ * a given date is within a certain range
+ * @param {*} date the date to check
+ * @returns true if date is within range, false otherwise
+ */
 function isThisSemester(date) {
         var currentSemester = getCurrentSemester();
         if (currentSemester == semester.FALL) {
@@ -284,12 +302,25 @@ function isThisSemester(date) {
         }
     }
 
+    /**
+ * Below are functions performing calculations to determine if
+ * a given date is within a certain range
+ * @param {*} date the date to check
+ * @returns true if date is within range, false otherwise
+ */
 function isThisWeek(date) {
     var now = new Date();
     var earned = new Date(date);
     var weekDay = now.getDay();
     return (now - earned) / 86400000 <= weekDay;
 }
+
+/**
+ * Below are functions performing calculations to determine if
+ * a given date is within a certain range
+ * @param {*} date the date to check
+ * @returns true if date is within range, false otherwise
+ */
 function isThisMonth(date) {
     var now = new Date();
     var earned = new Date(date);
@@ -297,6 +328,180 @@ function isThisMonth(date) {
     return Math.floor((now - earned) / 86400000) <= monthDay;
 }
 
+/**
+ * Below are functions performing calculations to determine if
+ * a given date is within a certain range
+ * @param {*} date the date to check
+ * @returns true if date is within range, false otherwise
+ */
+function isInParticularWeek(date, weekStartDate){
+    weekStartDate = new Date(weekStartDate);
+    var earned = new Date(date);
+    return (weekStartDate - earned) / 86400000 <= 7 && (weekStartDate - earned) / 86400000 > 0;
+}
+
+/**
+ * Gets the brother of the weeek
+ * @param {*} leaderboards 
+ * @returns 
+ */
+function getBrotherOfTheWeek(leaderboards) {
+    if (leaderboards.length == 0) {
+        return [];
+    }
+    var brothers = [];
+    
+    leaderboards[0].sort((a,b)=>b.points-a.points);
+    console.log(leaderboards);
+    var filteredLeaderboard = leaderboards[0].filter(a => a.points == leaderboards[0][0].points)
+    console.log(filteredLeaderboard);
+    for (var i = 0; i<filteredLeaderboard.length;i++) {
+        brothers.push(filteredLeaderboard[i].id);
+    }
+    return brothers;
+}
+
+
+/**
+ * Gets the weekly leaderboard for every week in the semester
+ * @param {*} transactions all semesters transactions
+ * @param {*} userIds 
+ * @returns 
+ */
+function getWeeklyLeaderboards(transactions, userIds) {
+    var leaderboards = [];
+    var currentDate = new Date();
+    var weekDay = currentDate.getDay();
+    var weeklyTranscations = {}
+    currentDate = new Date(currentDate-86400000*(6+weekDay));
+    currentDate.setHours(0,0,0,0);
+    if (transactions.length != 0){
+        while (isThisSemester(currentDate)) {
+            weeklyTranscations = [];
+            for(var i=0; i<transactions.length; i++) {
+                if (isInParticularWeek(currentDate, new Date(transactions[i].dateEarned))) {
+                    weeklyTranscations.push(transactions[i]);
+                }
+            }
+            leaderboards.push(getLeaderboard(weeklyTranscations,"semesterly",userIds));
+            currentDate = new Date(currentDate-86400000*7);
+        }
+    }
+    return leaderboards;
+}
+
+function getBiggestClimber(leaderboards) {
+    var deltas = [];
+    if (leaderboards.length < 2) {
+        return [];
+    }
+    
+    //calcute rankings excluding previous week
+    var semLeaderboard = {}
+    console.log(leaderboards[0]);
+    for(var i = 1; i< leaderboards.length;i++){
+        for(var j = 0; j< leaderboards[i].length;j++){
+            if (semLeaderboard[leaderboards[i][j].id] > 0){
+                semLeaderboard[leaderboards[i][j].id] += leaderboards[i][j].points
+            } else {
+                semLeaderboard[leaderboards[i][j].id] = leaderboards[i][j].points
+
+            }
+        }
+    }
+    console.log (semLeaderboard);
+    // put into array to sort for rankings
+    var semLeaderboardArr = []
+    var key;
+    for (var key in semLeaderboard) { 
+        semLeaderboardArr.push({'id':key,'points':semLeaderboard[key], 'rank':-1});
+    }
+    semLeaderboardArr.sort((a,b)=>b.points-a.points);
+    console.log(semLeaderboardArr);
+    for(var i = 0; i< semLeaderboardArr.length;i++){
+        semLeaderboardArr[i].rank = i;
+    }
+    console.log(semLeaderboardArr);
+
+    //repeat process with the most recent week added
+    //add the newest week to each semester total
+    var newSemLeaderboard = {}
+    semLeaderboardArr.forEach(i => {
+        newSemLeaderboard[i.id] = i.points
+        leaderboards[0].forEach(j => {
+            if(i.id==j.id){
+                newSemLeaderboard[i.id] += j.points
+            }
+        });
+    });
+    //turn the map into an array, sort, and add rankings
+    var newSemLeaderboardArr = [];
+    
+    for (var key in newSemLeaderboard) { 
+        newSemLeaderboardArr.push({'id':key,'points':newSemLeaderboard[key], 'rank':-1});
+    }
+    newSemLeaderboardArr.sort((a,b)=>b.points-a.points);
+    newSemLeaderboardArr.forEach(i => {
+        i.rank = newSemLeaderboardArr.indexOf(i);
+    });
+    //make new ranks
+    var newRanks = {};
+    newSemLeaderboardArr.forEach(entry => {
+        newRanks[entry.id] = entry.rank;
+    });
+    //get deltas
+    var deltas = [];
+    console.log(newSemLeaderboardArr);
+    semLeaderboardArr.forEach(i => {
+        deltas.push({'id':i.id, "delta":i.rank-newRanks[i.id]});
+    });
+    deltas.sort((a,b)=>b.delta-a.delta);
+    deltas = deltas.filter(a => a.delta == deltas[0].delta);
+    console.log(deltas);
+    var biggestClimbers=[];
+    deltas.forEach(i => {
+        biggestClimbers.push(i.id);
+    });
+    console.log(biggestClimbers);
+    return biggestClimbers;
+    
+}
+
+function getHottestStreak(leaderboards) {
+    if (leaderboards.length == 0 || leaderboards[0].length==0){
+        return [];
+    }
+    var streaks = [];
+    var streak;
+    var nextRank;
+    var currRank;
+    var userId;
+    leaderboards[0].sort((a,b)=>b.points-a.points);
+    for(var j=0; j<leaderboards[0].length; j++) {
+        userId = leaderboards[0][j].id;
+        nextRank = j;
+        streak = true;
+        for(var i = 1; streak && i < leaderboards.length; i++) {
+            leaderboards[i].sort((a,b)=>b.points-a.points);
+            for(var k =0; k<leaderboards[i].length;k++){
+                if (leaderboards[i][k].id == userId) {
+                    currRank = k;
+                }
+            }
+            streak = currRank >= nextRank;
+        }
+        i--;
+        streaks.push({'userId':userId, "streak":i});
+    }
+
+    streaks.sort((a,b)=>b.streak-a.streak);
+    streaks = streaks.filter(a => a.streak==streaks[0].streak);
+    hottestUsers = []
+    for(var i=0; i<streaks.length; i++){
+        hottestUsers.push(streaks[i].userId);
+    }
+    return hottestUsers;
+}
 /**
  * Checks what current semester is
  * @returns fall or spring semester "enum" values

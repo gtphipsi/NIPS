@@ -85,6 +85,7 @@ $(document).ready(function() {
             }).done(function() {
                 console.log("making user log table");
                 updateTimeframe();
+                updateMetrics(TRANSACTIONS);
                 var pointsReceived = getUserReceiverTransactions(userId, TRANSACTIONS);
                 $('#userLogTable').DataTable().clear().draw();
                 for (var i = 0; i < pointsReceived.length; i++) {
@@ -262,7 +263,7 @@ function updateTimeframe() {
 
 function updateRank() {
     
-    var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME);
+    var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME, Object.keys(USERS_BY_ID));
     var transactions = getTransactionsTF(TRANSACTIONS, TIMEFRAME);
     var userRanking = getUserRanking(USER._id, leaderboard);
     console.log("Transaction");
@@ -283,6 +284,25 @@ function updateRank() {
     updateProgressBar(userPoints);
 }
 
+function updateMetrics(transactions) {
+    var leaderboards = getWeeklyLeaderboards(transactions, Object.keys(USERS_BY_ID));
+    var brothersOfTheWeek = getBrotherOfTheWeek(leaderboards);
+    $('#brotherOfTheWeek').text(userIdsToJoinedString(brothersOfTheWeek));
+    //var hottestUsers = getHottestStreak(leaderboards);
+    //$("#hottestStreak").text(userIdsToJoinedString(hottestUsers));
+    var biggestClimbers = getBiggestClimber(leaderboards);
+    $("#biggestClimber").text(userIdsToJoinedString(biggestClimbers));
+}
+function userIdsToJoinedString(userIds) {
+    var joinedString = '';
+    for (var i =0; i< userIds.length; i++) {
+        console.log(userIds[i]);
+        joinedString += getName(USERS_BY_ID[userIds[i]])+', '
+    }
+    return joinedString.substring(0,joinedString.length-2)
+    
+}
+
 function updateStatistics(leaderboard) {
     var mean = getMean(leaderboard);
     var median = getMedian(leaderboard);
@@ -300,18 +320,16 @@ function makeGraphs(leaderboard, transactions){
     fraternityHistogram = document.getElementById('fraternityHistogram');
     var x = [];
     var i = 0;
-    for (var user in leaderboard){
-        x[i] = leaderboard[user].points;
-        i++;
+    for (var i=0;i< leaderboard.length;i++){
+        x[i] = leaderboard[i].points;
     }
-    
     var trace = {
         x: x,
         type: 'histogram',
         marker: {
             color: '#00703c',
         },
-        nbinsx: 6
+        nbinsx:6
     };
     var data = [trace];
     
