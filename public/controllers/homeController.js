@@ -94,7 +94,8 @@ $(document).ready(function() {
                     $('#userLogTable').DataTable().row.add(newRow);
                 }
                 $('#userLogTable').DataTable().draw();
-                $.get("/requests", function(data) {
+                updatedTop3();
+                $.get("/requests", function (data) {
                     REQUESTS = data;
                     console.log("retrieved requests data");
                 }).fail(function() {
@@ -235,6 +236,17 @@ $(document).ready(function() {
         }
     });
 });
+
+function updatedTop3(){
+    console.log("Making top 3");
+    var leaderboard = getLeaderboard(TRANSACTIONS, TIMEFRAME, Object.keys(USERS_BY_ID));
+    console.log(leaderboard);
+    console.log(TIMEFRAME);
+    console.log(USERS_BY_ID);
+    $('firstTop3BrotherName').text(leaderboard[0]);
+    $('secondTop3BrotherName').text(leaderboard[1]);
+    $('thirdTop3BrotherName').text(leaderboard[2]);
+}
 
 function updateTimeframe() {
     var time = $('#rankTimeframe').val();

@@ -1,188 +1,269 @@
 <!DOCTYPE html>
 <html>
-    <head>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Bootstrap -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<!-- jQuery Scripts -->
-		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-		<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-		<!-- DataTables Scripts -->
-		<script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-		<link rel="stylesheet" src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
-		<link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
-		<script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
-		<!-- Custom Styles and Controllers -->
-		<link rel="stylesheet" href="/styles.css">
-		<script type="text/javascript" src="/controllers/utils.js"></script>
-		<script src="/plotly-latest.min.js"></script>
-		<script type="text/javascript" src="/controllers/homeController.js"></script>
-		<link rel="shortcut icon" type="image/png" href="images/pkp_shield.png"/>
-        <!-- Font Awesome Icons -->
-		<script src="https://kit.fontawesome.com/98b48e5f8f.js" crossorigin="anonymous"></script>
-		<!-- Metadata -->
-		<title>Phi Kappa Psi</title>
-	</head>
-	<body class="snowBackground">
-        <nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container-fluid topNav" id="navbar">
-				<!-- GENERATED VIA UTILS FUNCTION -->
-			</div>
-		</nav>
-		<div class="container">
-			<div class="row">
-				<div class="col-md center redTitle boxShadow">
-					<h1 id="welcomeMessage">Welcome, Brother </h1>
-				</div>
-			</div>
-			<div id="loadingIcon">
-				<i class="fas fa-spinner fa-pulse fa-3x"></i>
-			</div>
-			<div class="row homeRow">
-				<div class="homeContainer progressContainer">
-					<div class="progress" id="progressBar">
-						<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-						style="width:1%" id="userProgress">Participation
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row homeRow">
-				<div class="col-lg">
-					<div class="row homeRow">
-						<div class="homeContainer rankContainer">
-							<h3><select id="rankTimeframe" onchange="updateTimeframe()">
-								<option value="weekly">Weekly</option>
-								<option value="monthly">Monthly</option>
-								<option value="semesterly">Semesterly</option>
-							</select></h3>
-							<h1 id="userRank"></h1>
-							<h1 id="rankIcon"></h1>
-							<h3 id="pointsBehind"></h3>
-						</div>
-					</div>
-					<div class="row homeRow">
-						<div class="homeContainer logContainer">
-							<h1><i class="fas fa-gift pkpgreen"></i> Points Received</h1>
-							<table class="DataTable defaultRedTable" id="userLogTable">
-								<thead>
-									<tr>
-										<th>Date</th>
-										<th>Reason</th>
-										<th>Amount</th>
-									</tr>
-								</thead>
-								<tbody>
-		
-								</tbody>
-							</table>
-						</div>
-					</div>
-					
-				</div>
-				<div class="col-lg">
-					<div class="row homeRow">
-						<div class="homeContainer requestContainer">
-							<h1><i class="far fa-comment-dots pkpgreen"></i> Requests</h1>
-							<button id=requestButton><i class="far fa-paper-plane"></i> Send Request</button>
-							<button id=deleteButton><i class="far fa-trash-alt"></i> Delete</button>
-							<button id=resolveButton><i class="far fa-check-square"></i> Resolve</button>
-							<table class="DataTable defaultRedTable" id="userRequestsTable">
-								<thead>
-									<tr>
-										<th>requesterId</th>
-										<th>Date</th>
-										<th>Reason</th>
-										<th>Requester</th>
-										<th></th>
-										<th>ObjectId</th>
-									</tr>
-								</thead>
-								<tbody>
-		
-								</tbody>
-							</table>
-						</div>
-					</div>
-					<div class="row homeRow">
-						<div class="homeContainer fraternityContainer">
-							<h1><i class="fas fa-calculator pkpgreen"></i> Fraternity Statistics</h1>
-							<table class="defaultRedTable" id="statsTable">
-								<tr>
-									<td class="statLabel"><h2>Mean</h2></td>
-									<td><i class="fas fa-equals"></i></td>
-									<td><h2 class="statNum" id="statMean">0</h2></td>
-								</tr>
-								<tr>
-									<td class="statLabel"><h2>Median</h2></td>
-									<td><i class="fas fa-equals"></i></td>
-									<td><h2 class="statNum" id="statMedian">0</h2></td>
-								</tr>
-								<tr>
-									<td class="statLabel"><h2>High</h2></td>
-									<td><i class="fas fa-equals"></i></td>
-									<td><h2 class="statNum" id="statHigh">0</h2></td>
-								</tr>
-								<tr style="border-bottom: 1px solid transparent;">
-									<td class="statLabel"><h2>Low</h2></td>
-									<td><i class="fas fa-equals"></i></td>
-									<td><h2 class="statNum" id="statLow">0</h2></td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row homeRow">
-				<div class="col-lg">
-					<div class="row homeRow">
-						<div class='homeContainer graphContainer'>
-							<div id="fraternityHistogram"></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg">
-					<div class="row homeRow">
-						<div class='homeContainer graphContainer'>
-							<div id="fraternityLine"></div>
-						</div>	
-					</div>
-				</div>
-			</div>
-		</div>
-		<footer></footer>
-		<div id="requestDialog" title="Request NIPS">				   
-			<form>
-				<label for="name">Reason</label>
-				<input type="text" name="name" id="requestReason" placeholder="want points" class="text ui-widget-content ui-corner-all">
-				<label for="assigner">Assigner</label>
-				<select id="requestAssigner" placeholder="Assigner">
-					<option>Assigner</option>
-					<option>GP</option>
-					<option>VGP</option>
-					<option>P</option>
-					<option>NME</option>
-					<option>BG</option>
-					<option>SG</option>
-					<option>AG</option>
-					<option>Phu</option>
-					<option>Hi</option>
-					<option value="riskManager">Risk Manager</option>
-					<option value="rushChair">Rush Chair</option>
-					<option>Finance Head</option>
-					<option>APR Head</option>
-					<option>Technology Head</option>
-					<option>Social Head</option>
-					<option>Membership Head</option>
-					<option>Philanthropy Head</option>
-					<option>Scholarship Head</option>
-					<option>H&W Head</option>				
-				</select><br>
-				<label>Date</label>
-				<input type="date" name="date" placeholder="Date (mm/dd/yyyy)" id="requestDate">
-				<br><input id="requestSubmit" type="submit">
-			</form>
-		</div>
-	</body>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!-- jQuery Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <!-- DataTables Scripts -->
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"
+    />
+    <link
+      type="text/css"
+      href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css"
+      rel="stylesheet"
+    />
+    <script
+      type="text/javascript"
+      src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"
+    ></script>
+    <!-- Custom Styles and Controllers -->
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="text/javascript" src="/controllers/utils.js"></script>
+    <script src="/plotly-latest.min.js"></script>
+    <script
+      type="text/javascript"
+      src="/controllers/homeController.js"
+    ></script>
+    <link rel="shortcut icon" type="image/png" href="images/pkp_shield.png" />
+    <!-- Font Awesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/98b48e5f8f.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Metadata -->
+    <title>Phi Kappa Psi</title>
+  </head>
+  <body class="snowBackground">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid topNav" id="navbar">
+        <!-- GENERATED VIA UTILS FUNCTION -->
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-md center redTitle boxShadow">
+          <h1 id="welcomeMessage">Welcome, Brother</h1>
+        </div>
+      </div>
+      <div id="loadingIcon">
+        <i class="fas fa-spinner fa-pulse fa-3x"></i>
+      </div>
+      <div class="row homeRow">
+        <div class="homeContainer progressContainer">
+          <div class="progress" id="progressBar">
+            <div
+              class="progress-bar progress-bar-striped progress-bar-animated"
+              role="progressbar"
+              style="width: 1%"
+              id="userProgress"
+            >
+              Participation
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row homeRow">
+        <div class="col-lg">
+          <div class="row homeRow">
+            <div class="homeContainer rankContainer">
+              <h3>
+                <select id="rankTimeframe" onchange="updateTimeframe()">
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="semesterly">Semesterly</option>
+                </select>
+              </h3>
+              <h1 id="userRank"></h1>
+              <h1 id="rankIcon"></h1>
+              <h3 id="pointsBehind"></h3>
+            </div>
+          </div>
+          <div class="row homeRow">
+            <div class="homeContainer logContainer">
+              <h1><i class="fas fa-gift pkpgreen"></i> Points Received</h1>
+              <table class="DataTable defaultRedTable" id="userLogTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Reason</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row homeRow">
+            <div class="homeContainer graphContainer">
+              <div id="fraternityHistogram"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg">
+          <div class="row homeRow">
+            <div class="homeContainer">
+              <h1 class="metricTitle" id="brotherOfWeekTitle">
+                Brother of the Week
+              </h1>
+              <p class="metricBrothers" id="brotherOfTheWeek"></p>
+              <h1 class="metricTitle" id="biggestClimberTitle">
+                Biggest Climber
+              </h1>
+              <p class="metricBrothers" id="biggestClimber"></p>
+              <!--<h1 class="metricTitle" id="hottestStreakTitle">Longest Up-Streak </h1>
+							<p class="metricBrothers" id="hottestStreak"></p>-->
+            </div>
+          </div>
+          <div class="row homeRow">
+            <div class="homeContainer requestContainer">
+              <h1><i class="far fa-comment-dots pkpgreen"></i> Requests</h1>
+              <button id="requestButton">
+                <i class="far fa-paper-plane"></i> Send Request
+              </button>
+              <button id="deleteButton">
+                <i class="far fa-trash-alt"></i> Delete
+              </button>
+              <button id="resolveButton">
+                <i class="far fa-check-square"></i> Resolve
+              </button>
+              <table class="DataTable defaultRedTable" id="userRequestsTable">
+                <thead>
+                  <tr>
+                    <th>requesterId</th>
+                    <th>Date</th>
+                    <th>Reason</th>
+                    <th>Requester</th>
+                    <th></th>
+                    <th>ObjectId</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row homeRow">
+            <div class="homeContainer" id="top3Container">
+              <h1>
+                <i class=" pkpgreen"></i> Top 3 Brothers
+              </h1>
+              <table class="defaultRedTable" id="top3Table">
+                  <tr>
+                    <td class="top3entry" id="firstTop3BrotherName"></td>
+                    <td class="top3entry" id="firstTop3BrotherPoints"></td>
+                  </tr>
+                  <tr>
+                    <td class="top3entry" id="firstTop3BrotherName"></td>
+                    <td class="top3entry" id="firstTop3BrotherPoints"></td>
+                  </tr>
+                  <tr>
+                    <td class="top3entry" id="firstTop3BrotherName"></td>
+                    <td class="top3entry" id="firstTop3BrotherPoints"></td>
+                  </tr>
+              </table>
+            </div>
+
+          </div>
+          <div class="row homeRow">
+            <div class="homeContainer fraternityContainer">
+              <h1>
+                <i class="fas fa-calculator pkpgreen"></i> Fraternity Statistics
+              </h1>
+              <table class="defaultRedTable" id="statsTable">
+                <tr>
+                  <td class="statLabel"><h2>Mean</h2></td>
+                  <td><i class="fas fa-equals"></i></td>
+                  <td><h2 class="statNum" id="statMean">0</h2></td>
+                </tr>
+                <tr>
+                  <td class="statLabel"><h2>Median</h2></td>
+                  <td><i class="fas fa-equals"></i></td>
+                  <td><h2 class="statNum" id="statMedian">0</h2></td>
+                </tr>
+                <tr>
+                  <td class="statLabel"><h2>High</h2></td>
+                  <td><i class="fas fa-equals"></i></td>
+                  <td><h2 class="statNum" id="statHigh">0</h2></td>
+                </tr>
+                <tr style="border-bottom: 1px solid transparent">
+                  <td class="statLabel"><h2>Low</h2></td>
+                  <td><i class="fas fa-equals"></i></td>
+                  <td><h2 class="statNum" id="statLow">0</h2></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="row homeRow">
+            <div class="homeContainer graphContainer">
+              <div id="fraternityLine"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer></footer>
+    <div id="requestDialog" title="Request NIPS">
+      <form>
+        <label for="name">Reason</label>
+        <input
+          type="text"
+          name="name"
+          id="requestReason"
+          placeholder="want points"
+          class="text ui-widget-content ui-corner-all"
+        />
+        <label for="assigner">Assigner</label>
+        <select id="requestAssigner" placeholder="Assigner">
+          <option>Assigner</option>
+          <option>GP</option>
+          <option>VGP</option>
+          <option>P</option>
+          <option>NME</option>
+          <option>BG</option>
+          <option>SG</option>
+          <option>AG</option>
+          <option>Phu</option>
+          <option>Hi</option>
+          <option value="riskManager">Risk Manager</option>
+          <option value="rushChair">Rush Chair</option>
+          <option>Finance Head</option>
+          <option>APR Head</option>
+          <option>Technology Head</option>
+          <option>Social Head</option>
+          <option>Membership Head</option>
+          <option>Philanthropy Head</option>
+          <option>Scholarship Head</option>
+          <option>H&W Head</option></select
+        ><br />
+        <label>Date</label>
+        <input
+          type="date"
+          name="date"
+          placeholder="Date (mm/dd/yyyy)"
+          id="requestDate"
+        />
+        <br /><input id="requestSubmit" type="submit" />
+      </form>
+    </div>
+  </body>
 </html>

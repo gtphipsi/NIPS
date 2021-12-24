@@ -82,15 +82,33 @@ $(document).ready(function() {
 
         /* Show Buttons */
 
-        $('#showGPButton').off('click');
-        $('#showGPButton').click(function() {
-            if (FILTERS.indexOf(positions.GP) >= 0) {
-                return;
-            }
-            FILTERS.push(positions.GP);
-            $('#hideGPButton').show();
-            updateMatrix();
-        });
+        var jqToPos = new Map();
+        map.set('#showGPButton',positions.GP);
+        map.set('VGPButton',positions.VGP);
+        map.set('PButton',positions.P);
+        map.set('AGButton',positions.AG);
+        map.set('HodButton',positions.HOD);
+        map.set('NMEButton',positions.NME);
+        map.set('PhuButton',positions.PHU);
+        map.set('BGButton',positions.BG);
+        map.set('SGButton',positions.SG);
+        map.set('HIButton',positions.HI);
+        map.set('RushChairButton',positions.RUSH_CHAIR);
+        map.set('CommitteeButton',positions.COMMITTEE);
+        map.set('RiskManagerButton',positions.RISK_MANAGER);
+    
+        for(var key in jqToPos.keys()){
+            $('#show'+key).off('click');
+            $(key).click(function () {
+                if (FILTERS.indexOf(jqToPos[key]) >= 0) {
+                    return;
+                }
+                FILTERS.push(jqToPos[key]);
+                $('#hide'+key).show();
+                updateMatrix();
+            });
+        }
+        
 
         $('#showVGPButton').off('click');
         $('#showVGPButton').click(function() {

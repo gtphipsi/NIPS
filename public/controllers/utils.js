@@ -117,6 +117,7 @@ function getPositions(user, committees) {
 function getLeaderboard(transactions, timeframe) {
     var leaderboard = [];
     var pointValues = getPointValues(transactions, timeframe);
+    console.log(transactions);
     for (userId in pointValues) {
         var obj = {
             id: userId,
